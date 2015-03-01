@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 
 android {
@@ -11,41 +13,29 @@ android {
         versionCode 1
         versionName "1.0"
     }
-
-    signingConfigs {
-        debug {
-            //storeFile file("debug.keystore")
-        }
-
-        release {
-            storeFile file("release.keystore")
-            storePassword "xxx"
-            keyAlias "triethocduongpho"
-            keyPassword "xxx"
-        }
-    }
-
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
             debuggable true
             versionNameSuffix " debug " + getBuildName()
         }
+
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
     }
 }
 
 def getBuildName()
 {
-    return new java.text.SimpleDateFormat("yyMMdd-HHmm").format(new Date());
+    return new SimpleDateFormat("yyMMdd-HHmm").format(new Date());
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.2'
     compile project(':html-textview')
+    compile 'com.squareup.picasso:picasso:2.5.0'
+    compile 'com.android.support:appcompat-v7:21.0.2'
+    compile 'com.android.support:support-v4:21.0.2'
 }
