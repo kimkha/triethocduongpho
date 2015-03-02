@@ -1,2 +1,1 @@
-include ':app'
-include ':html-textview'
+include ':app', ':backend', ':html-textview'
