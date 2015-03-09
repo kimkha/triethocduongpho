@@ -16,7 +16,11 @@ import android.os.Build;
 import android.widget.Toast;
 
 import com.kimkha.triethocduongpho.R;
+import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
 import com.kimkha.triethocduongpho.data.Content;
+import com.kimkha.triethocduongpho.data.MyArticleService;
+
+import java.util.List;
 
 public class PageActivity extends ActionBarActivity {
 
@@ -26,8 +30,10 @@ public class PageActivity extends ActionBarActivity {
         setContentView(R.layout.activity_page);
         if (savedInstanceState == null) {
             Bundle arguments = new Bundle();
-            String id = getIntent().getStringExtra(PageFragment.ARG_ITEM_ID);
-            arguments.putString(PageFragment.ARG_ITEM_ID, id);
+            Long id = getIntent().getLongExtra(PageFragment.ARG_ITEM_ID, 0);
+            arguments.putLong(PageFragment.ARG_ITEM_ID, id);
+            String title = getIntent().getStringExtra(PageFragment.ARG_ITEM_TITLE);
+            arguments.putString(PageFragment.ARG_ITEM_TITLE, title);
             PageFragment pageFragment = new PageFragment();
             pageFragment.setArguments(arguments);
 
@@ -35,7 +41,7 @@ public class PageActivity extends ActionBarActivity {
                     .add(R.id.container, pageFragment)
                     .commit();
 
-            getSupportActionBar().setTitle(Content.MAP_DEFAULT.get(id).title);
+            getSupportActionBar().setTitle(title);
         }
     }
 

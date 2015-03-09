@@ -81,9 +81,10 @@ public class CategoryDetailActivity extends ActionBarActivity implements Categor
     }
 
     @Override
-    public void onItemSelected(String id) {
+    public void onItemSelected(Long id, String title) {
         Intent pageIntent = new Intent(this, PageActivity.class);
         pageIntent.putExtra(PageFragment.ARG_ITEM_ID, id);
+        pageIntent.putExtra(PageFragment.ARG_ITEM_TITLE, title);
         startActivity(pageIntent);
     }
 }

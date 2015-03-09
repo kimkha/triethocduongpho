@@ -158,14 +158,17 @@ public class ArticleEndpoint {
     public CollectionResponse<Article> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         //test();
-        Query<Article> query = ofy().load().type(Article.class).limit(limit);
+        Query<Article> query = ofy().load().type(Article.class).order("-created").limit(limit);
         if (cursor != null) {
             query = query.startAt(Cursor.fromWebSafeString(cursor));
         }
         QueryResultIterator<Article> queryIterator = query.iterator();
         List<Article> articleList = new ArrayList<Article>(limit);
         while (queryIterator.hasNext()) {
-            articleList.add(queryIterator.next());
+            Article article = queryIterator.next();
+            // To save data transfer
+            article.setFullContent(null);
+            articleList.add(article);
         }
         return CollectionResponse.<Article>builder().setItems(articleList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }

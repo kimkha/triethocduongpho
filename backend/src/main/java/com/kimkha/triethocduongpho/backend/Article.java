@@ -5,6 +5,9 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * @author kimkha
  * @version 0.1
@@ -18,6 +21,9 @@ public class Article {
     private String title;
     private String imgUrl;
     private Text fullContent;
+    private Date created;
+    private Date fetchTime;
+    private List<String> category;
 
     @Index
     private String url;
@@ -56,6 +62,30 @@ public class Article {
 
     public void setFullContent(Text fullContent) {
         this.fullContent = fullContent;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getFetchTime() {
+        return fetchTime;
+    }
+
+    public void setFetchTime(Date fetchTime) {
+        this.fetchTime = fetchTime;
+    }
+
+    public List<String> getCategory() {
+        return category;
+    }
+
+    public void setCategory(List<String> category) {
+        this.category = category;
     }
 
     public String getUrl() {
