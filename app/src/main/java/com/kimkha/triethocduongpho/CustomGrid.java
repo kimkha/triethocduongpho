@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
 import com.kimkha.triethocduongpho.data.Content;
 import com.squareup.picasso.Picasso;
 
@@ -17,10 +18,10 @@ public class CustomGrid extends BaseAdapter {
 
     private Context mContext;
 
-    private final List<Content> content;
+    private final List<Article> content;
 
 
-    public CustomGrid(Context c, List<Content> content) {
+    public CustomGrid(Context c, List<Article> content) {
         mContext = c;
         this.content = content;
     }
@@ -54,8 +55,8 @@ public class CustomGrid extends BaseAdapter {
             grid = inflater.inflate(R.layout.grid_single, null);
             TextView textView = (TextView) grid.findViewById(R.id.grid_text);
             ImageView imageView = (ImageView) grid.findViewById(R.id.grid_image);
-            textView.setText(content.get(position).title);
-            Picasso.with(mContext).load(content.get(position).imageUrl).into(imageView);
+            textView.setText(content.get(position).getTitle());
+            Picasso.with(mContext).load(content.get(position).getImgUrl()).into(imageView);
         } else {
             grid = convertView;
         }

@@ -1,6 +1,7 @@
 package com.kimkha.triethocduongpho;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,7 +12,10 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 
+import com.kimkha.triethocduongpho.backend.articleApi.ArticleApi;
+import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
 import com.kimkha.triethocduongpho.data.Content;
+import com.kimkha.triethocduongpho.data.MyArticleService;
 
 import java.util.List;
 
@@ -21,16 +25,16 @@ import java.util.List;
  * in two-pane mode (on tablets) or a {@link CategoryDetailActivity}
  * on handsets.
  */
-public class CategoryDetailFragment extends Fragment {
+public class CategoryDetailFragment extends Fragment implements MyArticleService.ApiCallback {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
     public static final String ARG_ITEM_ID = "item_id";
 
-    GridView gridView;
-
-    private List<Content> contentList = Content.CATEGORY_DEFAULT;
+    private GridView gridView = null;
+    private List<Article> articleList = null;
+    private boolean readyForGrid = false;
 
     private Callbacks mCallbacks = sDummyCallbacks;
 
@@ -55,27 +59,33 @@ public class CategoryDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // TODO Choose type of category (default: Home)
-        // contentList = <something>
+        articleList = null;
+        MyArticleService.getArticleList("", this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_category_detail, container, false);
-
-        CustomGrid adapter = new CustomGrid(getActivity(), contentList);
         gridView = (GridView) rootView.findViewById(R.id.grid);
-        gridView.setAdapter(adapter);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                mCallbacks.onItemSelected(contentList.get(position).id);
-            }
-        });
-
+        updateView();
         return rootView;
+    }
+
+    private void updateView() {
+        if (gridView != null && articleList != null) {
+            CustomGrid adapter = new CustomGrid(getActivity(), articleList);
+            gridView.setAdapter(adapter);
+
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    mCallbacks.onItemSelected(articleList.get(position).getUrl());
+                }
+            });
+        }
     }
 
     @Override
@@ -96,6 +106,16 @@ public class CategoryDetailFragment extends Fragment {
 
         // Reset the active callbacks interface to the dummy implementation.
         mCallbacks = sDummyCallbacks;
+    }
+
+    @Override
+    public void onArticleReady(Article article) {
+    }
+
+    @Override
+    public void onArticleListReady(List<Article> articleList) {
+        this.articleList = articleList;
+        updateView();
     }
 
 }

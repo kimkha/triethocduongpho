@@ -61,10 +61,12 @@ public class ArticleEndpoint {
         article.setUrl("test1");
         article.setTitle("Test title");
         article.setImgUrl("http://www.nimbleams.com/media/165625/personaccount.jpg");
-        Text txt = new Text("<h2>Hello</h2><p>I'm <b>Nguyen Kim Kha</b>. Nice to meet you!</p>");
+        Text txt = new Text("<h2>Hello</h2><p>I'm <b>Nguyen Kim Kha</b>. Nice to meet you!</p>" +
+                "<p><img src='http://www.nimbleams.com/media/165625/personaccount.jpg' /></p>");
         article.setFullContent(txt);
         ofy().save().entity(article).now();
     }
+
     /**
      * Returns the {@link Article} with the corresponding ID.
      *
@@ -155,6 +157,7 @@ public class ArticleEndpoint {
             httpMethod = ApiMethod.HttpMethod.GET)
     public CollectionResponse<Article> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
+        //test();
         Query<Article> query = ofy().load().type(Article.class).limit(limit);
         if (cursor != null) {
             query = query.startAt(Cursor.fromWebSafeString(cursor));

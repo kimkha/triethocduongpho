@@ -13,7 +13,7 @@ import com.googlecode.objectify.annotation.Index;
 @Entity
 public class Article {
     @Id
-    Long id;
+    private Long id;
 
     private String title;
     private String imgUrl;
@@ -24,6 +24,14 @@ public class Article {
 
     public Article() {
 
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -57,4 +65,5 @@ public class Article {
     public void setUrl(String url) {
         this.url = url;
     }
+
 }
