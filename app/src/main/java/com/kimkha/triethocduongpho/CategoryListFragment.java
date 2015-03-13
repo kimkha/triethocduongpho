@@ -2,9 +2,8 @@ package com.kimkha.triethocduongpho;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.ListView;
 
 /**
  * A list fragment representing a list of Pages. This fragment
@@ -15,7 +14,7 @@ import android.widget.ListView;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class CategoryListFragment extends ListFragment {
+public class CategoryListFragment extends Fragment {
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -32,7 +31,7 @@ public class CategoryListFragment extends ListFragment {
     /**
      * The current activated item position. Only used on tablets.
      */
-    private int mActivatedPosition = ListView.INVALID_POSITION;
+    //private int mActivatedPosition = ListView.INVALID_POSITION;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -68,6 +67,7 @@ public class CategoryListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         // TODO: replace with a real list adapter.
+
 //        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
 //                getActivity(),
 //                android.R.layout.simple_list_item_activated_1,
@@ -82,7 +82,7 @@ public class CategoryListFragment extends ListFragment {
         // Restore the previously serialized activated item position.
         if (savedInstanceState != null
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
-            setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
+            //setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
     }
 
@@ -105,44 +105,44 @@ public class CategoryListFragment extends ListFragment {
         // Reset the active callbacks interface to the dummy implementation.
         mCallbacks = sDummyCallbacks;
     }
-
-    @Override
-    public void onListItemClick(ListView listView, View view, int position, long id) {
-        super.onListItemClick(listView, view, position, id);
-
-        // Notify the active callbacks interface (the activity, if the
-        // fragment is attached to one) that an item has been selected.
-//        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
-    }
+//
+//    @Override
+//    public void onListItemClick(ListView listView, View view, int position, long id) {
+//        super.onListItemClick(listView, view, position, id);
+//
+//        // Notify the active callbacks interface (the activity, if the
+//        // fragment is attached to one) that an item has been selected.
+////        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+//    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mActivatedPosition != ListView.INVALID_POSITION) {
-            // Serialize and persist the activated item position.
-            outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
-        }
+//        if (mActivatedPosition != ListView.INVALID_POSITION) {
+//            // Serialize and persist the activated item position.
+//            outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
+//        }
     }
-
-    /**
-     * Turns on activate-on-click mode. When this mode is on, list items will be
-     * given the 'activated' state when touched.
-     */
-    public void setActivateOnItemClick(boolean activateOnItemClick) {
-        // When setting CHOICE_MODE_SINGLE, ListView will automatically
-        // give items the 'activated' state when touched.
-        getListView().setChoiceMode(activateOnItemClick
-                ? ListView.CHOICE_MODE_SINGLE
-                : ListView.CHOICE_MODE_NONE);
-    }
-
-    private void setActivatedPosition(int position) {
-        if (position == ListView.INVALID_POSITION) {
-            getListView().setItemChecked(mActivatedPosition, false);
-        } else {
-            getListView().setItemChecked(position, true);
-        }
-
-        mActivatedPosition = position;
-    }
+//
+//    /**
+//     * Turns on activate-on-click mode. When this mode is on, list items will be
+//     * given the 'activated' state when touched.
+//     */
+//    public void setActivateOnItemClick(boolean activateOnItemClick) {
+//        // When setting CHOICE_MODE_SINGLE, ListView will automatically
+//        // give items the 'activated' state when touched.
+//        getListView().setChoiceMode(activateOnItemClick
+//                ? ListView.CHOICE_MODE_SINGLE
+//                : ListView.CHOICE_MODE_NONE);
+//    }
+//
+//    private void setActivatedPosition(int position) {
+//        if (position == ListView.INVALID_POSITION) {
+//            getListView().setItemChecked(mActivatedPosition, false);
+//        } else {
+//            getListView().setItemChecked(position, true);
+//        }
+//
+//        mActivatedPosition = position;
+//    }
 }

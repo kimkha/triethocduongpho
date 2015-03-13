@@ -155,10 +155,13 @@ public class ArticleEndpoint {
             name = "list",
             path = "article",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public CollectionResponse<Article> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<Article> list(@Named("cat") String category, @Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         //test();
         Query<Article> query = ofy().load().type(Article.class).order("-created").limit(limit);
+        if (category == null || !category.equals("")) {
+            query = query.filter("category", category);
+        }
         if (cursor != null) {
             query = query.startAt(Cursor.fromWebSafeString(cursor));
         }

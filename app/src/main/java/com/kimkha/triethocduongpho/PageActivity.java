@@ -1,26 +1,10 @@
 package com.kimkha.triethocduongpho;
 
-import android.content.Intent;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 import android.widget.Toast;
-
-import com.kimkha.triethocduongpho.R;
-import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
-import com.kimkha.triethocduongpho.data.Content;
-import com.kimkha.triethocduongpho.data.MyArticleService;
-
-import java.util.List;
 
 public class PageActivity extends ActionBarActivity {
 
@@ -34,6 +18,8 @@ public class PageActivity extends ActionBarActivity {
             arguments.putLong(PageFragment.ARG_ITEM_ID, id);
             String title = getIntent().getStringExtra(PageFragment.ARG_ITEM_TITLE);
             arguments.putString(PageFragment.ARG_ITEM_TITLE, title);
+            String imgUrl = getIntent().getStringExtra(PageFragment.ARG_ITEM_IMG);
+            arguments.putString(PageFragment.ARG_ITEM_IMG, imgUrl);
             PageFragment pageFragment = new PageFragment();
             pageFragment.setArguments(arguments);
 

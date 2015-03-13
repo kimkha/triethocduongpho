@@ -9,39 +9,39 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
-import com.kimkha.triethocduongpho.data.Content;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class CustomGrid extends BaseAdapter {
+    private static final int DEFAULT_IMG = R.drawable.no_image;
 
     private Context mContext;
 
-    private final List<Article> content;
+    private final List<Article> articleList;
 
 
-    public CustomGrid(Context c, List<Article> content) {
+    public CustomGrid(Context c, List<Article> articleList) {
         mContext = c;
-        this.content = content;
+        this.articleList = articleList;
     }
 
 
     @Override
     public int getCount() {
-        return content.size();
+        return articleList.size();
     }
 
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return articleList.get(position);
     }
 
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return articleList.get(position).getId();
     }
 
 
@@ -53,13 +53,17 @@ public class CustomGrid extends BaseAdapter {
         if (convertView == null) {
             //grid = new View(mContext);
             grid = inflater.inflate(R.layout.grid_single, null);
-            TextView textView = (TextView) grid.findViewById(R.id.grid_text);
-            ImageView imageView = (ImageView) grid.findViewById(R.id.grid_image);
-            textView.setText(content.get(position).getTitle());
-            Picasso.with(mContext).load(content.get(position).getImgUrl()).into(imageView);
         } else {
             grid = convertView;
         }
+
+        TextView textView = (TextView) grid.findViewById(R.id.grid_text);
+        ImageView imageView = (ImageView) grid.findViewById(R.id.grid_image);
+        //imageView.setImageResource(DEFAULT_IMG);
+        textView.setText(articleList.get(position).getTitle());
+        Picasso.with(mContext).load(articleList.get(position).getImgUrl())
+                .resizeDimen(R.dimen.my_grid_image_size, R.dimen.my_grid_image_size).centerCrop()
+                .placeholder(DEFAULT_IMG).error(DEFAULT_IMG).into(imageView);
         return grid;
     }
 }

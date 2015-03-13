@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/grid_image"
         android:contentDescription="@string/app_name"
-        android:layout_width="160dp"
-        android:layout_height="160dp">
+        android:layout_width="@dimen/my_grid_image_size"
+        android:layout_height="@dimen/my_grid_image_size">
     </ImageView>
     <!--<ProgressBar-->
         <!--android:layout_width="wrap_content"-->
@@ -19,7 +20,7 @@
         <!--android:indeterminate="true" />-->
     <TextView
         android:id="@+id/grid_text"
-        android:layout_width="160dp"
+        android:layout_width="@dimen/my_grid_image_size"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/grid_image"
         android:layout_alignTop="@+id/grid_image"

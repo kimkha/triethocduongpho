@@ -1,7 +1,10 @@
 <resources>
-    <string name="app_name">Triet Hoc Duong Pho</string>
+    <string name="app_name">Triết Học Đường Phố</string>
     <string name="title_page_detail">Page Detail</string>
     <string name="title_activity_page">PageActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="loading">Loading Content&#8230;</string>
     <string name="action_settings">Settings</string>
+
+    <!-- Category list -->
+    <string name="category_def">Bài Nổi Bật</string>
 </resources>

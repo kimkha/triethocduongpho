@@ -1,22 +1,20 @@
 package com.kimkha.triethocduongpho;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 
-import com.kimkha.triethocduongpho.backend.articleApi.ArticleApi;
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
-import com.kimkha.triethocduongpho.data.Content;
 import com.kimkha.triethocduongpho.data.MyArticleService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,16 +23,20 @@ import java.util.List;
  * in two-pane mode (on tablets) or a {@link CategoryDetailActivity}
  * on handsets.
  */
-public class CategoryDetailFragment extends Fragment implements MyArticleService.ApiCallback {
+public class CategoryDetailFragment extends Fragment implements MyArticleService.ApiCallback, EndlessScrollListener.RefreshList {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
      */
-    public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_CATEGORY = "category";
 
+    private String category = "";
+    private String nextPageToken = null;
     private GridView gridView = null;
-    private List<Article> articleList = null;
+    private List<Article> articleList = new ArrayList<>();
     private boolean readyForGrid = false;
+    private CustomGrid adapter = null;
+    private EndlessScrollListener scrollListener = null;
 
     private Callbacks mCallbacks = sDummyCallbacks;
 
@@ -42,25 +44,37 @@ public class CategoryDetailFragment extends Fragment implements MyArticleService
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(Long id, String title);
+        public void onItemSelected(Long id, String title, String imgUrl);
+
+        public void onItemLoaded();
+
+        public void onItemLoading();
     }
 
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(Long id, String title) {
+        public void onItemSelected(Long id, String title, String imgUrl) {
         }
+        @Override
+        public void onItemLoaded(){}
+
+        @Override
+        public void onItemLoading() {}
     };
 
     public CategoryDetailFragment() {
+        super();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // TODO Choose type of category (default: Home)
-        articleList = null;
-        MyArticleService.getArticleList("", this);
+        if (getArguments().containsKey(ARG_CATEGORY)) {
+            category = getArguments().getString(ARG_CATEGORY);
+        }
+
+        loadListFromStart();
     }
 
     @Override
@@ -74,18 +88,33 @@ public class CategoryDetailFragment extends Fragment implements MyArticleService
     }
 
     private void updateView() {
-        if (gridView != null && articleList != null) {
-            CustomGrid adapter = new CustomGrid(getActivity(), articleList);
-            gridView.setAdapter(adapter);
+        if (gridView != null && readyForGrid) {
+            if (adapter == null) {
+                adapter = new CustomGrid(getActivity(), articleList);
+                gridView.setAdapter(adapter);
 
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                    Article article = articleList.get(position);
-                    mCallbacks.onItemSelected(article.getId(), article.getTitle());
+                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        Article article = articleList.get(position);
+                        mCallbacks.onItemSelected(article.getId(), article.getTitle(), article.getImgUrl());
+                    }
+                });
+
+                scrollListener = new EndlessScrollListener(gridView, this);
+                gridView.setOnScrollListener(scrollListener);
+
+            } else {
+                adapter.notifyDataSetChanged();
+                if (this.nextPageToken == null || "".equals(this.nextPageToken.trim())) {
+                    scrollListener.noMorePages();
+                } else {
+                    scrollListener.notifyMorePages();
                 }
-            });
+            }
+
+            mCallbacks.onItemLoaded();
         }
     }
 
@@ -99,6 +128,8 @@ public class CategoryDetailFragment extends Fragment implements MyArticleService
         }
 
         mCallbacks = (Callbacks) activity;
+
+        category = getString(R.string.category_def);
     }
 
     @Override
@@ -109,13 +140,35 @@ public class CategoryDetailFragment extends Fragment implements MyArticleService
         mCallbacks = sDummyCallbacks;
     }
 
+    public void loadListFromStart() {
+        articleList.clear();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+        readyForGrid = false;
+        MyArticleService.getArticleList(category, nextPageToken, this);
+    }
+
+    @Override
+    public void onScrollNextPage() {
+        readyForGrid = false;
+        mCallbacks.onItemLoading();
+        MyArticleService.getArticleList(category, nextPageToken, this);
+    }
+
     @Override
     public void onArticleReady(Article article) {
     }
 
     @Override
-    public void onArticleListReady(List<Article> articleList) {
-        this.articleList = articleList;
+    public void onArticleListReady(List<Article> articleList, String nextPageToken) {
+        if (articleList != null && articleList.size() > 0) {
+            this.articleList.addAll(articleList);
+        }
+
+        this.nextPageToken = nextPageToken;
+
+        readyForGrid = true;// Make articleList ready
         updateView();
     }
 

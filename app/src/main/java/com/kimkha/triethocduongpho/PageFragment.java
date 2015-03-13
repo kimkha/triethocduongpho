@@ -5,10 +5,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
-import com.kimkha.triethocduongpho.data.Content;
 import com.kimkha.triethocduongpho.data.MyArticleService;
+import com.squareup.picasso.Picasso;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
@@ -23,9 +25,14 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 
     public static final String ARG_ITEM_ID = "item_id";
     public static final String ARG_ITEM_TITLE = "item_title";
+    public static final String ARG_ITEM_IMG = "item_img";
 
+    private String imgUrl;
+    private String title;
     private Article article;
     private HtmlTextView htmlTextView;
+    private ImageView imageView;
+    private TextView headerView;
 
     public PageFragment() {
 
@@ -37,6 +44,8 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             Long id = getArguments().getLong(ARG_ITEM_ID);
+            title = getArguments().getString(ARG_ITEM_TITLE);
+            imgUrl = getArguments().getString(ARG_ITEM_IMG);
 
             MyArticleService.getArticle(id, this);
         }
@@ -47,6 +56,10 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
         htmlTextView = (HtmlTextView) rootView.findViewById(R.id.page_content);
+        imageView = (ImageView) rootView.findViewById(R.id.page_image);
+        Picasso.with(getActivity()).load(imgUrl).into(imageView);
+        headerView = (TextView) rootView.findViewById(R.id.page_header);
+        headerView.setText(title);
 
         updateView();
         return rootView;
@@ -65,7 +78,7 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
     }
 
     @Override
-    public void onArticleListReady(List<Article> articleList) {
+    public void onArticleListReady(List<Article> articleList, String nextPageToken) {
 
     }
 }

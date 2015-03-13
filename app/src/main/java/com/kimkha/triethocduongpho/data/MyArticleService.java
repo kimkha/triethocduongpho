@@ -5,8 +5,6 @@ import android.util.Pair;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.kimkha.triethocduongpho.backend.articleApi.ArticleApi;
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
 import com.kimkha.triethocduongpho.backend.articleApi.model.CollectionResponseArticle;
@@ -40,8 +38,8 @@ public class MyArticleService {
                 .build();
     }
 
-    public static void getArticleList(String category, ApiCallback callback) {
-        new EndpointsAsyncTask().execute(new Pair<ApiCallback, String>(callback, category));
+    public static void getArticleList(String category, String nextPageToken, ApiCallback callback) {
+        new EndpointsAsyncTask(callback).execute(new Pair<String, String>(category, nextPageToken));
     }
 
    public static void getArticle(Long id, ApiCallback callback) {
@@ -71,17 +69,20 @@ public class MyArticleService {
         }
     }
 
-    static class EndpointsAsyncTask extends AsyncTask<Pair<ApiCallback, String>, Void, List<Article>> {
+    static class EndpointsAsyncTask extends AsyncTask<Pair<String, String>, Void, CollectionResponseArticle> {
         private ApiCallback apiCallback;
 
+        public EndpointsAsyncTask(ApiCallback apiCallback) {
+            this.apiCallback = apiCallback;
+        }
+
         @Override
-        protected List<Article> doInBackground(Pair<ApiCallback, String>... params) {
-            apiCallback = params[0].first;
-            String category = params[0].second;
+        protected CollectionResponseArticle doInBackground(Pair<String, String>... params) {
+            String category = params[0].first;
+            String nextPageToken = params[0].second;
 
             try {
-                CollectionResponseArticle response = articleApi.list().execute();
-                return response.getItems();
+                return articleApi.list(category).setCursor(nextPageToken).execute();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -89,13 +90,13 @@ public class MyArticleService {
         }
 
         @Override
-        protected void onPostExecute(List<Article> result) {
-            apiCallback.onArticleListReady(result);
+        protected void onPostExecute(CollectionResponseArticle result) {
+            apiCallback.onArticleListReady(result.getItems(), result.getNextPageToken());
         }
     }
 
     public static interface ApiCallback {
         void onArticleReady(Article article);
-        void onArticleListReady(List<Article> articleList);
+        void onArticleListReady(List<Article> articleList, String nextPageToken);
     }
 }
