@@ -11,7 +11,7 @@ android {
         minSdkVersion 8
         targetSdkVersion 21
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
     }
     buildTypes {
         debug {
@@ -37,6 +37,7 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.0'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.google.http-client:google-http-client-gson:1.19.0' exclude module: 'httpclient'
     compile 'com.google.android.gms:play-services:+'
     compile project(path: ':backend', configuration: 'android-endpoints')
 }

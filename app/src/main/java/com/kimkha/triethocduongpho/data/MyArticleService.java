@@ -1,10 +1,13 @@
 package com.kimkha.triethocduongpho.data;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Pair;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import com.kimkha.triethocduongpho.backend.articleApi.ArticleApi;
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
 import com.kimkha.triethocduongpho.backend.articleApi.model.CollectionResponseArticle;
@@ -21,9 +24,21 @@ public class MyArticleService {
     private final static String URL_BASE = "http://10.0.2.2:8080/_ah/api/";
     private final static ArticleApi articleApi;
 
+    /**
+     * Class instance of the JSON factory.
+     */
+    public static JsonFactory getJsonFactory() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            // only for honeycomb and newer versions
+            return new AndroidJsonFactory();
+        } else {
+            return new GsonFactory();
+        }
+    }
+
     static {
         articleApi = new ArticleApi.Builder(AndroidHttp.newCompatibleTransport(),
-                new AndroidJsonFactory(), null)
+                getJsonFactory(), null)
                 // options for running against local devappserver
                 // - 10.0.2.2 is localhost's IP address in Android emulator
                 // - turn off compression when running against local devappserver
