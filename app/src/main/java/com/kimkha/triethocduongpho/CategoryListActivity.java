@@ -48,9 +48,9 @@ public class CategoryListActivity extends ActionBarActivity
 
             // In two-pane mode, list items should be given the
             // 'activated' state when touched.
-            ((CategoryListFragment) getSupportFragmentManager()
-                    .findFragmentById(R.id.page_list))
-                    .setActivateOnItemClick(true);
+//            ((CategoryListFragment) getSupportFragmentManager()
+//                    .findFragmentById(R.id.page_list))
+//                    .setActivateOnItemClick(true);
         }
 
 
