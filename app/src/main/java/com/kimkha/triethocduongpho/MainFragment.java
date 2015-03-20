@@ -80,6 +80,10 @@ public class MainFragment extends Fragment implements MyArticleService.ApiCallba
 
         if (getArguments().containsKey(ARG_CATEGORY)) {
             category = getArguments().getString(ARG_CATEGORY);
+
+            if (category == null || category.equalsIgnoreCase(getString(R.string.category_all))) {
+                category = "";
+            }
         }
 
         loadListFromStart();
