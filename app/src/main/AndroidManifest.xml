@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.kimkha.triethocduongpho" >
 
-    <uses-sdk tools:overrideLibrary="com.google.android.gms" />
+    <uses-sdk tools:overrideLibrary="com.google.android.gms, com.etsy.android.grid" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
