@@ -28,6 +28,8 @@ public class PageActivity extends ActionBarActivity {
                     .commit();
 
             getSupportActionBar().setTitle(title);
+            //getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
