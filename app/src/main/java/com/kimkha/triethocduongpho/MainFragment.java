@@ -3,11 +3,11 @@ package com.kimkha.triethocduongpho;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
 import com.kimkha.triethocduongpho.data.MyArticleService;
@@ -29,10 +29,11 @@ public class MainFragment extends Fragment implements MyArticleService.ApiCallba
 
     private String category = "";
     private String nextPageToken = null;
-    private GridView gridView = null;
+    private RecyclerView mRecyclerView = null;
+    private LinearLayoutManager mLayoutManager;
     private List<Article> articleList = new ArrayList<>();
     private boolean readyForGrid = false;
-    private CustomGrid adapter = null;
+    private ArticleAdapter adapter = null;
     private EndlessScrollListener scrollListener = null;
 
     private Callbacks mCallbacks = sDummyCallbacks;
@@ -89,7 +90,11 @@ public class MainFragment extends Fragment implements MyArticleService.ApiCallba
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        gridView = (GridView) rootView.findViewById(R.id.grid_main);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         updateView();
         return rootView;
@@ -127,30 +132,30 @@ public class MainFragment extends Fragment implements MyArticleService.ApiCallba
     }
 
     private void updateView() {
-        if (gridView != null && readyForGrid) {
+        if (mRecyclerView != null && readyForGrid) {
             if (adapter == null) {
-                adapter = new CustomGrid(getActivity(), articleList);
-                gridView.setAdapter(adapter);
+                adapter = new ArticleAdapter(articleList);
+                mRecyclerView.setAdapter(adapter);
 
-                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view,
-                                            int position, long id) {
-                        Article article = articleList.get(position);
-                        mCallbacks.onItemSelected(article.getId(), article.getTitle(), article.getImgUrl());
-                    }
-                });
+//                mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view,
+//                                            int position, long id) {
+//                        Article article = articleList.get(position);
+//                        mCallbacks.onItemSelected(article.getId(), article.getTitle(), article.getImgUrl());
+//                    }
+//                });
 
-                scrollListener = new EndlessScrollListener(gridView, this);
-                gridView.setOnScrollListener(scrollListener);
+//                scrollListener = new EndlessScrollListener(gridView, this);
+//                gridView.setOnScrollListener(scrollListener);
 
             } else {
-                adapter.notifyDataSetChanged();
-                if (this.nextPageToken == null || "".equals(this.nextPageToken.trim())) {
-                    scrollListener.noMorePages();
-                } else {
-                    scrollListener.notifyMorePages();
-                }
+//                adapter.notifyDataSetChanged();
+//                if (this.nextPageToken == null || "".equals(this.nextPageToken.trim())) {
+//                    scrollListener.noMorePages();
+//                } else {
+//                    scrollListener.notifyMorePages();
+//                }
             }
 
             mCallbacks.onItemLoaded();

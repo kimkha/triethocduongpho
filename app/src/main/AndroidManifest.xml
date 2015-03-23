@@ -3,37 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.kimkha.triethocduongpho" >
 
-    <uses-sdk tools:overrideLibrary="com.google.android.gms, com.etsy.android.grid" />
+    <uses-sdk tools:overrideLibrary="com.etsy.android.grid" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
-    <permission
-        android:name="com.example.gcm.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-
-    <uses-permission android:name="com.example.gcm.permission.C2D_MESSAGE" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".CategoryListActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name=".CategoryDetailActivity"
-            android:label="@string/app_name"
-            android:parentActivityName=".CategoryListActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.kimkha.triethocduongpho.CategoryListActivity" />
-        </activity>
         <activity
             android:name=".PageActivity"
             android:icon="@mipmap/ic_launcher"

@@ -37,8 +37,10 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.0'
     compile 'com.etsy.android.grid:library:1.0.5'
     compile 'com.android.support:appcompat-v7:+'
+    compile 'com.android.support:cardview-v7:22.+'
+    compile 'com.android.support:recyclerview-v7:22.+'
     compile 'com.android.support:support-v4:+'
-    compile 'com.google.android.gms:play-services:+'
+    //compile 'com.google.android.gms:play-services:+'
     compile 'com.google.http-client:google-http-client-gson:1.19.0' exclude module: 'httpclient'
     compile project(path: ':backend', configuration: 'android-endpoints')
 }
