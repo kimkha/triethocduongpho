@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,7 @@ public class MainFragment extends Fragment implements MyArticleService.ApiCallba
     private String category = "";
     private String nextPageToken = null;
     private RecyclerView mRecyclerView = null;
-    private LinearLayoutManager mLayoutManager;
+    private StaggeredGridLayoutManager mLayoutManager;
     private List<Article> articleList = new ArrayList<>();
     private boolean readyForGrid = false;
     private ArticleAdapter adapter = null;
@@ -93,8 +94,11 @@ public class MainFragment extends Fragment implements MyArticleService.ApiCallba
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.num_of_column), StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        adapter = new ArticleAdapter(getActivity());
+        mRecyclerView.setAdapter(adapter);
 
         updateView();
         return rootView;
@@ -133,10 +137,11 @@ public class MainFragment extends Fragment implements MyArticleService.ApiCallba
 
     private void updateView() {
         if (mRecyclerView != null && readyForGrid) {
-            if (adapter == null) {
-                adapter = new ArticleAdapter(articleList);
-                mRecyclerView.setAdapter(adapter);
+            adapter.appendArticleList(articleList);
+            adapter.notifyDataSetChanged();
 
+//            if (adapter.getItemCount() == 0) {
+//
 //                mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //                    @Override
 //                    public void onItemClick(AdapterView<?> parent, View view,
@@ -148,15 +153,15 @@ public class MainFragment extends Fragment implements MyArticleService.ApiCallba
 
 //                scrollListener = new EndlessScrollListener(gridView, this);
 //                gridView.setOnScrollListener(scrollListener);
-
-            } else {
+//
+//            } else {
 //                adapter.notifyDataSetChanged();
 //                if (this.nextPageToken == null || "".equals(this.nextPageToken.trim())) {
 //                    scrollListener.noMorePages();
 //                } else {
 //                    scrollListener.notifyMorePages();
 //                }
-            }
+//            }
 
             mCallbacks.onItemLoaded();
         }
