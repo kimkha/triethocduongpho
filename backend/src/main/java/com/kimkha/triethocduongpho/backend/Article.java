@@ -24,6 +24,8 @@ public class Article {
     private Date created;
     private Date fetchTime;
     private List<String> category;
+    private String author;
+    private int version;
 
     @Index
     private String url;
@@ -96,4 +98,19 @@ public class Article {
         this.url = url;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
 }
