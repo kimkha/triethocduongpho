@@ -1,6 +1,7 @@
 package com.kimkha.triethocduongpho.app;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -10,6 +11,9 @@ import com.kimkha.triethocduongpho.ui.PageFragment;
 
 public class PageActivity extends BaseActivity {
 
+    private String mTitle;
+    private String mImgUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,10 +22,10 @@ public class PageActivity extends BaseActivity {
             Bundle arguments = new Bundle();
             Long id = getIntent().getLongExtra(PageFragment.ARG_ITEM_ID, 0);
             arguments.putLong(PageFragment.ARG_ITEM_ID, id);
-            String title = getIntent().getStringExtra(PageFragment.ARG_ITEM_TITLE);
-            arguments.putString(PageFragment.ARG_ITEM_TITLE, title);
-            String imgUrl = getIntent().getStringExtra(PageFragment.ARG_ITEM_IMG);
-            arguments.putString(PageFragment.ARG_ITEM_IMG, imgUrl);
+            mTitle = getIntent().getStringExtra(PageFragment.ARG_ITEM_TITLE);
+            arguments.putString(PageFragment.ARG_ITEM_TITLE, mTitle);
+            mImgUrl = getIntent().getStringExtra(PageFragment.ARG_ITEM_IMG);
+            arguments.putString(PageFragment.ARG_ITEM_IMG, mImgUrl);
             PageFragment pageFragment = new PageFragment();
             pageFragment.setArguments(arguments);
 
@@ -29,9 +33,6 @@ public class PageActivity extends BaseActivity {
                     .add(R.id.container, pageFragment)
                     .commit();
 
-            getSupportActionBar().setTitle(title);
-            //getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -40,6 +41,11 @@ public class PageActivity extends BaseActivity {
         return R.layout.activity_page;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        restoreActionBar();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -60,6 +66,15 @@ public class PageActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void restoreActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(mTitle);
+        }
     }
 
 }
