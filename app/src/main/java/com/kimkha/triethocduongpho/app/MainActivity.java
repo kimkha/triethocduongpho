@@ -27,7 +27,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainFragment.Callbacks {
 
     /**
@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         if (checkNetworkAndShowAlert()) {
             isNetworkAvailable = true;
@@ -61,9 +60,15 @@ public class MainActivity extends AppCompatActivity
             mNavigationDrawerFragment.setUp(
                     R.id.navigation_drawer,
                     (DrawerLayout) findViewById(R.id.drawer_layout));
+
         } else {
             isNetworkAvailable = false;
         }
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_main;
     }
 
     @Override

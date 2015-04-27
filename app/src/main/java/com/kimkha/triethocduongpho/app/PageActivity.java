@@ -1,6 +1,5 @@
 package com.kimkha.triethocduongpho.app;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,12 +8,12 @@ import android.widget.Toast;
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.ui.PageFragment;
 
-public class PageActivity extends ActionBarActivity {
+public class PageActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_page);
+
         if (savedInstanceState == null) {
             Bundle arguments = new Bundle();
             Long id = getIntent().getLongExtra(PageFragment.ARG_ITEM_ID, 0);
@@ -34,6 +33,11 @@ public class PageActivity extends ActionBarActivity {
             //getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_page;
     }
 
 
