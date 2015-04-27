@@ -21,7 +21,7 @@ import java.util.List;
  * @version 0.1
  * @since 3/14/15
  */
-public class MainFragment extends Fragment implements MyArticleService.ApiCallback, EndlessScrollListener.RefreshList {
+public class MainFragment extends Fragment {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -87,8 +87,6 @@ public class MainFragment extends Fragment implements MyArticleService.ApiCallba
                 category = "";
             }
         }
-
-        loadListFromStart();
     }
 
     @Override
@@ -101,10 +99,14 @@ public class MainFragment extends Fragment implements MyArticleService.ApiCallba
         mLayoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.num_of_column), StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        triggerEvents();
+
         adapter = new ArticleAdapter(getActivity());
         mRecyclerView.setAdapter(adapter);
 
-        updateView();
+        adapter.setCallback(mCallbacks);
+        adapter.startLoader(category);
+
         return rootView;
     }
 
@@ -129,69 +131,14 @@ public class MainFragment extends Fragment implements MyArticleService.ApiCallba
         mCallbacks = sDummyCallbacks;
     }
 
-    public void loadListFromStart() {
-        articleList.clear();
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
-        nextPageToken = null;
-        readyForGrid = false;
-        MyArticleService.getArticleList(category, nextPageToken, this);
-    }
+    private void triggerEvents() {
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
 
-    private void updateView() {
-        if (mRecyclerView != null && readyForGrid) {
-            adapter.appendArticleList(articleList);
-            adapter.notifyDataSetChanged();
-
-//            if (adapter.getItemCount() == 0) {
-//
-//                mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view,
-//                                            int position, long id) {
-//                        Article article = articleList.get(position);
-//                        mCallbacks.onItemSelected(article.getId(), article.getTitle(), article.getImgUrl());
-//                    }
-//                });
-
-//                scrollListener = new EndlessScrollListener(gridView, this);
-//                gridView.setOnScrollListener(scrollListener);
-//
-//            } else {
-//                adapter.notifyDataSetChanged();
-//                if (this.nextPageToken == null || "".equals(this.nextPageToken.trim())) {
-//                    scrollListener.noMorePages();
-//                } else {
-//                    scrollListener.notifyMorePages();
-//                }
-//            }
-
-            mCallbacks.onItemLoaded();
-        }
-    }
-
-    @Override
-    public void onScrollNextPage() {
-        readyForGrid = false;
-        mCallbacks.onItemLoading();
-        MyArticleService.getArticleList(category, nextPageToken, this);
-    }
-
-    @Override
-    public void onArticleReady(Article article) {
-    }
-
-    @Override
-    public void onArticleListReady(List<Article> articleList, String nextPageToken) {
-        if (articleList != null && articleList.size() > 0) {
-            this.articleList.addAll(articleList);
-        }
-
-        this.nextPageToken = nextPageToken;
-
-        readyForGrid = true;// Make articleList ready
-        updateView();
     }
 
 }

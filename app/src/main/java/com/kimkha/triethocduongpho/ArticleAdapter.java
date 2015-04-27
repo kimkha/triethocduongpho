@@ -2,7 +2,6 @@ package com.kimkha.triethocduongpho;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
+import com.kimkha.triethocduongpho.data.MyArticleService;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -18,8 +18,11 @@ import java.util.List;
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
     private static final int DEFAULT_IMG = R.drawable.no_image;
 
-    private final List<Article> articleList = new ArrayList<>();
+    private final List<Article> mArticleList = new ArrayList<>();
     private final Context mContext;
+    private MainFragment.Callbacks mCallback;
+    private String mNextPageToken;
+    private String mCategory;
 
     public ArticleAdapter(Context context) {
         mContext = context;
@@ -37,8 +40,53 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         }
     }
 
-    public void appendArticleList(List<Article> articleList) {
-        this.articleList.addAll(articleList);
+    public void setCallback(MainFragment.Callbacks callback) {
+        mCallback = callback;
+    }
+
+    public void startLoader(String category) {
+        // Clear the list first
+        mNextPageToken = null;
+        mCategory = category;
+        mArticleList.clear();
+        notifyDataSetChanged();
+
+        loadCurrentPage();
+    }
+
+    public void goNext() {
+        // Everything was prepared, just go
+        loadCurrentPage();
+    }
+
+    private void loadCurrentPage() {
+        notifyLoading();
+        MyArticleService.getArticleList(mCategory, mNextPageToken, new MyArticleService.ApiCallback() {
+            @Override
+            public void onArticleReady(Article article) {
+                // Do nothing
+            }
+
+            @Override
+            public void onArticleListReady(List<Article> articleList, String nextPageToken) {
+                if (articleList != null && articleList.size() > 0) {
+                    // Exist the list to append
+                    mArticleList.addAll(articleList);
+                    mNextPageToken = nextPageToken;
+                    notifyDataSetChanged();
+                }
+
+                notifyLoaded();
+            }
+        });
+    }
+
+    private void notifyLoading() {
+        mCallback.onItemLoading();
+    }
+
+    private void notifyLoaded() {
+        mCallback.onItemLoaded();
     }
 
     @Override
@@ -50,7 +98,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Article article = articleList.get(position);
+        Article article = mArticleList.get(position);
         holder.mTextView.setText(article.getTitle());
         String img = article.getImgUrl();
         if (img != null && img.startsWith("/triethocduongpho-android")) {
@@ -62,12 +110,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
 
     @Override
     public long getItemId(int position) {
-        return articleList.get(position).getId();
+        return mArticleList.get(position).getId();
     }
 
     @Override
     public int getItemCount() {
-        return articleList.size();
+        return mArticleList.size();
     }
 
 }
