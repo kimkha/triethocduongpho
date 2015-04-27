@@ -85,7 +85,7 @@ public class MyArticleService {
     }
 
     static class EndpointsAsyncTask extends AsyncTask<Pair<String, String>, Void, CollectionResponseArticle> {
-        private ApiCallback apiCallback;
+        private final ApiCallback apiCallback;
 
         public EndpointsAsyncTask(ApiCallback apiCallback) {
             this.apiCallback = apiCallback;

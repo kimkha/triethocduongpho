@@ -50,10 +50,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTextView.setText(articleList.get(position).getTitle());
-        Picasso.with(mContext).load(articleList.get(position).getImgUrl())
+        Article article = articleList.get(position);
+        holder.mTextView.setText(article.getTitle());
+        String img = article.getImgUrl();
+        if (img != null && img.startsWith("/triethocduongpho-android")) {
+            img = "http://storage.googleapis.com" + img;
+        }
+        Picasso.with(mContext).load(img)
                 .placeholder(DEFAULT_IMG).error(DEFAULT_IMG).into(holder.mImageView);
-        Log.e("TAAAA", "articleList.get(position).getImgUrl() " + articleList.get(position).getImgUrl());
     }
 
     @Override
