@@ -1,23 +1,16 @@
-package com.kimkha.triethocduongpho;
+package com.kimkha.triethocduongpho.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
-import com.kimkha.triethocduongpho.data.MyArticleService;
-import com.kimkha.triethocduongpho.ui.RecyclerItemClickListener;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.kimkha.triethocduongpho.data.ArticleAdapter;
+import com.kimkha.triethocduongpho.R;
 
 /**
  * @author kimkha

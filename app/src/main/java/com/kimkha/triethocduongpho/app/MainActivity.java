@@ -1,4 +1,4 @@
-package com.kimkha.triethocduongpho;
+package com.kimkha.triethocduongpho.app;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -8,23 +8,26 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.Toast;
 
+import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.data.Category;
+import com.kimkha.triethocduongpho.ui.MainFragment;
+import com.kimkha.triethocduongpho.ui.NavigationDrawerFragment;
+import com.kimkha.triethocduongpho.ui.PageFragment;
 
 import java.net.URL;
 import java.net.URLConnection;
 
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainFragment.Callbacks {
 
     /**

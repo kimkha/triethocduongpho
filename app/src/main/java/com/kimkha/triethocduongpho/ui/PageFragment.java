@@ -1,4 +1,4 @@
-package com.kimkha.triethocduongpho;
+package com.kimkha.triethocduongpho.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
 import com.kimkha.triethocduongpho.data.MyArticleService;
 import com.squareup.picasso.Picasso;

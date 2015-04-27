@@ -1,4 +1,4 @@
-package com.kimkha.triethocduongpho;
+package com.kimkha.triethocduongpho.ui;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.data.Category;
 
 /**

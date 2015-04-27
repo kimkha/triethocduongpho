@@ -1,4 +1,4 @@
-package com.kimkha.triethocduongpho;
+package com.kimkha.triethocduongpho.data;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
-import com.kimkha.triethocduongpho.data.MyArticleService;
+import com.kimkha.triethocduongpho.ui.MainFragment;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

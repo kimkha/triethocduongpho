@@ -1,10 +1,13 @@
-package com.kimkha.triethocduongpho;
+package com.kimkha.triethocduongpho.app;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.kimkha.triethocduongpho.R;
+import com.kimkha.triethocduongpho.ui.PageFragment;
 
 public class PageActivity extends ActionBarActivity {
 
