@@ -23,6 +23,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     private MainFragment.Callbacks mCallback;
     private String mNextPageToken;
     private String mCategory;
+    private boolean loading = false;
 
     public ArticleAdapter(Context context) {
         mContext = context;
@@ -60,25 +61,32 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     }
 
     private void loadCurrentPage() {
-        notifyLoading();
-        MyArticleService.getArticleList(mCategory, mNextPageToken, new MyArticleService.ApiCallback() {
-            @Override
-            public void onArticleReady(Article article) {
-                // Do nothing
-            }
+        if (!loading) {
+            // Mark it as loading... Please wait
+            loading = true;
+            notifyLoading();
 
-            @Override
-            public void onArticleListReady(List<Article> articleList, String nextPageToken) {
-                if (articleList != null && articleList.size() > 0) {
-                    // Exist the list to append
-                    mArticleList.addAll(articleList);
-                    mNextPageToken = nextPageToken;
-                    notifyDataSetChanged();
+            MyArticleService.getArticleList(mCategory, mNextPageToken, new MyArticleService.ApiCallback() {
+                @Override
+                public void onArticleReady(Article article) {
+                    // Do nothing
                 }
 
-                notifyLoaded();
-            }
-        });
+                @Override
+                public void onArticleListReady(List<Article> articleList, String nextPageToken) {
+                    if (articleList != null && articleList.size() > 0) {
+                        // Exist the list to append
+                        mArticleList.addAll(articleList);
+                        mNextPageToken = nextPageToken;
+                        notifyDataSetChanged();
+                    }
+
+                    // Mark it as load finished... Can go next
+                    loading = false;
+                    notifyLoaded();
+                }
+            });
+        }
     }
 
     private void notifyLoading() {

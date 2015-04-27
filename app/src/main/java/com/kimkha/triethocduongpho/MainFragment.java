@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +30,9 @@ public class MainFragment extends Fragment {
     private static final String ARG_CATEGORY = "category";
 
     private String category = "";
-    private String nextPageToken = null;
     private RecyclerView mRecyclerView = null;
     private StaggeredGridLayoutManager mLayoutManager;
-    private List<Article> articleList = new ArrayList<>();
-    private boolean readyForGrid = false;
     private ArticleAdapter adapter = null;
-    private EndlessScrollListener scrollListener = null;
 
     private Callbacks mCallbacks = sDummyCallbacks;
 
@@ -131,11 +128,26 @@ public class MainFragment extends Fragment {
         mCallbacks = sDummyCallbacks;
     }
 
+    public void cleanAndReload() {
+        adapter.startLoader(category);
+    }
+
     private void triggerEvents() {
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+
+                int visibleItemCount = mLayoutManager.getChildCount();
+                int totalItemCount = mLayoutManager.getItemCount();
+                int[] pastVisiblesItems = mLayoutManager.findFirstVisibleItemPositions(null);
+
+                if (pastVisiblesItems.length > 0) {
+                    if ( (visibleItemCount+pastVisiblesItems[0]) >= totalItemCount) {
+                        // This is last item
+                        adapter.goNext();
+                    }
+                }
             }
         });
 

@@ -20,7 +20,8 @@ import android.widget.Toast;
 
 import com.kimkha.triethocduongpho.data.Category;
 
-import java.net.InetAddress;
+import java.net.URL;
+import java.net.URLConnection;
 
 
 public class MainActivity extends ActionBarActivity
@@ -39,13 +40,14 @@ public class MainActivity extends ActionBarActivity
     private MainFragment mFragment;
     private boolean isNetworkAvailable = false;
     private AlertDialog networkDialog;
+    private boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (displayNetworkAlert()) {
+        if (checkNetworkAndShowAlert()) {
             isNetworkAvailable = true;
 
             mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -65,19 +67,23 @@ public class MainActivity extends ActionBarActivity
     public void onResume() {
         super.onResume();
         Log.e("AAA", "isNetworkAvailable " + isNetworkAvailable);
-        if (!isNetworkAvailable && displayNetworkAlert()) {
+        if (!isNetworkAvailable && checkNetworkAndShowAlert()) {
             // Old = not connect, New = connected => reload activity
             Log.e("AAA", "Restart");
             isNetworkAvailable = true;
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
+            restartActivity();
         }
+    }
+
+    private void restartActivity() {
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        if (isNetworkAvailable) {
+        if (checkNetworkAndShowAlert()) {
             // update the main content by replacing fragments
             String category = Category.CATEGORY_LIST[position];
             mFragment = MainFragment.newInstance(category);
@@ -93,9 +99,11 @@ public class MainActivity extends ActionBarActivity
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        if (actionBar != null) {
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(mTitle);
+        }
     }
 
 
@@ -108,6 +116,7 @@ public class MainActivity extends ActionBarActivity
             // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.mainmenu, menu);
             restoreActionBar();
+            showProgressActionBar();
             return true;
         }
         return super.onCreateOptionsMenu(menu);
@@ -120,8 +129,7 @@ public class MainActivity extends ActionBarActivity
                 case R.id.action_refresh:
                     Toast.makeText(this, "Refresh selected", Toast.LENGTH_SHORT)
                             .show();
-                    setRefreshActionButtonState(true);
-                    mFragment.loadListFromStart();
+                    mFragment.cleanAndReload();
                     break;
                 case R.id.action_settings:
                     Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
@@ -148,20 +156,30 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public void onItemLoading() {
-        setRefreshActionButtonState(true);
+        isLoading = true;
+        setRefreshActionButtonState();
     }
 
     @Override
     public void onItemLoaded() {
-        setRefreshActionButtonState(false);
+        isLoading = false;
+        setRefreshActionButtonState();
     }
 
-    public void setRefreshActionButtonState(final boolean refreshing) {
+    public void setRefreshActionButtonState() {
+        showProgressActionBar();
+        if (isLoading) {
+            Toast.makeText(this, R.string.loading, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void showProgressActionBar() {
+        Log.e("AAA", "optionsMenu " + optionsMenu + " isLoading " + isLoading);
         if (optionsMenu != null) {
             final MenuItem refreshItem = optionsMenu
                     .findItem(R.id.action_refresh);
             if (refreshItem != null) {
-                if (refreshing) {
+                if (isLoading) {
                     MenuItemCompat.setActionView(refreshItem, R.layout.actionbar_indeterminate_progress);
                     //refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
                 } else {
@@ -170,13 +188,11 @@ public class MainActivity extends ActionBarActivity
                 }
             }
         }
-        if (refreshing) {
-            Toast.makeText(this, R.string.loading, Toast.LENGTH_LONG).show();
-        }
     }
 
-    private boolean displayNetworkAlert() {
-        if (!isNetworkConnected() || !isServerConnected()) {
+    private boolean checkNetworkAndShowAlert() {
+        Log.e("AAA", "connected " + isNetworkConnected() + " " + isServerConnected());
+        if (!isNetworkConnected()) {
             if (networkDialog == null) {
                 networkDialog = new AlertDialog.Builder(this).setMessage("Please Check Your Internet Connection and Try Again")
                         .setTitle("Network Error")
@@ -184,7 +200,7 @@ public class MainActivity extends ActionBarActivity
                         .setNegativeButton("Retry",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
-                                        finish();
+                                        restartActivity();
                                     }
                                 })
                         .setPositiveButton("Connect to WIFI",
@@ -203,10 +219,14 @@ public class MainActivity extends ActionBarActivity
     }
 
     private boolean isServerConnected() {
-        try {
-            InetAddress ipAddr = InetAddress.getByName("triethocduongpho-android.appspot.com");
-            return ipAddr.isReachable(30000);
+        try{
+            URL myUrl = new URL("triethocduongpho-android.appspot.com");
+            URLConnection connection = myUrl.openConnection();
+            connection.setConnectTimeout(10000);
+            connection.connect();
+            return true;
         } catch (Exception e) {
+            // Handle your exceptions
             return false;
         }
     }
