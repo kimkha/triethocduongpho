@@ -66,10 +66,8 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("AAA", "isNetworkAvailable " + isNetworkAvailable);
         if (!isNetworkAvailable && checkNetworkAndShowAlert()) {
             // Old = not connect, New = connected => reload activity
-            Log.e("AAA", "Restart");
             isNetworkAvailable = true;
             restartActivity();
         }
@@ -174,7 +172,6 @@ public class MainActivity extends ActionBarActivity
     }
 
     private void showProgressActionBar() {
-        Log.e("AAA", "optionsMenu " + optionsMenu + " isLoading " + isLoading);
         if (optionsMenu != null) {
             final MenuItem refreshItem = optionsMenu
                     .findItem(R.id.action_refresh);
@@ -191,7 +188,6 @@ public class MainActivity extends ActionBarActivity
     }
 
     private boolean checkNetworkAndShowAlert() {
-        Log.e("AAA", "connected " + isNetworkConnected() + " " + isServerConnected());
         if (!isNetworkConnected()) {
             if (networkDialog == null) {
                 networkDialog = new AlertDialog.Builder(this).setMessage("Please Check Your Internet Connection and Try Again")
