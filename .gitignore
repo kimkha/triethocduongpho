@@ -1,6 +1,10 @@
 .gradle
 /local.properties
+<<<<<<< HEAD
 .idea
+=======
+/.idea
+>>>>>>> 69989e2ab2c4f94267d02021bb2d95fed24878a3
 *.iml
 .DS_Store
 /build
