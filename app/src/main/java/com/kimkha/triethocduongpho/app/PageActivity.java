@@ -61,6 +61,9 @@ public class PageActivity extends BaseActivity {
                 Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
                         .show();
                 break;
+            case android.R.id.home:
+                onBackPressed();
+                break;
             default:
                 break;
         }
@@ -71,7 +74,6 @@ public class PageActivity extends BaseActivity {
     private void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setTitle(mTitle);
         }
