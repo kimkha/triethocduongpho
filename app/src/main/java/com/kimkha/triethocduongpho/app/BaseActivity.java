@@ -3,7 +3,9 @@ package com.kimkha.triethocduongpho.app;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.kimkha.triethocduongpho.R;
 
@@ -39,4 +41,20 @@ public abstract class BaseActivity extends AppCompatActivity {
     public Toolbar getToolbar() {
         return toolbar;
     }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
+                        .show();
+                break;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

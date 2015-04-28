@@ -136,10 +136,6 @@ public class MainActivity extends BaseActivity
                             .show();
                     mFragment.cleanAndReload();
                     break;
-                case R.id.action_settings:
-                    Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
-                            .show();
-                    break;
                 default:
                     break;
             }
