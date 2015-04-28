@@ -26,7 +26,8 @@
             android:textSize="@dimen/my_text_size"
             android:layout_margin="@dimen/my_text_margin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:lineSpacingMultiplier="1.2"/>
 
     </LinearLayout>
 </ScrollView>
