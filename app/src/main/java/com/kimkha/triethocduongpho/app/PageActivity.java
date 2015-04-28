@@ -68,7 +68,7 @@ public class PageActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void restoreActionBar() {
+    private void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);

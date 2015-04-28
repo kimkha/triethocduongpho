@@ -109,10 +109,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         Article article = mArticleList.get(position);
         holder.mTextView.setText(article.getTitle());
-        String img = article.getImgUrl();
-        if (img != null && img.startsWith("/triethocduongpho-android")) {
-            img = "http://storage.googleapis.com" + img;
-        }
+        String img = MyArticleService.parseImageUrl(article.getImgUrl());
         Picasso.with(mContext).load(img)
                 .placeholder(DEFAULT_IMG).error(DEFAULT_IMG).into(holder.mImageView);
     }

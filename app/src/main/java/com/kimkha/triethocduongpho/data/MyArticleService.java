@@ -53,6 +53,13 @@ public class MyArticleService {
                 .build();
     }
 
+    public static String parseImageUrl(String imgUrl) {
+        if (imgUrl != null && imgUrl.startsWith("/triethocduongpho-android")) {
+            imgUrl = "http://storage.googleapis.com" + imgUrl;
+        }
+        return imgUrl;
+    }
+
     public static void getArticleList(String category, String nextPageToken, ApiCallback callback) {
         new EndpointsAsyncTask(callback).execute(new Pair<String, String>(category, nextPageToken));
     }

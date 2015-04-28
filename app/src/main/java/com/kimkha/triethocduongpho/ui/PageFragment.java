@@ -47,6 +47,7 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
             Long id = getArguments().getLong(ARG_ITEM_ID);
             title = getArguments().getString(ARG_ITEM_TITLE);
             imgUrl = getArguments().getString(ARG_ITEM_IMG);
+            imgUrl = MyArticleService.parseImageUrl(imgUrl);
 
             MyArticleService.getArticle(id, this);
         }
@@ -58,12 +59,18 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
         htmlTextView = (HtmlTextView) rootView.findViewById(R.id.page_content);
         imageView = (ImageView) rootView.findViewById(R.id.page_image);
-        Picasso.with(getActivity()).load(imgUrl).into(imageView);
         headerView = (TextView) rootView.findViewById(R.id.page_header);
-        headerView.setText(title);
 
-        updateView();
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        Picasso.with(getActivity()).load(imgUrl).into(imageView);
+        headerView.setText(title);
+        updateView();
+
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void updateView() {
