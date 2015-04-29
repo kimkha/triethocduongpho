@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
 import com.kimkha.triethocduongpho.ui.MainFragment;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -110,7 +111,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         Article article = mArticleList.get(position);
         holder.mTextView.setText(article.getTitle());
         String img = MyArticleService.parseImageUrl(article.getImgUrl());
-        Picasso.with(mContext).load(img)
+        Picasso.with(mContext.getApplicationContext()).load(img)
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .placeholder(DEFAULT_IMG).error(DEFAULT_IMG).into(holder.mImageView);
     }
 
