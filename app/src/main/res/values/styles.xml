@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="NavigationText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">@dimen/abc_text_size_body_1_material</item>
+        <item name="android:textColor">@color/navi_item_color</item>
+        <!--<item name="android:fontFamily">sans-serif-light</item>-->
+    </style>
+</resources>

@@ -10,5 +10,5 @@
     android:scrollbars="vertical"
     android:focusable="true"
     android:fitsSystemWindows="true"
-    android:background="@color/background_floating_material_light"
+    android:background="@color/material_grey_50"
     tools:context="com.kimkha.triethocduongpho.ui.NavigationDrawerFragment" />

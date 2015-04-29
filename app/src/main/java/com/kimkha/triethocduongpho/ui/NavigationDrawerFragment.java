@@ -11,6 +11,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.app.BaseActivity;
 import com.kimkha.triethocduongpho.data.Category;
+import com.kimkha.triethocduongpho.data.NavigationAdapter;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -88,11 +90,10 @@ public class NavigationDrawerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // Indicate that this fragment would like to influence the set of actions in the action bar.
 
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
+        mDrawerListView.setAdapter(new NavigationAdapter(
                 getActionBar().getThemedContext(),
-                android.R.layout.simple_list_item_1,
-                android.R.id.text1,
                 Category.CATEGORY_LIST));
+
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
         setHasOptionsMenu(true);
@@ -279,7 +280,7 @@ public class NavigationDrawerFragment extends Fragment {
     /**
      * Callbacks interface that all activities using this fragment must implement.
      */
-    public static interface NavigationDrawerCallbacks {
+    public interface NavigationDrawerCallbacks {
         /**
          * Called when an item in the navigation drawer is selected.
          */

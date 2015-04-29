@@ -221,4 +221,7 @@
     <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
     <color name="transparent">#00000000</color>
+
+    <!-- Custom -->
+
 </resources>
