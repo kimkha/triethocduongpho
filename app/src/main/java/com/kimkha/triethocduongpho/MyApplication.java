@@ -7,6 +7,9 @@ import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+
 import java.net.InetAddress;
 
 /**
@@ -20,6 +23,9 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
+                .build();
+        ImageLoader.getInstance().init(config);
     }
 
 }

@@ -11,8 +11,7 @@ import android.widget.TextView;
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
 import com.kimkha.triethocduongpho.data.MyArticleService;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
@@ -67,9 +66,7 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Picasso.with(getActivity().getApplicationContext()).load(imgUrl)
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .into(imageView);
+        ImageLoader.getInstance().displayImage(imgUrl, imageView);
         headerView.setText(title);
         updateView();
 

@@ -11,14 +11,17 @@ import android.widget.TextView;
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
 import com.kimkha.triethocduongpho.ui.MainFragment;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
     private static final int DEFAULT_IMG = R.drawable.no_image;
+    private final DisplayImageOptions options = new DisplayImageOptions.Builder()
+            .showImageOnFail(DEFAULT_IMG).showImageForEmptyUri(DEFAULT_IMG).showImageOnLoading(DEFAULT_IMG)
+            .build();
 
     private final List<Article> mArticleList = new ArrayList<>();
     private final Context mContext;
@@ -111,9 +114,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         Article article = mArticleList.get(position);
         holder.mTextView.setText(article.getTitle());
         String img = MyArticleService.parseImageUrl(article.getImgUrl());
-        Picasso.with(mContext.getApplicationContext()).load(img)
-                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                .placeholder(DEFAULT_IMG).error(DEFAULT_IMG).into(holder.mImageView);
+
+        ImageLoader.getInstance().displayImage(img, holder.mImageView, options);
     }
 
     @Override

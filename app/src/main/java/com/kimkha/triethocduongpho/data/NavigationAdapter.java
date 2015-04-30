@@ -56,10 +56,6 @@ public class NavigationAdapter extends BaseAdapter {
             vh.textView = (TextView) view.findViewById(R.id.text);
             vh.divider = view.findViewById(R.id.divider);
 
-            if (item != null && item.startsWith("---")) {
-                vh.isDivider = true;
-            }
-
             view.setTag(vh);
         } else {
             view = convertView;
@@ -68,7 +64,7 @@ public class NavigationAdapter extends BaseAdapter {
 
         vh.textView.setText(item);
 
-        if (vh.isDivider) {
+        if (item != null && item.startsWith("---")) {
             vh.textView.setVisibility(View.GONE);
             vh.divider.setVisibility(View.VISIBLE);
         } else {
@@ -81,6 +77,5 @@ public class NavigationAdapter extends BaseAdapter {
     private class ViewHolder {
         public TextView textView;
         public View divider;
-        public boolean isDivider;
     }
 }
