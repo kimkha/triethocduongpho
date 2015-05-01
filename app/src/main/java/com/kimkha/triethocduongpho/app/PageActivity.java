@@ -1,11 +1,13 @@
 package com.kimkha.triethocduongpho.app;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.view.Menu;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import com.kimkha.triethocduongpho.BuildConfig;
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.ui.PageFragment;
 
@@ -13,6 +15,8 @@ public class PageActivity extends BaseActivity {
 
     private String mTitle;
     private String mImgUrl;
+    private int mAlpha = 255;
+    private boolean mIsShow = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,7 @@ public class PageActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         restoreActionBar();
+        showTransparentToolbar();
     }
 
     @Override
@@ -63,8 +68,33 @@ public class PageActivity extends BaseActivity {
     private void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(mIsShow);
             actionBar.setTitle(mTitle);
+        }
+    }
+
+    public void setTitleIsShow(boolean isShow) {
+        if (mIsShow == isShow) {
+            // No change
+            return;
+        }
+        mIsShow = isShow;
+        restoreActionBar();
+    }
+
+    public void makeTransparentToolbar(int alpha) {
+        if (mAlpha == alpha) {
+            // No change
+            return;
+        }
+        mAlpha = alpha;
+        showTransparentToolbar();
+    }
+
+    private void showTransparentToolbar() {
+        Toolbar toolbar = getToolbar();
+        if (toolbar != null) {
+            toolbar.getBackground().setAlpha(mAlpha);
         }
     }
 

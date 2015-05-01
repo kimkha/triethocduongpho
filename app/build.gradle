@@ -10,8 +10,8 @@ android {
         applicationId "com.kimkha.triethocduongpho"
         minSdkVersion 8
         targetSdkVersion 22
-        versionCode 4
-        versionName "0.2"
+        versionCode 7
+        versionName "1.1"
     }
     buildTypes {
         debug {

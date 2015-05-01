@@ -43,6 +43,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         return toolbar;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (toolbar != null) {
+            toolbar.getBackground().setAlpha(255);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
