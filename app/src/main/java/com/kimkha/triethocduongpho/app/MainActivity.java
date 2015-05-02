@@ -131,8 +131,6 @@ public class MainActivity extends BaseActivity
         if (isNetworkAvailable) {
             switch (item.getItemId()) {
                 case R.id.action_refresh:
-                    Toast.makeText(this, "Refresh selected", Toast.LENGTH_SHORT)
-                            .show();
                     mFragment.cleanAndReload();
                     break;
                 default:
@@ -168,9 +166,9 @@ public class MainActivity extends BaseActivity
 
     public void setRefreshActionButtonState() {
         showProgressActionBar();
-        if (isLoading) {
-            Toast.makeText(this, R.string.loading, Toast.LENGTH_LONG).show();
-        }
+//        if (isLoading) {
+//            Toast.makeText(this, R.string.loading, Toast.LENGTH_LONG).show();
+//        }
     }
 
     private void showProgressActionBar() {

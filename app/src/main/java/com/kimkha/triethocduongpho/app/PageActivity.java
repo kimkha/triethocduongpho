@@ -15,7 +15,7 @@ public class PageActivity extends BaseActivity {
 
     private String mTitle;
     private String mImgUrl;
-    private int mAlpha = 255;
+    private int mAlpha = 0;
     private boolean mIsShow = false;
 
     @Override

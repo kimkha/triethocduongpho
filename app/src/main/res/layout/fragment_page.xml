@@ -14,17 +14,37 @@
             android:id="@+id/page_image"
             android:adjustViewBounds="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/page_header"
-            android:layout_margin="@dimen/my_text_margin"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/my_header_text_size" />
+            android:elevation="3px"
+            android:background="?attr/colorPrimary"
+            android:minHeight="@dimen/my_min_height"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/page_head_group"
+            android:padding="@dimen/my_text_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="3px"
+            android:background="?attr/colorPrimary">
+            <TextView
+                android:id="@+id/page_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/abc_primary_text_material_dark"
+                android:text="Header"
+                android:textSize="@dimen/abc_text_size_headline_material" />
+            <TextView
+                android:id="@+id/page_subheader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/abc_secondary_text_material_dark"
+                android:textSize="@dimen/abc_text_size_caption_material"
+                android:text="Subhead"/>
+        </LinearLayout>
         <org.sufficientlysecure.htmltextview.HtmlTextView
             android:id="@+id/page_content"
             android:text="@string/loading"
-            android:textSize="@dimen/my_text_size"
+            android:textSize="@dimen/abc_text_size_body_1_material"
             android:layout_margin="@dimen/my_text_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

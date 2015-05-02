@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,8 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
     private HtmlTextView htmlTextView;
     private ImageView imageView;
     private TextView headerView;
+    private TextView subHeaderView;
+    private View headGroup;
 
     public PageFragment() {
 
@@ -77,6 +80,8 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
         htmlTextView = (HtmlTextView) rootView.findViewById(R.id.page_content);
         imageView = (ImageView) rootView.findViewById(R.id.page_image);
         headerView = (TextView) rootView.findViewById(R.id.page_header);
+        subHeaderView = (TextView) rootView.findViewById(R.id.page_subheader);
+        headGroup = rootView.findViewById(R.id.page_head_group);
 
         listenScroll();
 
@@ -85,8 +90,9 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        ImageLoader.getInstance().displayImage(imgUrl, imageView);
         headerView.setText(title);
+        subHeaderView.setText("");
+        ImageLoader.getInstance().displayImage(imgUrl, imageView);
         updateView();
 
         super.onViewCreated(view, savedInstanceState);
@@ -122,22 +128,24 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
     private void changeToolbarUI(int scrollY) {
         if (endAlpha <= 1) {
             // Not detect height yet.
-            endAlpha = Math.max(1, imageView.getHeight() - 100);
+            int toolbarHeight = (int) getResources().getDimension(R.dimen.my_min_height);
+            endAlpha = Math.max(1, imageView.getHeight() - toolbarHeight);
             startAlpha = endAlpha/2;
-//            endTitle = Math.max(1, imageView.getHeight() + headerView.getHeight());
-            endTitle = endAlpha;
+            endTitle = Math.max(1, imageView.getHeight() + headGroup.getHeight() - toolbarHeight);
+//            endTitle = endAlpha;
         }
 
         if (mActivity != null) {
-            if (scrollY >= endAlpha || endAlpha <= startAlpha) {
-                mActivity.makeTransparentToolbar(255);
-            } else if (scrollY <= startAlpha) {
-                mActivity.makeTransparentToolbar(0);
-            } else {
-                int deltaY = scrollY - startAlpha;
-                int factor = endAlpha - startAlpha;
-                mActivity.makeTransparentToolbar(deltaY*255/factor);
-            }
+//            if (scrollY >= endAlpha || endAlpha <= startAlpha) {
+//                mActivity.makeTransparentToolbar(255);
+//            } else if (scrollY <= startAlpha) {
+//                mActivity.makeTransparentToolbar(0);
+//            } else {
+//                int deltaY = scrollY - startAlpha;
+//                int factor = endAlpha - startAlpha;
+//                mActivity.makeTransparentToolbar(deltaY*255/factor);
+//            }
+            mActivity.makeTransparentToolbar(scrollY >= endTitle?255:0);
             mActivity.setTitleIsShow(scrollY >= endTitle);
         }
     }
@@ -145,6 +153,9 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
     private void updateView() {
         if (article != null && htmlTextView != null) {
             htmlTextView.setHtmlFromString(article.getFullContent().getValue(), false);
+            CharSequence timeSpanned = DateUtils.getRelativeTimeSpanString(
+                    article.getCreated().getValue(), System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS);
+            subHeaderView.setText(timeSpanned);
 
             changeToolbarUI(0);
         }
