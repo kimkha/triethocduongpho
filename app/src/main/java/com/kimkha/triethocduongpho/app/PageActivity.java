@@ -68,8 +68,8 @@ public class PageActivity extends BaseActivity {
     private void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setDisplayShowTitleEnabled(mIsShow);
-            actionBar.setTitle(mTitle);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setTitle(mIsShow?mTitle:"");
         }
     }
 
