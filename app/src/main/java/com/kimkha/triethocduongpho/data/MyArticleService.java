@@ -64,9 +64,9 @@ public class MyArticleService {
         new EndpointsAsyncTask(callback).execute(new Pair<String, String>(category, nextPageToken));
     }
 
-   public static void getArticle(Long id, ApiCallback callback) {
-       new ArticleEndpointsAsyncTask().execute(new Pair<ApiCallback, Long>(callback, id));
-   }
+    public static void getArticle(Long id, ApiCallback callback) {
+        new ArticleEndpointsAsyncTask().execute(new Pair<ApiCallback, Long>(callback, id));
+    }
 
     static class ArticleEndpointsAsyncTask extends AsyncTask<Pair<ApiCallback, Long>, Void, Article> {
         private ApiCallback apiCallback;
@@ -117,7 +117,7 @@ public class MyArticleService {
         }
     }
 
-    public static interface ApiCallback {
+    public interface ApiCallback {
         void onArticleReady(Article article);
         void onArticleListReady(List<Article> articleList, String nextPageToken);
     }

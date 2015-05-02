@@ -25,6 +25,7 @@ public class MainFragment extends Fragment {
      */
     private static final String ARG_CATEGORY = "category";
 
+    private int expectHeightForBig = 200;
     private String category = "";
     private RecyclerView mRecyclerView = null;
     private LinearLayoutManager mLayoutManager;
@@ -73,6 +74,10 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        int screenWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
+        screenWidth = screenWidth - 2*getResources().getDimensionPixelSize(R.dimen.my_text_margin);
+        expectHeightForBig = screenWidth*9/16;
+
         if (getArguments().containsKey(ARG_CATEGORY)) {
             category = getArguments().getString(ARG_CATEGORY);
 
@@ -95,7 +100,7 @@ public class MainFragment extends Fragment {
 
         triggerEvents();
 
-        adapter = new ArticleAdapter(getActivity());
+        adapter = new ArticleAdapter(getActivity(), expectHeightForBig);
         mRecyclerView.setAdapter(adapter);
 
         adapter.setCallback(mCallbacks);

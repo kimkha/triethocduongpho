@@ -223,5 +223,6 @@
     <color name="transparent">#00000000</color>
 
     <!-- Custom -->
+    <color name="black_33">#64000000</color>
 
 </resources>

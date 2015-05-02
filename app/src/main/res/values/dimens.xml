@@ -5,6 +5,7 @@
     <integer name="num_of_column">2</integer>
 
     <dimen name="my_image_size">96dp</dimen>
+    <dimen name="my_big_image_height">162dp</dimen>
 
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->
