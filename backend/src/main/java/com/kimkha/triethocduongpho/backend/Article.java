@@ -26,6 +26,7 @@ public class Article {
     private List<String> category;
     private String author;
     private int version;
+    private int style = 0;// 0=normal, 1=big size
 
     @Index
     private String url;
@@ -112,5 +113,13 @@ public class Article {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    public int getStyle() {
+        return style;
+    }
+
+    public void setStyle(int style) {
+        this.style = style;
     }
 }

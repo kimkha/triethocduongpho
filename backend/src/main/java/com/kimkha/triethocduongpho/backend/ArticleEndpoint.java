@@ -13,6 +13,7 @@ import com.googlecode.objectify.cmd.Query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import javax.annotation.Nullable;
@@ -167,10 +168,17 @@ public class ArticleEndpoint {
         }
         QueryResultIterator<Article> queryIterator = query.iterator();
         List<Article> articleList = new ArrayList<Article>(limit);
+
+        // TODO Use random to choose big style
+        Random random = new Random();
+
         while (queryIterator.hasNext()) {
             Article article = queryIterator.next();
             // To save data transfer
             article.setFullContent(null);
+            if (random.nextInt(4) == 0) {
+                article.setStyle(1);
+            }
             articleList.add(article);
         }
         return CollectionResponse.<Article>builder().setItems(articleList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
