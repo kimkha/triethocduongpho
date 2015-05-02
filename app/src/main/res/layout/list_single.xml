@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="0dp"
+    android:clickable="true"
+    android:id="@+id/card_view" >
+
+    <ImageView
+        android:id="@+id/grid_image"
+        android:src="@drawable/no_image"
+        android:layout_width="@dimen/my_image_size"
+        android:layout_height="@dimen/my_image_size"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:minHeight="@dimen/my_image_size">
+
+        <TextView
+            android:id="@+id/grid_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TitleText"
+            android:text="Title"/>
+        <TextView
+            android:id="@+id/sub_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/SubTitleText"
+            android:text="Subtitle"/>
+    </LinearLayout>
+
+    <!--<View-->
+        <!--android:id="@+id/divider"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_marginTop="@dimen/abc_button_padding_horizontal_material"-->
+        <!--android:layout_marginBottom="@dimen/abc_button_padding_horizontal_material"-->
+        <!--android:background="#1F000000"/>-->
+
+</LinearLayout>

@@ -20,6 +20,7 @@
 
             <ImageView
                 android:id="@+id/grid_image"
+                android:src="@drawable/no_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"/>
@@ -28,7 +29,8 @@
                 android:id="@+id/grid_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:text="Title"/>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

@@ -3,6 +3,7 @@ package com.kimkha.triethocduongpho.ui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -26,7 +27,7 @@ public class MainFragment extends Fragment {
 
     private String category = "";
     private RecyclerView mRecyclerView = null;
-    private StaggeredGridLayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager;
     private ArticleAdapter adapter = null;
 
     private Callbacks mCallbacks = sDummyCallbacks;
@@ -88,7 +89,8 @@ public class MainFragment extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.num_of_column), StaggeredGridLayoutManager.VERTICAL);
+//        mLayoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.num_of_column), StaggeredGridLayoutManager.VERTICAL);
+        mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         triggerEvents();
@@ -135,6 +137,14 @@ public class MainFragment extends Fragment {
 
                 int visibleItemCount = mLayoutManager.getChildCount();
                 int totalItemCount = mLayoutManager.getItemCount();
+
+                int lastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
+                if (lastVisiblesItems+visibleItemCount >= totalItemCount) {
+                    // This is last item
+                    adapter.goNext();
+                }
+
+                /* FOR STAGGER GRID
                 int[] pastVisiblesItems = mLayoutManager.findFirstVisibleItemPositions(null);
 
                 if (pastVisiblesItems.length > 0) {
@@ -142,7 +152,7 @@ public class MainFragment extends Fragment {
                         // This is last item
                         adapter.goNext();
                     }
-                }
+                }/* FOR STAGGER GRID */
             }
         });
 

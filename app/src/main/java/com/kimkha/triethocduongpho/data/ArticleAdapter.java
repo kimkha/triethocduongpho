@@ -2,6 +2,7 @@ package com.kimkha.triethocduongpho.data;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,11 +39,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         // each data item is just a string in this case
         public TextView mTextView;
         public ImageView mImageView;
+        public TextView mSubTextView;
 
         public ViewHolder(View view) {
             super(view);
             mTextView = (TextView) view.findViewById(R.id.grid_text);
             mImageView = (ImageView) view.findViewById(R.id.grid_image);
+            mSubTextView = (TextView) view.findViewById(R.id.sub_text);
         }
     }
 
@@ -104,7 +107,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View grid = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_single, null);
+        View grid = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_single, null);
 
         return new ViewHolder(grid);
     }
@@ -113,8 +116,12 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         Article article = mArticleList.get(position);
         holder.mTextView.setText(article.getTitle());
-        String img = MyArticleService.parseImageUrl(article.getImgUrl());
 
+        CharSequence timeSpanned = DateUtils.getRelativeTimeSpanString(
+                article.getCreated().getValue(), System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS);
+        holder.mSubTextView.setText(timeSpanned);
+
+        String img = MyArticleService.parseImageUrl(article.getImgUrl());
         ImageLoader.getInstance().displayImage(img, holder.mImageView, options);
     }
 
