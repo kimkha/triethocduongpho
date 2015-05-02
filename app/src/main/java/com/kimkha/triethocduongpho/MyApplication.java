@@ -24,9 +24,6 @@ public class MyApplication extends Application {
         super.onCreate();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
-                .memoryCacheSize(41943040)
-                .diskCacheSize(104857600)
-                .threadPoolSize(10)
                 .build();
         ImageLoader.getInstance().init(config);
     }

@@ -39,6 +39,10 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
     public static final String ARG_ITEM_TITLE = "item_title";
     public static final String ARG_ITEM_IMG = "item_img";
 
+    private final DisplayImageOptions options = new DisplayImageOptions.Builder()
+            .cacheInMemory(true).cacheOnDisk(true)
+            .build();
+
     private int startAlpha = 0;
     private int endAlpha = 1;
     private int endTitle = 1;
@@ -92,7 +96,7 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
     public void onViewCreated(View view, Bundle savedInstanceState) {
         headerView.setText(title);
         subHeaderView.setText("");
-        ImageLoader.getInstance().displayImage(imgUrl, imageView);
+        ImageLoader.getInstance().displayImage(imgUrl, imageView, options);
         updateView();
 
         super.onViewCreated(view, savedInstanceState);

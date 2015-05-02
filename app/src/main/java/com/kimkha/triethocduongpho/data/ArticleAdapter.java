@@ -22,6 +22,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     private static final int DEFAULT_IMG = R.drawable.no_image;
     private final DisplayImageOptions options = new DisplayImageOptions.Builder()
             .showImageOnFail(DEFAULT_IMG).showImageForEmptyUri(DEFAULT_IMG).showImageOnLoading(DEFAULT_IMG)
+            .cacheInMemory(true).cacheOnDisk(true)
             .build();
 
     private final List<Article> mArticleList = new ArrayList<>();
