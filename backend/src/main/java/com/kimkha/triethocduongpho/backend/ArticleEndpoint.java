@@ -171,13 +171,15 @@ public class ArticleEndpoint {
 
         // TODO Use random to choose big style
         Random random = new Random();
+        boolean isFirst = true;
 
         while (queryIterator.hasNext()) {
             Article article = queryIterator.next();
             // To save data transfer
             article.setFullContent(null);
-            if (random.nextInt(4) == 0) {
+            if (isFirst || random.nextInt(8) == 0) {
                 article.setStyle(1);
+                isFirst = false;
             }
             articleList.add(article);
         }
