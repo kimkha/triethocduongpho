@@ -10,6 +10,7 @@ public class Category {
             "Bài Nổi Bật",
             "Tất Cả",
             "Bài Quan Trọng",
+            "CCTTHĐP",
             "-------",
             "Văn Hóa - Xã Hội",
             "Thời Sự",

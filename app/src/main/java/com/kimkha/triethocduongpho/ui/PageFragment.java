@@ -156,7 +156,7 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 
     private void updateView() {
         if (article != null && htmlTextView != null) {
-            htmlTextView.setHtmlFromString(article.getFullContent().getValue(), false);
+            htmlTextView.setHtmlFromString(article.getFullContent().getValue(), false, MyArticleService.getImgBase());
             CharSequence timeSpanned = DateUtils.getRelativeTimeSpanString(
                     article.getCreated().getValue(), System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS);
             subHeaderView.setText(timeSpanned);

@@ -22,6 +22,7 @@ import java.util.List;
  */
 public class MyArticleService {
     private final static String URL_BASE = "http://10.0.2.2:8080/_ah/api/";
+    private final static String IMG_BASE = "http://storage.googleapis.com";
     private final static ArticleApi articleApi;
 
     /**
@@ -55,9 +56,13 @@ public class MyArticleService {
 
     public static String parseImageUrl(String imgUrl) {
         if (imgUrl != null && imgUrl.startsWith("/triethocduongpho-android")) {
-            imgUrl = "http://storage.googleapis.com" + imgUrl;
+            imgUrl = IMG_BASE + imgUrl;
         }
         return imgUrl;
+    }
+
+    public static String getImgBase() {
+        return IMG_BASE;
     }
 
     public static void getArticleList(String category, String nextPageToken, ApiCallback callback) {
