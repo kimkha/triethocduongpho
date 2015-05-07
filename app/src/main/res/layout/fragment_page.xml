@@ -15,7 +15,6 @@
             android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="3px"
             android:background="?attr/colorPrimary"
             android:minHeight="@dimen/my_min_height"/>
         <LinearLayout
@@ -24,7 +23,6 @@
             android:padding="@dimen/my_text_margin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:elevation="3px"
             android:background="?attr/colorPrimary">
             <TextView
                 android:id="@+id/page_header"

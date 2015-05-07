@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.kimkha.triethocduongpho.BuildConfig;
@@ -79,6 +80,7 @@ public class PageActivity extends BaseActivity {
             return;
         }
         mIsShow = isShow;
+        Log.e("AAA", "mIsShow " + mIsShow);
         restoreActionBar();
     }
 
@@ -88,6 +90,7 @@ public class PageActivity extends BaseActivity {
             return;
         }
         mAlpha = alpha;
+        Log.e("AAA", "mAlpha " + mAlpha);
         showTransparentToolbar();
     }
 

@@ -124,6 +124,7 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
             @Override
             public void onScrollChanged() {
                 int scrollY = scrollView.getScrollY();
+                Log.e("AAA", "scrollY " + scrollY);
                 changeToolbarUI(scrollY);
             }
         });
