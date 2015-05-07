@@ -80,7 +80,6 @@ public class PageActivity extends BaseActivity {
             return;
         }
         mIsShow = isShow;
-        Log.e("AAA", "mIsShow " + mIsShow);
         restoreActionBar();
     }
 
@@ -90,7 +89,6 @@ public class PageActivity extends BaseActivity {
             return;
         }
         mAlpha = alpha;
-        Log.e("AAA", "mAlpha " + mAlpha);
         showTransparentToolbar();
     }
 

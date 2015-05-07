@@ -7,9 +7,9 @@
     </style>
 
     <style name="AppTheme.Toolbar" parent="AppTheme">
-        <item name="android:textColorPrimary">@color/abc_primary_text_material_dark</item>
-        <item name="android:textColorSecondary">@color/abc_secondary_text_material_dark</item>
-        <item name="actionMenuTextColor">@color/abc_primary_text_material_dark</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="actionMenuTextColor">@color/white</item>
     </style>
 
     <style name="AppTheme" parent="AppTheme.Base"/>
