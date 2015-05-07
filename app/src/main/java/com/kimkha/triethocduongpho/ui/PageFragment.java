@@ -1,13 +1,9 @@
 package com.kimkha.triethocduongpho.ui;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +18,6 @@ import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
 import com.kimkha.triethocduongpho.data.MyArticleService;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
@@ -33,7 +28,8 @@ import java.util.List;
  * @since 3/1/15
  * @version 0.1
  */
-public class PageFragment extends Fragment implements MyArticleService.ApiCallback {
+public class PageFragment extends Fragment implements MyArticleService.ApiCallback, ViewTreeObserver.OnScrollChangedListener
+{
 
     public static final String ARG_ITEM_ID = "item_id";
     public static final String ARG_ITEM_TITLE = "item_title";
@@ -87,7 +83,7 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
         subHeaderView = (TextView) rootView.findViewById(R.id.page_subheader);
         headGroup = rootView.findViewById(R.id.page_head_group);
 
-        listenScroll();
+        refreshScrollListener();
 
         return rootView;
     }
@@ -119,15 +115,15 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
         mActivity = null;
     }
 
-    private void listenScroll() {
-        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                int scrollY = scrollView.getScrollY();
-                Log.e("AAA", "scrollY " + scrollY);
-                changeToolbarUI(scrollY);
-            }
-        });
+    @Override
+    public void onScrollChanged() {
+        int scrollY = scrollView.getScrollY();
+        changeToolbarUI(scrollY);
+    }
+
+    private void refreshScrollListener() {
+        scrollView.getViewTreeObserver().removeOnScrollChangedListener(this);
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(this);
     }
 
     private void changeToolbarUI(int scrollY) {
@@ -150,7 +146,7 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 //                int factor = endAlpha - startAlpha;
 //                mActivity.makeTransparentToolbar(deltaY*255/factor);
 //            }
-            mActivity.makeTransparentToolbar(scrollY >= endTitle?255:0);
+            mActivity.makeTransparentToolbar(scrollY >= endTitle ? 255 : 0);
             mActivity.setTitleIsShow(scrollY >= endTitle);
         }
     }
@@ -162,6 +158,7 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
                     article.getCreated().getValue(), System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS);
             subHeaderView.setText(timeSpanned);
 
+            refreshScrollListener();
             changeToolbarUI(0);
         }
     }
@@ -176,4 +173,5 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
     public void onArticleListReady(List<Article> articleList, String nextPageToken) {
 
     }
+
 }
