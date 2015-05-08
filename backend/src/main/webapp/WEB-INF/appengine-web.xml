@@ -8,4 +8,8 @@
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties" />
         <property name="gcm.api.key" value="AIzaSyDQfTFI5EFqBoQKGXb9uU-0dP3JHLqJolo" />
     </system-properties>
+
+    <static-files>
+        <include path="/**.png" />
+    </static-files>
 </appengine-web-app>
