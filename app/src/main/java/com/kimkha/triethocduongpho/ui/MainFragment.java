@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 import com.kimkha.triethocduongpho.data.ArticleAdapter;
 import com.kimkha.triethocduongpho.R;
+import com.kimkha.triethocduongpho.data.ArticleGridAdapter;
+import com.kimkha.triethocduongpho.data.ArticleListAdapter;
 
 /**
  * @author kimkha
@@ -28,8 +30,11 @@ public class MainFragment extends Fragment {
     private int expectHeightForBig = 200;
     private String category = "";
     private RecyclerView mRecyclerView = null;
-    private LinearLayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private StaggeredGridLayoutManager gridLayoutManager;
+    private LinearLayoutManager listLayoutManager;
     private ArticleAdapter adapter = null;
+    private boolean isGridMode = false;
 
     private Callbacks mCallbacks = sDummyCallbacks;
 
@@ -94,16 +99,15 @@ public class MainFragment extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
-//        mLayoutManager = new StaggeredGridLayoutManager(getResources().getInteger(R.integer.num_of_column), StaggeredGridLayoutManager.VERTICAL);
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = getLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        adapter = getAdapter(getActivity());
+        mRecyclerView.setAdapter(adapter);
+        adapter.setCallback(mCallbacks);
 
         triggerEvents();
 
-        adapter = new ArticleAdapter(getActivity(), expectHeightForBig);
-        mRecyclerView.setAdapter(adapter);
-
-        adapter.setCallback(mCallbacks);
         adapter.startLoader(category);
 
         return rootView;
@@ -134,6 +138,26 @@ public class MainFragment extends Fragment {
         adapter.startLoader(category);
     }
 
+    private ArticleAdapter getAdapter(Activity activity) {
+        if (isGridMode) {
+            return new ArticleGridAdapter(activity);
+        } else {
+            return new ArticleListAdapter(activity, expectHeightForBig);
+        }
+    }
+
+    private RecyclerView.LayoutManager getLayoutManager(Activity activity) {
+        if (isGridMode) {
+            listLayoutManager = null;
+            gridLayoutManager = new StaggeredGridLayoutManager(activity.getResources().getInteger(R.integer.num_of_column), StaggeredGridLayoutManager.VERTICAL);
+            return gridLayoutManager;
+        } else {
+            listLayoutManager = new LinearLayoutManager(activity);
+            gridLayoutManager = null;
+            return listLayoutManager;
+        }
+    }
+
     private void triggerEvents() {
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -143,21 +167,22 @@ public class MainFragment extends Fragment {
                 int visibleItemCount = mLayoutManager.getChildCount();
                 int totalItemCount = mLayoutManager.getItemCount();
 
-                int lastVisiblesItems = mLayoutManager.findFirstVisibleItemPosition();
-                if (lastVisiblesItems+visibleItemCount >= totalItemCount) {
-                    // This is last item
-                    adapter.goNext();
-                }
+                if (isGridMode) {
+                    int[] pastVisiblesItems = gridLayoutManager.findFirstVisibleItemPositions(null);
 
-                /* FOR STAGGER GRID
-                int[] pastVisiblesItems = mLayoutManager.findFirstVisibleItemPositions(null);
-
-                if (pastVisiblesItems.length > 0) {
-                    if ( (visibleItemCount+pastVisiblesItems[0]) >= totalItemCount) {
+                    if (pastVisiblesItems.length > 0) {
+                        if ( (visibleItemCount+pastVisiblesItems[0]) >= totalItemCount) {
+                            // This is last item
+                            adapter.goNext();
+                        }
+                    }
+                } else {
+                    int lastVisiblesItems = listLayoutManager.findFirstVisibleItemPosition();
+                    if (lastVisiblesItems+visibleItemCount >= totalItemCount) {
                         // This is last item
                         adapter.goNext();
                     }
-                }/* FOR STAGGER GRID */
+                }
             }
         });
 
