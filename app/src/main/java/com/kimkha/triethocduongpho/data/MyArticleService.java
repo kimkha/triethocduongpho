@@ -66,24 +66,30 @@ public class MyArticleService {
     }
 
     public static void getArticleList(String category, String nextPageToken, ApiCallback callback) {
-        new EndpointsAsyncTask(callback).execute(new Pair<String, String>(category, nextPageToken));
+        new EndpointsAsyncTask(callback).execute(new Pair<>(category, nextPageToken));
     }
 
-    public static void getArticle(Long id, ApiCallback callback) {
-        new ArticleEndpointsAsyncTask().execute(new Pair<ApiCallback, Long>(callback, id));
+    public static void getArticle(String url, Long id, ApiCallback callback) {
+        new ArticleEndpointsAsyncTask(callback).execute(new Pair<>(url, id));
     }
 
-    static class ArticleEndpointsAsyncTask extends AsyncTask<Pair<ApiCallback, Long>, Void, Article> {
-        private ApiCallback apiCallback;
+    static class ArticleEndpointsAsyncTask extends AsyncTask<Pair<String, Long>, Void, Article> {
+        private final ApiCallback apiCallback;
+
+        public ArticleEndpointsAsyncTask(ApiCallback apiCallback) {
+            this.apiCallback = apiCallback;
+        }
 
         @Override
-        protected Article doInBackground(Pair<ApiCallback, Long>... params) {
-            apiCallback = params[0].first;
+        protected Article doInBackground(Pair<String, Long>... params) {
+            String url = params[0].first;
             Long id = params[0].second;
 
             try {
-                Article response = articleApi.get(id).execute();
-                return response;
+                if (id > 0) {
+                    return articleApi.get(id).execute();
+                }
+                return articleApi.getByUrl(url).execute();
             } catch (IOException e) {
                 e.printStackTrace();
             }

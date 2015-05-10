@@ -67,11 +67,13 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             Long id = getArguments().getLong(ARG_ITEM_ID);
+            String url = getArguments().getString(ARG_ITEM_URL);
+
             title = getArguments().getString(ARG_ITEM_TITLE);
             imgUrl = getArguments().getString(ARG_ITEM_IMG);
             imgUrl = MyArticleService.parseImageUrl(imgUrl);
 
-            MyArticleService.getArticle(id, this);
+            MyArticleService.getArticle(url, id, this);
         }
     }
 
