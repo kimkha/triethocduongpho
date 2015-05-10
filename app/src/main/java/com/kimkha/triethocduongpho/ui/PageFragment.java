@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.app.PageActivity;
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
@@ -84,6 +86,10 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
         headGroup = rootView.findViewById(R.id.page_head_group);
 
         refreshScrollListener();
+
+        AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         return rootView;
     }
