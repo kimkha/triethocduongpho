@@ -50,25 +50,6 @@ public class ArticleEndpoint {
     }
 
     /**
-     * Generate test article
-     */
-    @ApiMethod(
-            name = "test",
-            path = "article/test",
-            httpMethod = ApiMethod.HttpMethod.GET
-    )
-    public void test() {
-        Article article = new Article();
-        article.setUrl("test1");
-        article.setTitle("Test title");
-        article.setImgUrl("http://www.nimbleams.com/media/165625/personaccount.jpg");
-        Text txt = new Text("<h2>Hello</h2><p>I'm <b>Nguyen Kim Kha</b>. Nice to meet you!</p>" +
-                "<p><img src='http://www.nimbleams.com/media/165625/personaccount.jpg' /></p>");
-        article.setFullContent(txt);
-        ofy().save().entity(article).now();
-    }
-
-    /**
      * Returns the {@link Article} with the corresponding ID.
      *
      * @param id the ID of the entity to be retrieved
@@ -80,7 +61,6 @@ public class ArticleEndpoint {
             path = "article/{id}",
             httpMethod = ApiMethod.HttpMethod.GET)
     public Article get(@Named("id") Long id) throws NotFoundException {
-        logger.info("Getting Article with ID: " + id);
         Article article = ofy().load().type(Article.class).id(id).now();
         if (article == null) {
             throw new NotFoundException("Could not find Article with ID: " + id);
@@ -88,61 +68,16 @@ public class ArticleEndpoint {
         return article;
     }
 
-    /**
-     * Inserts a new {@code Article}.
-     */
     @ApiMethod(
-            name = "insert",
-            path = "article",
-            httpMethod = ApiMethod.HttpMethod.POST)
-    public Article insert(Article article) {
-        // Typically in a RESTful API a POST does not have a known ID (assuming the ID is used in the resource path).
-        // You should validate that article.id has not been set. If the ID type is not supported by the
-        // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
-        //
-        // If your client provides the ID then you should probably use PUT instead.
-        ofy().save().entity(article).now();
-        logger.info("Created Article.");
-
-        return ofy().load().entity(article).now();
-    }
-
-    /**
-     * Updates an existing {@code Article}.
-     *
-     * @param id      the ID of the entity to be updated
-     * @param article the desired state of the entity
-     * @return the updated version of the entity
-     * @throws NotFoundException if the {@code id} does not correspond to an existing
-     *                           {@code Article}
-     */
-    @ApiMethod(
-            name = "update",
-            path = "article/{id}",
-            httpMethod = ApiMethod.HttpMethod.PUT)
-    public Article update(@Named("id") Long id, Article article) throws NotFoundException {
-        // TODO: You should validate your ID parameter against your resource's ID here.
-        checkExists(id);
-        ofy().save().entity(article).now();
-        logger.info("Updated Article: " + article);
-        return ofy().load().entity(article).now();
-    }
-
-    /**
-     * Deletes the specified {@code Article}.
-     *
-     * @param id the ID of the entity to delete
-     * @throws NotFoundException if the {@code id} does not correspond to an existing
-     *                           {@code Article}
-     */
-    @ApiMethod(
-            name = "remove",
-            path = "article/{id}",
-            httpMethod = ApiMethod.HttpMethod.DELETE)
-    public void remove(@Named("id") Long id) throws NotFoundException {
-        checkExists(id);
-        ofy().delete().type(Article.class).id(id).now();
-        logger.info("Deleted Article with ID: " + id);
+            name = "getByUrl",
+            path = "articleUrl",
+            httpMethod = ApiMethod.HttpMethod.GET)
+    public Article getByUrl(@Named("url") String url) throws NotFoundException {
+        Article article = ofy().load().type(Article.class).filter("url", url).first().now();
+        if (article == null) {
+            throw new NotFoundException("Could not find Article with URL: " + url);
+        }
+        return article;
     }
 
     /**
@@ -186,11 +121,4 @@ public class ArticleEndpoint {
         return CollectionResponse.<Article>builder().setItems(articleList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
 
-    private void checkExists(Long id) throws NotFoundException {
-        try {
-            ofy().load().type(Article.class).id(id).safe();
-        } catch (com.googlecode.objectify.NotFoundException e) {
-            throw new NotFoundException("Could not find Article with ID: " + id);
-        }
-    }
 }
