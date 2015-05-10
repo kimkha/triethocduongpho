@@ -2,17 +2,19 @@
     <string name="app_name" translatable="false">Triết Học Đường Phố</string>
     <string name="title_page_detail">Page Detail</string>
     <string name="title_activity_page">PageActivity</string>
-    <string name="loading">Loading Content&#8230;</string>
+    <string name="loading">Đang tải nội dung&#8230;</string>
     <string name="action_settings">Settings</string>
 
     <string name="banner_ad_unit_id">ca-app-pub-9237162179109234/1819058309</string>
 
     <!-- Category list -->
-    <string name="category_def">Bài Nổi Bật</string>
+    <string name="category_def">Tất Cả</string>
     <string name="category_all">Tất Cả</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_example">Example action</string>
+    <string name="share">Chia sẻ</string>
+    <string name="send_to">Chia sẻ bài này qua&#8230;</string>
 </resources>

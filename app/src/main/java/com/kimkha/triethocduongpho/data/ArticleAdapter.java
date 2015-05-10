@@ -180,7 +180,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     public void onChooseItem(int position) {
         if (position < mArticleList.size() && position >= 0) {
             Article article = mArticleList.get(position);
-            mCallback.onItemSelected(article.getId(), article.getTitle(), article.getImgUrl());
+            mCallback.onItemSelected(article.getId(), article.getTitle(), article.getUrl(), article.getImgUrl());
         }
     }
 }

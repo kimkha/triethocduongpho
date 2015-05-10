@@ -35,6 +35,7 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 
     public static final String ARG_ITEM_ID = "item_id";
     public static final String ARG_ITEM_TITLE = "item_title";
+    public static final String ARG_ITEM_URL = "item_url";
     public static final String ARG_ITEM_IMG = "item_img";
 
     private final DisplayImageOptions options = new DisplayImageOptions.Builder()

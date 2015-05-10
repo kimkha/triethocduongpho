@@ -142,11 +142,12 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void onItemSelected(Long id, String title, String imgUrl) {
+    public void onItemSelected(Long id, String title, String url, String imgUrl) {
         if (isNetworkAvailable) {
             Intent pageIntent = new Intent(this, PageActivity.class);
             pageIntent.putExtra(PageFragment.ARG_ITEM_ID, id);
             pageIntent.putExtra(PageFragment.ARG_ITEM_TITLE, title);
+            pageIntent.putExtra(PageFragment.ARG_ITEM_URL, url);
             pageIntent.putExtra(PageFragment.ARG_ITEM_IMG, imgUrl);
             startActivity(pageIntent);
         }

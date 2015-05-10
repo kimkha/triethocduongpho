@@ -37,7 +37,7 @@ public class MainFragment extends Fragment {
         /**
          * Callback for when an item has been selected.
          */
-        public void onItemSelected(Long id, String title, String imgUrl);
+        public void onItemSelected(Long id, String title, String url, String imgUrl);
 
         public void onItemLoaded();
 
@@ -46,7 +46,7 @@ public class MainFragment extends Fragment {
 
     private static Callbacks sDummyCallbacks = new Callbacks() {
         @Override
-        public void onItemSelected(Long id, String title, String imgUrl) {
+        public void onItemSelected(Long id, String title, String url, String imgUrl) {
         }
         @Override
         public void onItemLoaded(){}
