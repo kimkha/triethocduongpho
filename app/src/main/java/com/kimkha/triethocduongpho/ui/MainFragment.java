@@ -168,17 +168,17 @@ public class MainFragment extends Fragment {
                 int totalItemCount = mLayoutManager.getItemCount();
 
                 if (isGridMode) {
-                    int[] pastVisiblesItems = gridLayoutManager.findFirstVisibleItemPositions(null);
+                    int[] pastVisibleItems = gridLayoutManager.findFirstVisibleItemPositions(null);
 
-                    if (pastVisiblesItems.length > 0) {
-                        if ( (visibleItemCount+pastVisiblesItems[0]) >= totalItemCount) {
+                    if (pastVisibleItems.length > 0) {
+                        if ( (visibleItemCount+pastVisibleItems[0]) >= totalItemCount) {
                             // This is last item
                             adapter.goNext();
                         }
                     }
                 } else {
-                    int lastVisiblesItems = listLayoutManager.findFirstVisibleItemPosition();
-                    if (lastVisiblesItems+visibleItemCount >= totalItemCount) {
+                    int lastVisibleItems = listLayoutManager.findFirstVisibleItemPosition();
+                    if (lastVisibleItems+visibleItemCount >= totalItemCount) {
                         // This is last item
                         adapter.goNext();
                     }
