@@ -10,7 +10,7 @@ android {
         applicationId "com.kimkha.triethocduongpho"
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 9
+        versionCode 10
         versionName "1.2"
     }
     buildTypes {
@@ -22,6 +22,7 @@ android {
 
         release {
             minifyEnabled true
+            //debuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

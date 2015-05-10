@@ -95,7 +95,7 @@ public class ArticleEndpoint {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         //test();
         Query<Article> query = ofy().load().type(Article.class).order("-created").limit(limit);
-        if (category == null || !category.equals("")) {
+        if (category != null && !"".equals(category)) {
             query = query.filter("category", category);
         }
         if (cursor != null) {

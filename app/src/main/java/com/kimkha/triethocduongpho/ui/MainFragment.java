@@ -123,7 +123,7 @@ public class MainFragment extends Fragment {
             throw new ClassCastException("Activity must implement fragment's callbacks.");
         }
 
-        category = getString(R.string.category_def);
+        category = "";
     }
 
     @Override
