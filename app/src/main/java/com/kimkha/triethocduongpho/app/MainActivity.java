@@ -113,8 +113,8 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        this.optionsMenu = menu;
         if (isNetworkAvailable && !mNavigationDrawerFragment.isDrawerOpen()) {
+            this.optionsMenu = menu;
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
@@ -123,19 +123,19 @@ public class MainActivity extends BaseActivity
             showProgressActionBar();
             return true;
         }
-        return super.onCreateOptionsMenu(menu);
+        return false;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (isNetworkAvailable) {
-            switch (item.getItemId()) {
-                case R.id.action_refresh:
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                if (isNetworkAvailable) {
                     mFragment.cleanAndReload();
-                    break;
-                default:
-                    break;
-            }
+                }
+                break;
+            default:
+                break;
         }
 
         return super.onOptionsItemSelected(item);

@@ -1,0 +1,24 @@
+<p>
+    Ứng dụng tiện lợi để đọc bài trên TrietHocDuongPho.com
+</p>
+
+<p>
+    Phiên bản hiện tại: <b>__VER__</b>
+</p>
+
+<h3>v1.2</h3>
+<ul>
+    <li>Chia sẻ bài viết</li>
+    <li>Thêm change log</li>
+    <li>Chuyển đổi hiển thị giữa grid và list</li>
+</ul>
+
+<h3>v1.1</h3>
+<ul>
+    <li>Sử dụng giao diện material design</li>
+</ul>
+
+<h3>v1.0</h3>
+<ul>
+    <li>Bắt đầu với các chức năng cơ bản</li>
+</ul>

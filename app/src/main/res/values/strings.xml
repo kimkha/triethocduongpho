@@ -2,6 +2,7 @@
     <string name="app_name" translatable="false">Triết Học Đường Phố</string>
     <string name="title_page_detail">Page Detail</string>
     <string name="title_activity_page">PageActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
     <string name="loading">Đang tải nội dung&#8230;</string>
     <string name="action_settings">Settings</string>
 
@@ -17,4 +18,7 @@
     <string name="action_example">Example action</string>
     <string name="share">Chia sẻ</string>
     <string name="send_to">Chia sẻ bài này qua&#8230;</string>
+
+    <string name="action_about">Giới thiệu</string>
+
 </resources>
