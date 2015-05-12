@@ -10,7 +10,7 @@
 <ul>
     <li>Chia sẻ bài viết</li>
     <li>Thêm change log</li>
-    <li>Chuyển đổi hiển thị giữa grid và list</li>
+    <!--li>Chuyển đổi hiển thị giữa grid và list</li-->
 </ul>
 
 <h3>v1.1</h3>
@@ -22,3 +22,9 @@
 <ul>
     <li>Bắt đầu với các chức năng cơ bản</li>
 </ul>
+
+<hr/>
+
+<p>
+    Developer: <b>Nguyễn Kim Kha</b>
+</p>

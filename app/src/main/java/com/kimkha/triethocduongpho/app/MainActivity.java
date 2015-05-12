@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity
             getMenuInflater().inflate(R.menu.main, menu);
             restoreActionBar();
             showProgressActionBar();
-            return true;
+            return super.onCreateOptionsMenu(menu);
         }
         return false;
     }

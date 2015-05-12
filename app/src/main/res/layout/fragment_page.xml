@@ -54,6 +54,9 @@
                 android:fontFamily="sans-serif"
                 android:lineSpacingMultiplier="1.2"/>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
         </LinearLayout>
     </ScrollView>
 

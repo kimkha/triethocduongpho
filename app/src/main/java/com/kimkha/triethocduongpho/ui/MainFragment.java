@@ -99,16 +99,9 @@ public class MainFragment extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = getLayoutManager(getActivity());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        adapter = getAdapter(getActivity());
-        mRecyclerView.setAdapter(adapter);
-        adapter.setCallback(mCallbacks);
+        switchLayout(false);
 
         triggerEvents();
-
-        adapter.startLoader(category);
 
         return rootView;
     }
@@ -132,6 +125,19 @@ public class MainFragment extends Fragment {
 
         // Reset the active callbacks interface to the dummy implementation.
         mCallbacks = sDummyCallbacks;
+    }
+
+    public void switchLayout(boolean isGridMode) {
+        this.isGridMode = isGridMode;
+
+        mLayoutManager = getLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        adapter = getAdapter(getActivity());
+        mRecyclerView.setAdapter(adapter);
+        adapter.setCallback(mCallbacks);
+
+        adapter.startLoader(category);
     }
 
     public void cleanAndReload() {
