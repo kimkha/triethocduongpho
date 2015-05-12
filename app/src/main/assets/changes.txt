@@ -9,7 +9,8 @@
 <h3>v1.2</h3>
 <ul>
     <li>Chia sẻ bài viết</li>
-    <li>Thêm change log</li>
+    <li>Thêm trang Thông tin</li>
+    <li>Thêm Đánh giá ứng dụng</li>
     <!--li>Chuyển đổi hiển thị giữa grid và list</li-->
 </ul>
 
