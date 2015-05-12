@@ -1,6 +1,8 @@
 package com.kimkha.triethocduongpho.app;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -63,6 +65,16 @@ public abstract class BaseActivity extends AppCompatActivity {
             case R.id.action_about:
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.action_rate:
+                Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
+                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                try {
+                    startActivity(goToMarket);
+                } catch (ActivityNotFoundException e) {
+                    uri = Uri.parse("http://play.google.com/store/apps/details?id=" + this.getPackageName());
+                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                }
                 break;
             default:
                 break;
