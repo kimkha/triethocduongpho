@@ -73,7 +73,19 @@ public class ArticleEndpoint {
             path = "articleUrl",
             httpMethod = ApiMethod.HttpMethod.GET)
     public Article getByUrl(@Named("url") String url) throws NotFoundException {
-        Article article = ofy().load().type(Article.class).filter("url", url).first().now();
+        // Remove ? and #
+        url = url.split("\\?")[0];
+        url = url.split("#")[0];
+
+        String[] arr = new String[2];
+        arr[0] = url;
+        if (url.endsWith("/")) {
+            arr[1] = url.substring(0, url.length()-1);
+        } else {
+            arr[1] = url + "/";
+        }
+
+        Article article = ofy().load().type(Article.class).filter("url in", arr).first().now();
         if (article == null) {
             throw new NotFoundException("Could not find Article with URL: " + url);
         }
