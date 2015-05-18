@@ -77,6 +77,15 @@ public class PageActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void notFoundPage() {
+        finish();
+    }
+
+    public void updateData(String title, String url) {
+        mTitle = title;
+        mUrl = url;
+    }
+
     private void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

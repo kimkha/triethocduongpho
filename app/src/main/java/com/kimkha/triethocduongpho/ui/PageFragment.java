@@ -48,6 +48,8 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 
     private String imgUrl;
     private String title;
+    private boolean titleLoaded = false;
+    private boolean imgLoaded = false;
     private Article article;
     private PageActivity mActivity;
     private ScrollView scrollView;
@@ -99,9 +101,17 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        headerView.setText(title);
+        if (title != null) {
+            headerView.setText(title);
+            titleLoaded = true;
+        } else {
+            headerView.setText("");
+        }
         subHeaderView.setText("");
-        ImageLoader.getInstance().displayImage(imgUrl, imageView, options);
+        if (imgUrl != null) {
+            ImageLoader.getInstance().displayImage(imgUrl, imageView, options);
+            imgLoaded = true;
+        }
         updateView();
 
         super.onViewCreated(view, savedInstanceState);
@@ -162,6 +172,18 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 
     private void updateView() {
         if (article != null && htmlTextView != null) {
+            if (!titleLoaded) {
+                title = article.getTitle();
+                mActivity.updateData(title, article.getUrl());
+
+                headerView.setText(title);
+                titleLoaded = true;
+            }
+            if (!imgLoaded) {
+                imgUrl = MyArticleService.parseImageUrl(article.getImgUrl());
+                ImageLoader.getInstance().displayImage(imgUrl, imageView, options);
+                imgLoaded = true;
+            }
             htmlTextView.setHtmlFromString(article.getFullContent().getValue(), false, MyArticleService.getImgBase());
             CharSequence timeSpanned = DateUtils.getRelativeTimeSpanString(
                     article.getCreated().getValue(), System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS);
@@ -175,6 +197,10 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
     @Override
     public void onArticleReady(Article article) {
         this.article = article;
+        if (article == null) {
+            mActivity.notFoundPage();
+            return;
+        }
         updateView();
     }
 

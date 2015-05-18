@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.kimkha.triethocduongpho.ui.PageFragment;
+
 /**
  * @author kimkha
  * @version 1.3
@@ -16,9 +18,17 @@ public class OpenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        String data = getIntent().getDataString();
-        Log.e("AAA", "URL: " + data);
+        String url = getIntent().getDataString();
+        startPageActivity(url);
 
+        finish();
+    }
+
+    private void startPageActivity(String url) {
         startActivity(new Intent(this, MainActivity.class));
+
+        Intent pageIntent = new Intent(this, PageActivity.class);
+        pageIntent.putExtra(PageFragment.ARG_ITEM_URL, url);
+        startActivity(pageIntent);
     }
 }
