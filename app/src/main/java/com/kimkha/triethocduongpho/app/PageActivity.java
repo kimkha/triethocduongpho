@@ -11,11 +11,14 @@ import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.ui.PageFragment;
 
 public class PageActivity extends BaseActivity {
+    public static final String SCREEN_NAME = "PAGE";
 
     private String mTitle;
     private String mUrl;
     private int mAlpha = 0;
     private boolean mIsShow = false;
+    private String mCategory;
+    private long id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +26,11 @@ public class PageActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             Bundle arguments = new Bundle();
-            Long id = getIntent().getLongExtra(PageFragment.ARG_ITEM_ID, 0);
+            id = getIntent().getLongExtra(PageFragment.ARG_ITEM_ID, 0);
             arguments.putLong(PageFragment.ARG_ITEM_ID, id);
+
+            mCategory = getIntent().getStringExtra(PageFragment.ARG_ITEM_CATEGORY);
+            arguments.putString(PageFragment.ARG_ITEM_CATEGORY, mCategory);
 
             mTitle = getIntent().getStringExtra(PageFragment.ARG_ITEM_TITLE);
             arguments.putString(PageFragment.ARG_ITEM_TITLE, mTitle);
@@ -34,6 +40,8 @@ public class PageActivity extends BaseActivity {
 
             String mImgUrl = getIntent().getStringExtra(PageFragment.ARG_ITEM_IMG);
             arguments.putString(PageFragment.ARG_ITEM_IMG, mImgUrl);
+
+            tracking(SCREEN_NAME, mCategory, "start", (id>0?mTitle:mUrl), id);
 
             PageFragment pageFragment = new PageFragment();
             pageFragment.setArguments(arguments);
@@ -78,6 +86,7 @@ public class PageActivity extends BaseActivity {
     }
 
     public void notFoundPage() {
+        tracking(SCREEN_NAME, mCategory, "notfound", (id>0?mTitle:mUrl), id);
         finish();
     }
 
@@ -120,6 +129,8 @@ public class PageActivity extends BaseActivity {
     }
 
     private void openShareIntent() {
+        tracking(SCREEN_NAME, mCategory, "share", mTitle, id);
+
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, mTitle + " " + mUrl);

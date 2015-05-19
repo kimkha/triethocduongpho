@@ -43,6 +43,8 @@ import java.util.regex.Pattern;
 public class MainActivity extends BaseActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainFragment.Callbacks {
 
+    private static final String SCREEN_NAME = "MAIN";
+
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -65,6 +67,8 @@ public class MainActivity extends BaseActivity
 
         if (checkNetworkAndShowAlert()) {
             isNetworkAvailable = true;
+
+            tracking(SCREEN_NAME, "Default", "view", null, -1);
 
             mNavigationDrawerFragment = (NavigationDrawerFragment)
                     getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -151,6 +155,8 @@ public class MainActivity extends BaseActivity
 
             mTitle = category;
             restoreActionBar();
+
+            tracking(SCREEN_NAME, mTitle.toString(), "select", null, -1);
         }
     }
 
@@ -184,6 +190,7 @@ public class MainActivity extends BaseActivity
             case R.id.action_refresh:
                 if (isNetworkAvailable) {
                     mFragment.cleanAndReload();
+                    tracking(SCREEN_NAME, mTitle.toString(), "reload", null, -1);
                 }
                 break;
             default:
@@ -196,8 +203,11 @@ public class MainActivity extends BaseActivity
     @Override
     public void onItemSelected(Long id, String title, String url, String imgUrl) {
         if (isNetworkAvailable) {
+            tracking(SCREEN_NAME, mTitle.toString(), "click", title, id);
+
             Intent pageIntent = new Intent(this, PageActivity.class);
             pageIntent.putExtra(PageFragment.ARG_ITEM_ID, id);
+            pageIntent.putExtra(PageFragment.ARG_ITEM_CATEGORY, mTitle.toString());
             pageIntent.putExtra(PageFragment.ARG_ITEM_TITLE, title);
             pageIntent.putExtra(PageFragment.ARG_ITEM_URL, url);
             pageIntent.putExtra(PageFragment.ARG_ITEM_IMG, imgUrl);

@@ -34,6 +34,7 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 {
 
     public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_ITEM_CATEGORY = "item_cat";
     public static final String ARG_ITEM_TITLE = "item_title";
     public static final String ARG_ITEM_URL = "item_url";
     public static final String ARG_ITEM_IMG = "item_img";
@@ -48,6 +49,7 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 
     private String imgUrl;
     private String title;
+    private String category;
     private boolean titleLoaded = false;
     private boolean imgLoaded = false;
     private Article article;
@@ -71,6 +73,7 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
             Long id = getArguments().getLong(ARG_ITEM_ID);
             String url = getArguments().getString(ARG_ITEM_URL);
 
+            category = getArguments().getString(ARG_ITEM_CATEGORY);
             title = getArguments().getString(ARG_ITEM_TITLE);
             imgUrl = getArguments().getString(ARG_ITEM_IMG);
             imgUrl = MyArticleService.parseImageUrl(imgUrl);
@@ -191,6 +194,8 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
 
             refreshScrollListener();
             changeToolbarUI(0);
+
+            mActivity.tracking(PageActivity.SCREEN_NAME, category, "show", article.getTitle(), article.getId());
         }
     }
 

@@ -10,6 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.kimkha.triethocduongpho.MyApplication;
 import com.kimkha.triethocduongpho.R;
 
 /**
@@ -29,6 +31,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        if (MyApplication.tracker != null) {
+            MyApplication.tracker.setScreenName("BASE");
         }
     }
 
@@ -83,4 +89,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void tracking(String screenName, String category, String action, String label, long value) {
+        if (MyApplication.tracker == null) {
+            return;
+        }
+
+        MyApplication.tracker.setScreenName(screenName);
+
+        HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
+                .setCategory(category)
+                .setAction(action);
+
+        if (label != null) {
+            builder = builder.setLabel(label);
+        }
+        if (value >= 0) {
+            builder = builder.setValue(value);
+        }
+        MyApplication.tracker.send(builder.build());
+    }
 }
