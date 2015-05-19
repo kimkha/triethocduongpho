@@ -1,29 +1,43 @@
 package com.kimkha.triethocduongpho.app;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.provider.Settings;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.kimkha.triethocduongpho.R;
+import com.kimkha.triethocduongpho.backend.article2Api.Article2Api;
+import com.kimkha.triethocduongpho.backend.article2Api.model.Article;
 import com.kimkha.triethocduongpho.data.Category;
 import com.kimkha.triethocduongpho.ui.MainFragment;
 import com.kimkha.triethocduongpho.ui.NavigationDrawerFragment;
 import com.kimkha.triethocduongpho.ui.PageFragment;
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.regex.Pattern;
 
 
 public class MainActivity extends BaseActivity
@@ -47,6 +61,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        new MyAsync().execute();
 
         if (checkNetworkAndShowAlert()) {
             isNetworkAvailable = true;
@@ -60,8 +75,45 @@ public class MainActivity extends BaseActivity
                     R.id.navigation_drawer,
                     (DrawerLayout) findViewById(R.id.drawer_layout));
 
+
         } else {
             isNetworkAvailable = false;
+        }
+    }
+
+    class MyAsync extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            testAuth();
+            return null;
+        }
+    }
+
+    private void testAuth() {
+        String validGoogleAccount = null;
+        Pattern emailPattern = Patterns.EMAIL_ADDRESS; // API level 8+
+        Account[] accounts = AccountManager.get(this).getAccounts();
+        for (Account account : accounts) {
+            if (emailPattern.matcher(account.name).matches()) {
+                //Just store mail if countain gmail.com
+                if (account.name.toString().contains("gmail.com")&&account.type.toString().contains("com.google")){
+                    validGoogleAccount=account.name.toString();
+                }
+
+            }
+        }
+
+        GoogleAccountCredential credential = GoogleAccountCredential.usingAudience(this, "server:client_id:409077299124-ao2vas19i2grph8rgb1e3k1mfd2v7p0i.apps.googleusercontent.com");
+        credential.setSelectedAccountName(validGoogleAccount);
+        Article2Api article2Api = (new Article2Api.Builder(AndroidHttp.newCompatibleTransport(), new JacksonFactory(), credential))
+                .setApplicationName("aaaaa")
+                .build();
+        try {
+            Article a = article2Api.get(1L).execute();
+            Log.e("AAA", "title " + a.getTitle());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

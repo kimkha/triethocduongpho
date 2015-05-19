@@ -15,7 +15,8 @@
             <param-name>services</param-name>
             <param-value>com.kimkha.triethocduongpho.backend.RegistrationEndpoint,
                 com.kimkha.triethocduongpho.backend.MessagingEndpoint,
-                com.kimkha.triethocduongpho.backend.ArticleEndpoint</param-value>
+                com.kimkha.triethocduongpho.backend.ArticleEndpoint,
+                com.kimkha.triethocduongpho.backend.Article2Endpoint</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
