@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.kimkha.triethocduongpho.util.MyValidator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -26,6 +27,8 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        MyValidator.init(this);
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
                 .build();
