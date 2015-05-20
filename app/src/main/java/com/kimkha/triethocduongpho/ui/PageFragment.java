@@ -16,8 +16,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.app.PageActivity;
-import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
-import com.kimkha.triethocduongpho.data.MyArticleService;
+import com.kimkha.triethocduongpho.backend.article2Api.model.Article;
+import com.kimkha.triethocduongpho.data.MyArticle2Service;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -30,7 +30,7 @@ import java.util.List;
  * @since 3/1/15
  * @version 0.1
  */
-public class PageFragment extends Fragment implements MyArticleService.ApiCallback, ViewTreeObserver.OnScrollChangedListener
+public class PageFragment extends Fragment implements MyArticle2Service.ApiCallback, ViewTreeObserver.OnScrollChangedListener
 {
 
     public static final String ARG_ITEM_ID = "item_id";
@@ -76,9 +76,9 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
             category = getArguments().getString(ARG_ITEM_CATEGORY);
             title = getArguments().getString(ARG_ITEM_TITLE);
             imgUrl = getArguments().getString(ARG_ITEM_IMG);
-            imgUrl = MyArticleService.parseImageUrl(imgUrl);
+            imgUrl = MyArticle2Service.parseImageUrl(imgUrl);
 
-            MyArticleService.getArticle(url, id, this);
+            MyArticle2Service.getArticle(url, id, this);
         }
     }
 
@@ -183,11 +183,11 @@ public class PageFragment extends Fragment implements MyArticleService.ApiCallba
                 titleLoaded = true;
             }
             if (!imgLoaded) {
-                imgUrl = MyArticleService.parseImageUrl(article.getImgUrl());
+                imgUrl = MyArticle2Service.parseImageUrl(article.getImgUrl());
                 ImageLoader.getInstance().displayImage(imgUrl, imageView, options);
                 imgLoaded = true;
             }
-            htmlTextView.setHtmlFromString(article.getFullContent().getValue(), false, MyArticleService.getImgBase());
+            htmlTextView.setHtmlFromString(article.getFullContent().getValue(), false, MyArticle2Service.getImgBase());
             CharSequence timeSpanned = DateUtils.getRelativeTimeSpanString(
                     article.getCreated().getValue(), System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS);
             subHeaderView.setText(timeSpanned);

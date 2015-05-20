@@ -1,19 +1,11 @@
 package com.kimkha.triethocduongpho.data;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.kimkha.triethocduongpho.R;
-import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
+import com.kimkha.triethocduongpho.backend.article2Api.model.Article;
 import com.kimkha.triethocduongpho.ui.MainFragment;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +48,7 @@ public abstract class ArticleAdapter<T extends RecyclerView.ViewHolder> extends 
             loading = true;
             notifyLoading();
 
-            MyArticleService.getArticleList(mCategory, mNextPageToken, new MyArticleService.ApiCallback() {
+            MyArticle2Service.getArticleList(mCategory, mNextPageToken, new MyArticle2Service.ApiCallback() {
                 @Override
                 public void onArticleReady(Article article) {
                     // Do nothing

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kimkha.triethocduongpho.R;
-import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
+import com.kimkha.triethocduongpho.backend.article2Api.model.Article;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -50,7 +50,7 @@ public class ArticleGridAdapter extends ArticleAdapter<ArticleGridAdapter.ViewHo
         Article article = mArticleList.get(position);
 
         holder.mTextView.setText(article.getTitle());
-        String img = MyArticleService.parseImageUrl(article.getImgUrl());
+        String img = MyArticle2Service.parseImageUrl(article.getImgUrl());
         ImageLoader.getInstance().displayImage(img, holder.mImageView, options);
     }
 

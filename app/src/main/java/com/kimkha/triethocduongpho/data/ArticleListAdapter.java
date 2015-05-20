@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kimkha.triethocduongpho.R;
-import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
+import com.kimkha.triethocduongpho.backend.article2Api.model.Article;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -85,7 +85,7 @@ public class ArticleListAdapter extends ArticleAdapter<ArticleListAdapter.ViewHo
                 article.getCreated().getValue(), System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS);
         holder.mSubTextView.setText(timeSpanned);
 
-        String img = MyArticleService.parseImageUrl(article.getImgUrl());
+        String img = MyArticle2Service.parseImageUrl(article.getImgUrl());
         ImageLoader.getInstance().displayImage(img, holder.mImageView, options);
     }
 
@@ -96,7 +96,7 @@ public class ArticleListAdapter extends ArticleAdapter<ArticleListAdapter.ViewHo
                 article.getCreated().getValue(), System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS);
         holder.mBigSubView.setText(timeSpanned);
 
-        String img = MyArticleService.parseImageUrl(article.getImgUrl());
+        String img = MyArticle2Service.parseImageUrl(article.getImgUrl());
         ImageLoader.getInstance().displayImage(img, holder.mBigImageView, options);
     }
 
