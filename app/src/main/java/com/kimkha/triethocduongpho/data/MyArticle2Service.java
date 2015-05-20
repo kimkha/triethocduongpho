@@ -120,6 +120,10 @@ public class MyArticle2Service {
 
         @Override
         protected void onPostExecute(CollectionResponseArticle result) {
+            if (result == null) {
+                apiCallback.onArticleListReady(null, null);
+                return;
+            }
             apiCallback.onArticleListReady(result.getItems(), result.getNextPageToken());
         }
     }

@@ -22,7 +22,6 @@ public class MyValidator {
             PackageManager pm = context.getPackageManager();
             Signature sig = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES).signatures[0];
             fingerprint = doFingerprint(sig.toByteArray(), "SHA1").toLowerCase();
-            Log.e("AAA", "Fingerprint: " + fingerprint);
             packageName = context.getPackageName().toLowerCase();
         } catch (Exception e) {
             e.printStackTrace();

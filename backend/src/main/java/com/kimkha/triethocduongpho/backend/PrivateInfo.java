@@ -16,6 +16,10 @@ public class PrivateInfo {
     private String fingerprint;
     private String packageName;
 
+    public PrivateInfo() {
+
+    }
+
     public Long getId() {
         return id;
     }

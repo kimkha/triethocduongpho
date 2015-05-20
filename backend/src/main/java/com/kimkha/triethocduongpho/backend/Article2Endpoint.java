@@ -50,6 +50,7 @@ public class Article2Endpoint {
     static {
         // Typically you would register this inside an OfyServive wrapper. See: https://code.google.com/p/objectify-appengine/wiki/BestPractices
         ObjectifyService.register(Article.class);
+        ObjectifyService.register(PrivateInfo.class);
     }
 
     /**
@@ -153,7 +154,7 @@ public class Article2Endpoint {
             try {
                 QueryResultIterable<PrivateInfo> allPrivate = ofy().load().type(PrivateInfo.class).iterable();
                 for (PrivateInfo info : allPrivate) {
-                    String key = doSHA1(String.format("%s;%s;%d", info.getFingerprint(), info.getFingerprint(), timehash));
+                    String key = doSHA1(String.format("%s;%s;%d", info.getFingerprint().toLowerCase(), info.getPackageName().toLowerCase(), timehash));
                     if (cert.equalsIgnoreCase(key)) {
                         return;
                     }
