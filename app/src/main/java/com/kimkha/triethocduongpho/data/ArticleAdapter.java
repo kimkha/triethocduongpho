@@ -68,7 +68,6 @@ public abstract class ArticleAdapter<T extends RecyclerView.ViewHolder> extends 
                         // Exist the list to append
                         mArticleList.addAll(articleList);
                         mNextPageToken = nextPageToken;
-                        Log.e("AAA", "mNextPageToken " + mNextPageToken);
                         notifyDataSetChanged();
                     }
 

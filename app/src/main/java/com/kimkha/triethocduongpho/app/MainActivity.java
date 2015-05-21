@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
@@ -23,7 +24,17 @@ import com.kimkha.triethocduongpho.data.MyArticle2Service;
 import com.kimkha.triethocduongpho.ui.MainFragment;
 import com.kimkha.triethocduongpho.ui.NavigationDrawerFragment;
 import com.kimkha.triethocduongpho.ui.PageFragment;
+import com.kimkha.triethocduongpho.util.MyConnection;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -46,14 +57,14 @@ public class MainActivity extends BaseActivity
     private Menu optionsMenu;
     private MainFragment mFragment;
     private boolean isNetworkAvailable = false;
-    private AlertDialog networkDialog;
     private boolean isLoading = false;
+    private MyConnection connection = new MyConnection(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (checkNetworkAndShowAlert()) {
+        if (connection.checkNetworkAndShowAlert()) {
             isNetworkAvailable = true;
 
             tracking(SCREEN_NAME, "Default", "view", null, -1);
@@ -79,14 +90,14 @@ public class MainActivity extends BaseActivity
     @Override
     public void onResume() {
         super.onResume();
-        if (!isNetworkAvailable && checkNetworkAndShowAlert()) {
+        if (!isNetworkAvailable && connection.checkNetworkAndShowAlert()) {
             // Old = not connect, New = connected => reload activity
             isNetworkAvailable = true;
             restartActivity();
         }
     }
 
-    private void restartActivity() {
+    public void restartActivity() {
         Intent intent = getIntent();
         finish();
         startActivity(intent);
@@ -94,7 +105,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        if (checkNetworkAndShowAlert()) {
+        if (connection.checkNetworkAndShowAlert()) {
             // update the main content by replacing fragments
             String category = Category.CATEGORY_LIST[position];
             mFragment = MainFragment.newInstance(category);
@@ -188,49 +199,4 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    private boolean checkNetworkAndShowAlert() {
-        if (!isNetworkConnected()) {
-            if (networkDialog == null) {
-                networkDialog = new AlertDialog.Builder(this).setMessage("Please Check Your Internet Connection and Try Again")
-                        .setTitle("Network Error")
-                        .setCancelable(false)
-                        .setNegativeButton("Retry",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        restartActivity();
-                                    }
-                                })
-                        .setPositiveButton("Connect to WIFI",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int whichButton) {
-                                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                                    }
-                                })
-                        .show();
-            } else {
-                networkDialog.show();
-            }
-            return false;
-        }
-        return true;
-    }
-
-    private boolean isServerConnected() {
-        try{
-            URL myUrl = new URL("triethocduongpho-android.appspot.com");
-            URLConnection connection = myUrl.openConnection();
-            connection.setConnectTimeout(10000);
-            connection.connect();
-            return true;
-        } catch (Exception e) {
-            // Handle your exceptions
-            return false;
-        }
-    }
-
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        return null != ni;
-    }
 }
