@@ -1,6 +1,7 @@
 package com.kimkha.triethocduongpho.data;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.backend.article2Api.model.Article;
@@ -59,7 +60,7 @@ public abstract class ArticleAdapter<T extends RecyclerView.ViewHolder> extends 
 
                 @Override
                 public void onArticleListReady(List<Article> articleList, String nextPageToken) {
-                    if (articleList == null || articleList.size() < DEFAULT_LIST_LIMIT) {
+                    if (articleList == null || articleList.size() == 0) {
                         isEndOfList = true;
                     }
 
@@ -67,6 +68,7 @@ public abstract class ArticleAdapter<T extends RecyclerView.ViewHolder> extends 
                         // Exist the list to append
                         mArticleList.addAll(articleList);
                         mNextPageToken = nextPageToken;
+                        Log.e("AAA", "mNextPageToken " + mNextPageToken);
                         notifyDataSetChanged();
                     }
 

@@ -19,5 +19,6 @@
         android:id="@+id/my_recycler_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:overScrollMode="ifContentScrolls"
         android:scrollbars="vertical" />
 </RelativeLayout>

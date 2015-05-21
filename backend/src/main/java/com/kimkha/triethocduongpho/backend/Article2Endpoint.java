@@ -131,14 +131,15 @@ public class Article2Endpoint {
         if (cursor != null) {
             query = query.startAt(Cursor.fromWebSafeString(cursor));
         }
-        QueryResultIterable<Article> queryIter = query.iterable();
+        QueryResultIterator<Article> queryIter = query.iterator();
         List<Article> articleList = new ArrayList<Article>(limit);
 
         // TODO Use random to choose big style
         Random random = new Random();
         boolean isFirst = true;
 
-        for (Article article : queryIter) {
+        while (queryIter.hasNext()) {
+            Article article = queryIter.next();
             // To save data transfer
             article.setFullContent(null);
             if (isFirst || random.nextInt(8) == 0) {
@@ -147,7 +148,7 @@ public class Article2Endpoint {
             }
             articleList.add(article);
         }
-        return CollectionResponse.<Article>builder().setItems(articleList).setNextPageToken(queryIter.iterator().getCursor().toWebSafeString()).build();
+        return CollectionResponse.<Article>builder().setItems(articleList).setNextPageToken(queryIter.getCursor().toWebSafeString()).build();
     }
 
     private void validateRequest(Long timehash, String cert) throws ForbiddenException {

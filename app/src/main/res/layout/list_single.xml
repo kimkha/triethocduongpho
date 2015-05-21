@@ -70,8 +70,8 @@
         android:id="@+id/big_style"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="0dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone">
