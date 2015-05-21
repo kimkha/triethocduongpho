@@ -30,7 +30,7 @@ import java.util.List;
 
 
 public class MainActivity extends BaseActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, MainFragment.Callbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     private static final String SCREEN_NAME = "MAIN";
 
@@ -150,7 +150,6 @@ public class MainActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
     public void onItemSelected(Long id, String title, String url, String imgUrl) {
         if (isNetworkAvailable) {
             tracking(SCREEN_NAME, mTitle.toString(), "click", title, id);
@@ -165,19 +164,8 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    @Override
-    public void onItemLoading() {
-        isLoading = true;
-        setRefreshActionButtonState();
-    }
-
-    @Override
-    public void onItemLoaded() {
-        isLoading = false;
-        setRefreshActionButtonState();
-    }
-
-    public void setRefreshActionButtonState() {
+    public void setRefreshActionButtonState(boolean isLoading) {
+        this.isLoading = isLoading;
         showProgressActionBar();
 //        if (isLoading) {
 //            Toast.makeText(this, R.string.loading, Toast.LENGTH_LONG).show();

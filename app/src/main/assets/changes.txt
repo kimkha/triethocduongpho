@@ -6,6 +6,13 @@
     Phiên bản hiện tại: <b>__VER__</b>
 </p>
 
+<h3>v1.4</h3>
+<ul>
+    <li>Đổi danh sách mặc định</li>
+    <li>Hiện tên tác giả</li>
+    <li>Tối ưu giao diện</li>
+</ul>
+
 <h3>v1.3</h3>
 <ul>
     <li>Bắt link để mở bài viết nhanh</li>

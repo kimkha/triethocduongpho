@@ -9,7 +9,10 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.kimkha.triethocduongpho.app.MainActivity;
 import com.kimkha.triethocduongpho.data.ArticleAdapter;
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.data.ArticleGridAdapter;
@@ -20,7 +23,7 @@ import com.kimkha.triethocduongpho.data.ArticleListAdapter;
  * @version 0.1
  * @since 3/14/15
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
     /**
      * The fragment argument representing the section number for this
      * fragment.
@@ -29,36 +32,13 @@ public class MainFragment extends Fragment {
 
     private int expectHeightForBig = 200;
     private String category = "";
+    private TextView mNoPostView;
     private RecyclerView mRecyclerView = null;
     private RecyclerView.LayoutManager mLayoutManager;
     private StaggeredGridLayoutManager gridLayoutManager;
     private LinearLayoutManager listLayoutManager;
     private ArticleAdapter adapter = null;
     private boolean isGridMode = false;
-
-    private Callbacks mCallbacks = sDummyCallbacks;
-
-    public interface Callbacks {
-        /**
-         * Callback for when an item has been selected.
-         */
-        public void onItemSelected(Long id, String title, String url, String imgUrl);
-
-        public void onItemLoaded();
-
-        public void onItemLoading();
-    }
-
-    private static Callbacks sDummyCallbacks = new Callbacks() {
-        @Override
-        public void onItemSelected(Long id, String title, String url, String imgUrl) {
-        }
-        @Override
-        public void onItemLoaded(){}
-
-        @Override
-        public void onItemLoading() {}
-    };
 
     /**
      * Returns a new instance of this fragment for the given section
@@ -96,6 +76,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        mNoPostView = (TextView) rootView.findViewById(R.id.no_post);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
 
@@ -110,21 +91,7 @@ public class MainFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        try {
-            mCallbacks = (Callbacks) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException("Activity must implement fragment's callbacks.");
-        }
-
         category = "";
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-
-        // Reset the active callbacks interface to the dummy implementation.
-        mCallbacks = sDummyCallbacks;
     }
 
     public void switchLayout(boolean isGridMode) {
@@ -135,7 +102,7 @@ public class MainFragment extends Fragment {
 
         adapter = getAdapter(getActivity());
         mRecyclerView.setAdapter(adapter);
-        adapter.setCallback(mCallbacks);
+        adapter.setCallback(this);
 
         adapter.startLoader(category);
     }
@@ -170,6 +137,11 @@ public class MainFragment extends Fragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
+                if (adapter.isEndOfList()) {
+                    // End of list, don't need to get more
+                    return;
+                }
+
                 int visibleItemCount = mLayoutManager.getChildCount();
                 int totalItemCount = mLayoutManager.getItemCount();
 
@@ -200,4 +172,29 @@ public class MainFragment extends Fragment {
         }));
     }
 
+    @Override
+    public void onItemSelected(Long id, String title, String url, String imgUrl) {
+        ((MainActivity) getActivity()).onItemSelected(id, title, url, imgUrl);
+    }
+
+    @Override
+    public void onItemLoaded() {
+        ((MainActivity) getActivity()).setRefreshActionButtonState(false);
+        if (adapter.isNoPost()) {
+            mRecyclerView.setVisibility(View.GONE);
+            mNoPostView.setVisibility(View.VISIBLE);
+        } else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            mNoPostView.setVisibility(View.GONE);
+        }
+
+        if (adapter.isEndOfList()) {
+            Toast.makeText(getActivity(), R.string.end_of_list, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onItemLoading() {
+        ((MainActivity) getActivity()).setRefreshActionButtonState(true);
+    }
 }

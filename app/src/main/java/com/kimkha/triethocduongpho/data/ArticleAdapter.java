@@ -16,20 +16,23 @@ public abstract class ArticleAdapter<T extends RecyclerView.ViewHolder> extends 
             .showImageOnFail(DEFAULT_IMG).showImageForEmptyUri(DEFAULT_IMG).showImageOnLoading(DEFAULT_IMG)
             .cacheInMemory(true).cacheOnDisk(true)
             .build();
+    private static final int DEFAULT_LIST_LIMIT = 20;
 
     protected final List<Article> mArticleList = new ArrayList<>();
-    private MainFragment.Callbacks mCallback;
+    private Callbacks mCallback = sDummyCallbacks;
     private String mNextPageToken;
     private String mCategory;
     private boolean loading = false;
+    private boolean isEndOfList = false;
 
-    public void setCallback(MainFragment.Callbacks callback) {
+    public void setCallback(Callbacks callback) {
         mCallback = callback;
     }
 
     public void startLoader(String category) {
         // Clear the list first
         mNextPageToken = null;
+        isEndOfList = false;
         mCategory = category;
         mArticleList.clear();
         notifyDataSetChanged();
@@ -48,7 +51,7 @@ public abstract class ArticleAdapter<T extends RecyclerView.ViewHolder> extends 
             loading = true;
             notifyLoading();
 
-            MyArticle2Service.getArticleList(mCategory, mNextPageToken, new MyArticle2Service.ApiCallback() {
+            MyArticle2Service.getArticleList(mCategory, mNextPageToken, DEFAULT_LIST_LIMIT, new MyArticle2Service.ApiCallback() {
                 @Override
                 public void onArticleReady(Article article) {
                     // Do nothing
@@ -56,6 +59,10 @@ public abstract class ArticleAdapter<T extends RecyclerView.ViewHolder> extends 
 
                 @Override
                 public void onArticleListReady(List<Article> articleList, String nextPageToken) {
+                    if (articleList == null || articleList.size() < DEFAULT_LIST_LIMIT) {
+                        isEndOfList = true;
+                    }
+
                     if (articleList != null && articleList.size() > 0) {
                         // Exist the list to append
                         mArticleList.addAll(articleList);
@@ -89,10 +96,41 @@ public abstract class ArticleAdapter<T extends RecyclerView.ViewHolder> extends 
         return mArticleList.size();
     }
 
+    public boolean isNoPost() {
+        return isEndOfList && (mArticleList == null || mArticleList.size() == 0);
+    }
+
+    public boolean isEndOfList() {
+        return isEndOfList && mArticleList != null && mArticleList.size() > 0;
+    }
+
     public void onChooseItem(int position) {
         if (position < mArticleList.size() && position >= 0) {
             Article article = mArticleList.get(position);
             mCallback.onItemSelected(article.getId(), article.getTitle(), article.getUrl(), article.getImgUrl());
         }
     }
+
+    public interface Callbacks {
+        /**
+         * Callback for when an item has been selected.
+         */
+        void onItemSelected(Long id, String title, String url, String imgUrl);
+
+        void onItemLoaded();
+
+        void onItemLoading();
+    }
+
+    private static Callbacks sDummyCallbacks = new Callbacks() {
+        @Override
+        public void onItemSelected(Long id, String title, String url, String imgUrl) {
+        }
+        @Override
+        public void onItemLoaded(){}
+
+        @Override
+        public void onItemLoading() {}
+    };
+
 }

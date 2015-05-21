@@ -122,7 +122,7 @@ public class Article2Endpoint {
             throws ForbiddenException {
         validateRequest(timehash, cert);
 
-        limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
+        limit = (limit == null || limit <= 0) ? DEFAULT_LIST_LIMIT : limit;
         //test();
         Query<Article> query = ofy().load().type(Article.class).order("-created").limit(limit);
         if (category != null && !"".equals(category)) {

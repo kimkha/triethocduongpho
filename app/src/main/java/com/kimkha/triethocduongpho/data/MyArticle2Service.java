@@ -55,26 +55,27 @@ public class MyArticle2Service {
         return IMG_BASE;
     }
 
-    public static void getArticleList(String category, String nextPageToken, ApiCallback callback) {
-        new EndpointsAsyncTask(callback).execute(new Pair<>(category, nextPageToken));
+    public static void getArticleList(String category, String nextPageToken, int limit, ApiCallback callback) {
+        new EndpointsAsyncTask(callback, category, nextPageToken, limit).execute();
     }
 
     public static void getArticle(String url, Long id, ApiCallback callback) {
-        new ArticleEndpointsAsyncTask(callback).execute(new Pair<>(url, id));
+        new ArticleEndpointsAsyncTask(callback, id, url).execute();
     }
 
-    static class ArticleEndpointsAsyncTask extends AsyncTask<Pair<String, Long>, Void, Article> {
+    static class ArticleEndpointsAsyncTask extends AsyncTask<Void, Void, Article> {
         private final ApiCallback apiCallback;
+        private final String url;
+        private final Long id;
 
-        public ArticleEndpointsAsyncTask(ApiCallback apiCallback) {
+        public ArticleEndpointsAsyncTask(ApiCallback apiCallback, Long id, String url) {
             this.apiCallback = apiCallback;
+            this.id = id;
+            this.url = url;
         }
 
         @Override
-        protected Article doInBackground(Pair<String, Long>... params) {
-            String url = params[0].first;
-            Long id = params[0].second;
-
+        protected Article doInBackground(Void... p) {
             Long timehash = System.currentTimeMillis();
             String cert = MyValidator.getCertificate(timehash);
 
@@ -95,23 +96,27 @@ public class MyArticle2Service {
         }
     }
 
-    static class EndpointsAsyncTask extends AsyncTask<Pair<String, String>, Void, CollectionResponseArticle> {
+    static class EndpointsAsyncTask extends AsyncTask<Void, Void, CollectionResponseArticle> {
         private final ApiCallback apiCallback;
+        private final String category;
+        private final String nextPageToken;
+        private final int limit;
 
-        public EndpointsAsyncTask(ApiCallback apiCallback) {
+        public EndpointsAsyncTask(ApiCallback apiCallback, String category, String nextPageToken, int limit) {
             this.apiCallback = apiCallback;
+            this.category = category;
+            this.nextPageToken = nextPageToken;
+            this.limit = limit;
         }
 
         @Override
-        protected CollectionResponseArticle doInBackground(Pair<String, String>... params) {
-            String category = params[0].first;
-            String nextPageToken = params[0].second;
-
+        protected CollectionResponseArticle doInBackground(Void... params) {
             Long timehash = System.currentTimeMillis();
             String cert = MyValidator.getCertificate(timehash);
 
             try {
-                return articleApi.list(category).setCursor(nextPageToken).setTimehash(timehash).setCert(cert).execute();
+                return articleApi.list(category).setCursor(nextPageToken).setLimit(limit)
+                        .setTimehash(timehash).setCert(cert).execute();
             } catch (IOException e) {
                 e.printStackTrace();
             }
