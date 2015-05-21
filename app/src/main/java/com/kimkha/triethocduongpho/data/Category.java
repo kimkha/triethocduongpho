@@ -7,8 +7,8 @@ package com.kimkha.triethocduongpho.data;
  */
 public class Category {
     public static final String[] CATEGORY_LIST = new String[]{
-            "Bài Nổi Bật",
             "Tất Cả",
+            "Bài Nổi Bật",
             "Bài Quan Trọng",
             "CCTTHĐP",
             "-------",

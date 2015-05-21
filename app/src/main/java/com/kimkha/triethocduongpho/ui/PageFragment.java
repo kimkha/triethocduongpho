@@ -60,6 +60,7 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
     private TextView headerView;
     private TextView subHeaderView;
     private View headGroup;
+    private TextView authorView;
 
     public PageFragment() {
 
@@ -91,6 +92,7 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
         imageView = (ImageView) rootView.findViewById(R.id.page_image);
         headerView = (TextView) rootView.findViewById(R.id.page_header);
         subHeaderView = (TextView) rootView.findViewById(R.id.page_subheader);
+        authorView = (TextView) rootView.findViewById(R.id.page_author);
         headGroup = rootView.findViewById(R.id.page_head_group);
 
         refreshScrollListener();
@@ -111,6 +113,7 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
             headerView.setText("");
         }
         subHeaderView.setText("");
+        authorView.setText("");
         if (imgUrl != null) {
             ImageLoader.getInstance().displayImage(imgUrl, imageView, options);
             imgLoaded = true;
@@ -187,10 +190,12 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
                 ImageLoader.getInstance().displayImage(imgUrl, imageView, options);
                 imgLoaded = true;
             }
+
             htmlTextView.setHtmlFromString(article.getFullContent().getValue(), false, MyArticle2Service.getImgBase());
             CharSequence timeSpanned = DateUtils.getRelativeTimeSpanString(
                     article.getCreated().getValue(), System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS);
             subHeaderView.setText(timeSpanned);
+            authorView.setText(article.getAuthor());
 
             refreshScrollListener();
             changeToolbarUI(0);

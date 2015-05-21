@@ -33,11 +33,13 @@ public class ArticleListAdapter extends ArticleAdapter<ArticleListAdapter.ViewHo
         public TextView mTextView;
         public ImageView mImageView;
         public TextView mSubTextView;
+        public TextView mAuthorTextView;
 
         public View bigWrapView;
         public TextView mBigTitleView;
         public ImageView mBigImageView;
         public TextView mBigSubView;
+        public TextView mBigAuthorView;
 
         public ViewHolder(View view, int expectHeightForBig) {
             super(view);
@@ -45,11 +47,13 @@ public class ArticleListAdapter extends ArticleAdapter<ArticleListAdapter.ViewHo
             mTextView = (TextView) view.findViewById(R.id.grid_text);
             mImageView = (ImageView) view.findViewById(R.id.grid_image);
             mSubTextView = (TextView) view.findViewById(R.id.sub_text);
+            mAuthorTextView = (TextView) view.findViewById(R.id.author_text);
 
             bigWrapView = view.findViewById(R.id.big_style);
             mBigTitleView = (TextView) view.findViewById(R.id.big_title);
             mBigImageView = (ImageView) view.findViewById(R.id.big_image);
             mBigSubView = (TextView) view.findViewById(R.id.big_sub);
+            mBigAuthorView = (TextView) view.findViewById(R.id.big_author);
 
             View contentView = view.findViewById(R.id.big_content_view);
             contentView.getLayoutParams().height = expectHeightForBig;
@@ -80,6 +84,7 @@ public class ArticleListAdapter extends ArticleAdapter<ArticleListAdapter.ViewHo
 
     private void displayNormalStyle(ViewHolder holder, Article article) {
         holder.mTextView.setText(article.getTitle());
+        holder.mAuthorTextView.setText(article.getAuthor());
 
         CharSequence timeSpanned = DateUtils.getRelativeTimeSpanString(
                 article.getCreated().getValue(), System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS);
@@ -91,6 +96,7 @@ public class ArticleListAdapter extends ArticleAdapter<ArticleListAdapter.ViewHo
 
     private void displayBigStyle(ViewHolder holder, Article article) {
         holder.mBigTitleView.setText(article.getTitle());
+        holder.mBigAuthorView.setText(article.getAuthor());
 
         CharSequence timeSpanned = DateUtils.getRelativeTimeSpanString(
                 article.getCreated().getValue(), System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS);

@@ -21,5 +21,6 @@
 
     <string name="action_about">Thông tin</string>
     <string name="action_rate">Đánh giá ứng dụng</string>
+    <string name="dot">·</string>
 
 </resources>
