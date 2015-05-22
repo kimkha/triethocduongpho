@@ -1,6 +1,7 @@
 package com.kimkha.triethocduongpho.util;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,10 +9,13 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.Settings;
 import android.util.Log;
+import android.util.SparseArray;
 
+import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.app.MainActivity;
 
 import java.io.IOException;
@@ -21,15 +25,18 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author kimkha
- * @version 1.3
+ * @version 2.0
  * @since 5/21/15
  */
 public class MyConnection {
     private final MainActivity activity;
     private AlertDialog networkDialog;
+    private AlertDialog updateDialog;
 
     public MyConnection(MainActivity mainActivity) {
         activity = mainActivity;
@@ -41,7 +48,7 @@ public class MyConnection {
             return false;
         }
 
-        new HttpAsyncTask().execute("http://triethocduongpho-android.appspot.com/version.txt");
+        //new HttpAsyncTask().execute("http://triethocduongpho-android.appspot.com/version.txt");
         return true;
     }
 
@@ -53,16 +60,17 @@ public class MyConnection {
 
     private void createAndShowAlert() {
         if (networkDialog == null) {
-            networkDialog = new AlertDialog.Builder(activity).setMessage("Please Check Your Internet Connection and Try Again")
-                    .setTitle("Network Error")
+            networkDialog = new AlertDialog.Builder(activity)
+                    .setTitle(R.string.network)
+                    .setMessage(R.string.network_content)
                     .setCancelable(false)
-                    .setNegativeButton("Retry",
+                    .setNegativeButton(R.string.network_retry,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     activity.restartActivity();
                                 }
                             })
-                    .setPositiveButton("Connect to WIFI",
+                    .setPositiveButton(R.string.network_wifi,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     activity.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
@@ -74,26 +82,107 @@ public class MyConnection {
         }
     }
 
+    private void showUpdatePopup(boolean isForce) {
+        if (updateDialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                    .setTitle(R.string.update)
+                    .setPositiveButton(R.string.update_go,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.dismiss();
+                                    goToStore();
+                                }
+                            });
+
+            if (isForce) {
+                builder.setMessage(R.string.update_content_force)
+                        .setCancelable(false);
+
+                // Reset skipping
+                PrefHelper.setLong(activity, "skipUpdate", 0);
+            } else {
+                long current = System.currentTimeMillis();
+                if (PrefHelper.getLong(activity, "skipUpdate") >= System.currentTimeMillis()) {
+                    // Still skipping time
+                    return;
+                }
+
+                builder.setMessage(R.string.update_content)
+                        .setCancelable(true)
+                        .setNegativeButton(R.string.update_cancel,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        dialog.dismiss();
+
+                                        long current = System.currentTimeMillis() + 2*24*60*60*1000;
+                                        PrefHelper.setLong(activity, "skipUpdate", current);
+                                    }
+                                });
+            }
+
+            updateDialog = builder.show();
+        } else {
+            updateDialog.show();
+        }
+    }
+
+    private void goToStore() {
+        Uri uri = Uri.parse("market://details?id=" + activity.getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            activity.startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            uri = Uri.parse("http://play.google.com/store/apps/details?id=" + activity.getPackageName());
+            activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        }
+    }
+
     private void checkVersion(String versionString) {
-        if (versionString == null || "".equals(versionString) || versionString.contains("@")) {
+        if (versionString == null || "".equals(versionString) || !versionString.contains("@")) {
             // Fail to connect
             createAndShowAlert();
             return;
         }
 
-        versionString = versionString.trim();
-        String[] pair = versionString.split("@");
-
+        Boolean update = parseVersion(versionString, getCurrentVersion());
+        if (update != null) {
+            showUpdatePopup(update);
+        }
     }
 
-    private String getCurrentVersion() {
+    private int getCurrentVersion() {
         try {
             PackageInfo pInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), PackageManager.GET_META_DATA);
-            return pInfo.versionName;
+            return pInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
             // Do nothing
         }
-        return "";
+        return 0;
+    }
+
+    private Boolean parseVersion(String string, int currentVersion) {
+        SparseArray<Version> result = new SparseArray<>();
+        if (string != null) {
+            int foundVersion = -1;
+            boolean isForce = false;
+
+            Pattern pattern = Pattern.compile("(\\d+)@(\\w+)");
+            Matcher matcher = pattern.matcher(string);
+            while (matcher.find()) {
+                int code = Integer.parseInt(matcher.group(1));
+                if (currentVersion <= code && (foundVersion == -1 || code < foundVersion)) {
+                    // Found a version need to update
+                    foundVersion = code;
+                    isForce = "force".equalsIgnoreCase(matcher.group(2));
+                }
+            }
+
+            if (foundVersion > 0) {
+                // Found an update
+                return isForce;
+            }
+        }
+        return null;
     }
 
     private String downloadUrl(String myurl) throws IOException {
@@ -112,7 +201,7 @@ public class MyConnection {
             // Starts the query
             conn.connect();
             int response = conn.getResponseCode();
-            Log.d("MainActivity", "The response is: " + response);
+            Log.w("MyConnection", "The response is: " + response);
             is = conn.getInputStream();
 
             // Convert the InputStream into a string
@@ -147,6 +236,11 @@ public class MyConnection {
         protected void onPostExecute(String result) {
             MyConnection.this.checkVersion(result);
         }
+    }
+
+    private class Version {
+        public int code;
+        public boolean force;
     }
 
 }
