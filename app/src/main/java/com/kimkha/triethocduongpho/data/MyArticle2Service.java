@@ -124,7 +124,6 @@ public class MyArticle2Service {
                         .setTimehash(timehash).setCert(cert);
                 if (0 < fromTime && fromTime <= toTime) {
                     builder = builder.setFrom(fromTime).setTo(toTime);
-                    Log.e("AAA", "time " + fromTime + " " + toTime);
                 }
                 return builder.execute();
             } catch (IOException e) {

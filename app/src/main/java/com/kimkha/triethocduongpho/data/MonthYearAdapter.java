@@ -39,7 +39,7 @@ public class MonthYearAdapter extends BaseAdapter {
         target.set(Calendar.MINUTE, 0);
         target.set(Calendar.HOUR_OF_DAY, 0);
         target.set(Calendar.DAY_OF_MONTH, 1);
-        target.set(Calendar.MONTH, Calendar.OCTOBER);
+        target.set(Calendar.MONTH, Calendar.JULY);
         target.set(Calendar.YEAR, 2013);
 
         while (now.after(target)) {
@@ -79,6 +79,25 @@ public class MonthYearAdapter extends BaseAdapter {
         String value = context.getResources().getString(R.string.month_format, item.get(Calendar.MONTH)+1, item.get(Calendar.YEAR));
         vh.textView.setText(value);
         return convertView;
+    }
+
+    public int findMatchedPosition(Calendar date) {
+        if (date == null) {
+            return -1;
+        }
+
+        int pos=0;
+        for (int i=0; i<listMonth.size(); i++) {
+            if (date.before(listMonth.get(i))) {
+                pos = i+1;
+                break;
+            }
+        }
+
+        if (pos >= listMonth.size() || pos < 0) {
+            return -1;//Not found
+        }
+        return pos;
     }
 
     class VH {

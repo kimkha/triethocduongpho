@@ -70,6 +70,7 @@ public class MainActivity extends BaseActivity
     private AlertDialog monthDialog;
     private Calendar fromDate;
     private Calendar toDate;
+    private MonthYearAdapter monthYearAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,9 +197,6 @@ public class MainActivity extends BaseActivity
     public void setRefreshActionButtonState(boolean isLoading) {
         this.isLoading = isLoading;
         showProgressActionBar();
-//        if (isLoading) {
-//            Toast.makeText(this, R.string.loading, Toast.LENGTH_LONG).show();
-//        }
     }
 
     private void showProgressActionBar() {
@@ -208,10 +206,8 @@ public class MainActivity extends BaseActivity
             if (refreshItem != null) {
                 if (isLoading) {
                     MenuItemCompat.setActionView(refreshItem, R.layout.actionbar_indeterminate_progress);
-                    //refreshItem.setActionView(R.layout.actionbar_indeterminate_progress);
                 } else {
                     MenuItemCompat.setActionView(refreshItem, null);
-                    //refreshItem.setActionView(null);
                 }
             }
         }
@@ -227,10 +223,9 @@ public class MainActivity extends BaseActivity
     private void showMonthDialog() {
         if (monthDialog == null) {
             AlertDialog.Builder builderSingle = new AlertDialog.Builder(MainActivity.this)
-                    .setIcon(R.mipmap.ic_launcher)
                     .setTitle(R.string.month_title);
 
-            final MonthYearAdapter monthYearAdapter = new MonthYearAdapter(MainActivity.this);
+            monthYearAdapter = new MonthYearAdapter(MainActivity.this);
 
             builderSingle.setNegativeButton(R.string.month_cancel,
                     new DialogInterface.OnClickListener() {
@@ -240,10 +235,11 @@ public class MainActivity extends BaseActivity
                         }
                     });
 
-            builderSingle.setAdapter(monthYearAdapter,
+            builderSingle.setSingleChoiceItems(monthYearAdapter, monthYearAdapter.findMatchedPosition(fromDate),
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
                             Calendar value = (Calendar) monthYearAdapter.getItem(which);
                             setMonthYear(value);
                         }
