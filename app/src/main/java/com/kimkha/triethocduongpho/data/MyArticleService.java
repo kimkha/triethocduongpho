@@ -8,6 +8,7 @@ import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
+import com.kimkha.triethocduongpho.Configs;
 import com.kimkha.triethocduongpho.backend.articleApi.ArticleApi;
 import com.kimkha.triethocduongpho.backend.articleApi.model.Article;
 import com.kimkha.triethocduongpho.backend.articleApi.model.CollectionResponseArticle;
@@ -55,7 +56,7 @@ public class MyArticleService {
     }
 
     public static String parseImageUrl(String imgUrl) {
-        if (imgUrl != null && imgUrl.startsWith("/triethocduongpho-android")) {
+        if (imgUrl != null && imgUrl.startsWith(String.format("/%s", Configs.APPENGINE_ID))) {
             imgUrl = IMG_BASE + imgUrl;
         }
         return imgUrl;

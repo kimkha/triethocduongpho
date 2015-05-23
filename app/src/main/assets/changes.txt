@@ -8,6 +8,7 @@
 
 <h3>v1.4</h3>
 <ul>
+    <li>Thêm mục chọn tháng để xem bài cũ</li>
     <li>Đổi danh sách mặc định</li>
     <li>Hiện tên tác giả</li>
     <li>Tối ưu giao diện</li>

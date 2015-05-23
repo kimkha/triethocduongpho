@@ -245,7 +245,7 @@ public class MainActivity extends BaseActivity
                             dialog.dismiss();
                         }
                     });
-            builderSingle.setPositiveButton(R.string.month_cancel,
+            builderSingle.setPositiveButton(R.string.month_all,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

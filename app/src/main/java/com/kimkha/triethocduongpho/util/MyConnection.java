@@ -15,6 +15,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.util.SparseArray;
 
+import com.kimkha.triethocduongpho.Configs;
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.app.MainActivity;
 
@@ -53,7 +54,7 @@ public class MyConnection {
             return false;
         }
 
-        new HttpAsyncTask().execute("http://triethocduongpho-android.appspot.com/version.txt?t="+System.currentTimeMillis());
+        new HttpAsyncTask().execute(String.format("%s/version.txt?t=%d", Configs.APPENGINE_BASEURL, System.currentTimeMillis()));
         return true;
     }
 
