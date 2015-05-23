@@ -133,6 +133,7 @@ public class MainActivity extends BaseActivity
             mTitle = Category.CATEGORY_LIST[position];
             fromDate = null;
             toDate = null;
+            monthDialog = null;
 
             runFragment();
 
@@ -147,7 +148,7 @@ public class MainActivity extends BaseActivity
             actionBar.setDisplayShowTitleEnabled(true);
             String title = mTitle;
             if (fromDate != null) {
-                title = String.format("(%02d/%02d) %s", fromDate.get(Calendar.MONTH), fromDate.get(Calendar.YEAR)%100, title);
+                title = String.format("[%02d/%02d] %s", fromDate.get(Calendar.MONTH)+1, fromDate.get(Calendar.YEAR)%100, title);
             }
             actionBar.setTitle(title);
         }
@@ -220,15 +221,21 @@ public class MainActivity extends BaseActivity
     }
 
     private void setMonthYear(Calendar selectedDate) {
+        String title = mTitle;
         if (selectedDate == null) {
             fromDate = null;
             toDate = null;
+            monthDialog = null;
         } else {
             fromDate = selectedDate;
             toDate = (Calendar) selectedDate.clone();
             toDate.add(Calendar.MONTH, 1);
+
+            title = String.format("[%02d/%02d] %s", fromDate.get(Calendar.MONTH)+1, fromDate.get(Calendar.YEAR)%100, title);
         }
         runFragment();
+
+        tracking(SCREEN_NAME, title, "select_month", null, -1);
     }
 
     private void showMonthDialog() {

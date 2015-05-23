@@ -4,14 +4,14 @@
 
     <item
         android:id="@+id/action_time"
-        android:orderInCategory="100"
+        android:orderInCategory="90"
         app:showAsAction="always"
         android:icon="@drawable/ic_filter_list_white_24dp"
         android:title="@string/action_month"/>
 
     <item
         android:id="@+id/action_refresh"
-        android:orderInCategory="90"
+        android:orderInCategory="100"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_refresh_white_24dp"
         android:title="@string/action_refresh"/>
