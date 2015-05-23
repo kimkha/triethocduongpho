@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_refresh"
-        android:orderInCategory="100"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_refresh_white_24dp"
-        android:title="Refresh"/>
-
-    <item
         android:id="@+id/action_time"
         android:orderInCategory="100"
         app:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_recent_history"
-        android:title="Month"/>
+        android:icon="@drawable/ic_filter_list_white_24dp"
+        android:title="@string/action_month"/>
+
+    <item
+        android:id="@+id/action_refresh"
+        android:orderInCategory="90"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_refresh_white_24dp"
+        android:title="@string/action_refresh"/>
 
 </menu>

@@ -121,6 +121,7 @@ public class MainActivity extends BaseActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.container, mFragment)
                 .commit();
+        restoreActionBar();
     }
 
     @Override
@@ -132,7 +133,6 @@ public class MainActivity extends BaseActivity
             toDate = null;
 
             runFragment();
-            restoreActionBar();
 
             tracking(SCREEN_NAME, mTitle, "select", null, -1);
         }
@@ -143,7 +143,11 @@ public class MainActivity extends BaseActivity
         if (actionBar != null) {
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
             actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setTitle(mTitle);
+            String title = mTitle;
+            if (fromDate != null) {
+                title = String.format("(%02d/%02d) %s", fromDate.get(Calendar.MONTH), fromDate.get(Calendar.YEAR)%100, title);
+            }
+            actionBar.setTitle(title);
         }
     }
 
@@ -182,11 +186,11 @@ public class MainActivity extends BaseActivity
 
     public void onItemSelected(Long id, String title, String url, String imgUrl) {
         if (isNetworkAvailable) {
-            tracking(SCREEN_NAME, mTitle.toString(), "click", title, id);
+            tracking(SCREEN_NAME, mTitle, "click", title, id);
 
             Intent pageIntent = new Intent(this, PageActivity.class);
             pageIntent.putExtra(PageFragment.ARG_ITEM_ID, id);
-            pageIntent.putExtra(PageFragment.ARG_ITEM_CATEGORY, mTitle.toString());
+            pageIntent.putExtra(PageFragment.ARG_ITEM_CATEGORY, mTitle);
             pageIntent.putExtra(PageFragment.ARG_ITEM_TITLE, title);
             pageIntent.putExtra(PageFragment.ARG_ITEM_URL, url);
             pageIntent.putExtra(PageFragment.ARG_ITEM_IMG, imgUrl);
@@ -214,9 +218,14 @@ public class MainActivity extends BaseActivity
     }
 
     private void setMonthYear(Calendar selectedDate) {
-        fromDate = selectedDate;
-        toDate = (Calendar) selectedDate.clone();
-        toDate.add(Calendar.MONTH, 1);
+        if (selectedDate == null) {
+            fromDate = null;
+            toDate = null;
+        } else {
+            fromDate = selectedDate;
+            toDate = (Calendar) selectedDate.clone();
+            toDate.add(Calendar.MONTH, 1);
+        }
         runFragment();
     }
 
@@ -232,6 +241,14 @@ public class MainActivity extends BaseActivity
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                        }
+                    });
+            builderSingle.setPositiveButton(R.string.month_cancel,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            setMonthYear(null);
                         }
                     });
 

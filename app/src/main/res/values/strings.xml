@@ -20,6 +20,8 @@
     <string name="send_to">Chia sẻ bài này qua&#8230;</string>
     <string name="action_about">Thông tin</string>
     <string name="action_rate">Đánh giá ứng dụng</string>
+    <string name="action_month">Bài cũ</string>
+    <string name="action_refresh">Làm mới danh sách</string>
 
     <!-- Alert -->
     <string name="network">Lỗi Kết Nối</string>
@@ -33,8 +35,8 @@
     <string name="update_cancel">Bỏ Qua</string>
 
     <!-- Month dialog -->
-    <string name="month_title">Chọn Tháng Để Xem:</string>
-    <string name="month_format">Tháng %1$d năm %2$d</string>
+    <string name="month_title">Xem bài trong tháng:</string>
+    <string name="month_format">Tháng %1$d/%2$d</string>
     <string name="month_cancel">Huỷ Bỏ</string>
 
     <!-- Other -->
