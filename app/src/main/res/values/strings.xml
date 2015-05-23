@@ -25,12 +25,12 @@
 
     <!-- Alert -->
     <string name="network">Lỗi Kết Nối</string>
-    <string name="network_content">Hiện không thể kết nối với server. \nVui lòng kiểm tra lại kết nối Internet và thử lại sau.</string>
+    <string name="network_content">Hiện không thể kết nối với server. \n\nVui lòng kiểm tra lại kết nối Internet và thử lại sau.</string>
     <string name="network_retry">Thử Lại</string>
     <string name="network_wifi">Kết Nối Wi-Fi</string>
     <string name="update">Có Bản Cập Nhật</string>
     <string name="update_content">Đã có phiên bản mới của ứng dụng này.</string>
-    <string name="update_content_force">Phiên bản hiện tại có vấn đề với server. \nVui lòng cài đặt phiên bản mới để có thể tiếp tục sử dụng.</string>
+    <string name="update_content_force">Phiên bản hiện tại có vấn đề với server. \n\nVui lòng cài đặt phiên bản mới để có thể tiếp tục sử dụng.</string>
     <string name="update_go">Cập Nhật</string>
     <string name="update_cancel">Bỏ Qua</string>
 

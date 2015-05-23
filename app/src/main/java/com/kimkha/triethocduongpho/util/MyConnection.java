@@ -37,6 +37,7 @@ public class MyConnection {
     private final MainActivity activity;
     private AlertDialog networkDialog;
     private AlertDialog updateDialog;
+    private boolean isForceUpdate;
 
     public MyConnection(MainActivity mainActivity) {
         activity = mainActivity;
@@ -48,7 +49,11 @@ public class MyConnection {
             return false;
         }
 
-        //new HttpAsyncTask().execute("http://triethocduongpho-android.appspot.com/version.txt");
+        if (mightForceUpdate()) {
+            return false;
+        }
+
+        new HttpAsyncTask().execute("http://triethocduongpho-android.appspot.com/version.txt?t="+System.currentTimeMillis());
         return true;
     }
 
@@ -82,7 +87,15 @@ public class MyConnection {
         }
     }
 
-    private void showUpdatePopup(boolean isForce) {
+    public boolean mightForceUpdate() {
+        if (isForceUpdate) {
+            showUpdatePopup();
+            return true;
+        }
+        return false;
+    }
+
+    private void showUpdatePopup() {
         if (updateDialog == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(activity)
                     .setTitle(R.string.update)
@@ -94,14 +107,13 @@ public class MyConnection {
                                 }
                             });
 
-            if (isForce) {
+            if (isForceUpdate) {
                 builder.setMessage(R.string.update_content_force)
                         .setCancelable(false);
 
                 // Reset skipping
                 PrefHelper.setLong(activity, "skipUpdate", 0);
             } else {
-                long current = System.currentTimeMillis();
                 if (PrefHelper.getLong(activity, "skipUpdate") >= System.currentTimeMillis()) {
                     // Still skipping time
                     return;
@@ -146,7 +158,8 @@ public class MyConnection {
 
         Boolean update = parseVersion(versionString, getCurrentVersion());
         if (update != null) {
-            showUpdatePopup(update);
+            isForceUpdate = update;
+            showUpdatePopup();
         }
     }
 
@@ -161,7 +174,6 @@ public class MyConnection {
     }
 
     private Boolean parseVersion(String string, int currentVersion) {
-        SparseArray<Version> result = new SparseArray<>();
         if (string != null) {
             int foundVersion = -1;
             boolean isForce = false;
@@ -236,11 +248,6 @@ public class MyConnection {
         protected void onPostExecute(String result) {
             MyConnection.this.checkVersion(result);
         }
-    }
-
-    private class Version {
-        public int code;
-        public boolean force;
     }
 
 }

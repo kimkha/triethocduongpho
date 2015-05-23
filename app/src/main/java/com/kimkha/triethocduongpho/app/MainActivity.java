@@ -107,6 +107,8 @@ public class MainActivity extends BaseActivity
             isNetworkAvailable = true;
             restartActivity();
         }
+
+        connection.mightForceUpdate();
     }
 
     public void restartActivity() {
