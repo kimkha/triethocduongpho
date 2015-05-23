@@ -5,8 +5,15 @@
     <item
         android:id="@+id/action_refresh"
         android:orderInCategory="100"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
         android:icon="@drawable/ic_refresh_white_24dp"
         android:title="Refresh"/>
+
+    <item
+        android:id="@+id/action_time"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:title="Month"/>
 
 </menu>

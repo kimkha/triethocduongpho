@@ -23,6 +23,8 @@ public abstract class ArticleAdapter<T extends RecyclerView.ViewHolder> extends 
     private Callbacks mCallback = sDummyCallbacks;
     private String mNextPageToken;
     private String mCategory;
+    private long mFromTime = -1;
+    private long mToTime = -1;
     private boolean loading = false;
     private boolean isEndOfList = false;
 
@@ -30,11 +32,13 @@ public abstract class ArticleAdapter<T extends RecyclerView.ViewHolder> extends 
         mCallback = callback;
     }
 
-    public void startLoader(String category) {
+    public void startLoader(String category, long fromTime, long toTime) {
         // Clear the list first
         mNextPageToken = null;
         isEndOfList = false;
         mCategory = category;
+        mFromTime = fromTime;
+        mToTime = toTime;
         mArticleList.clear();
         notifyDataSetChanged();
 
@@ -52,7 +56,7 @@ public abstract class ArticleAdapter<T extends RecyclerView.ViewHolder> extends 
             loading = true;
             notifyLoading();
 
-            MyArticle2Service.getArticleList(mCategory, mNextPageToken, DEFAULT_LIST_LIMIT, new MyArticle2Service.ApiCallback() {
+            MyArticle2Service.getArticleList(mCategory, mNextPageToken, DEFAULT_LIST_LIMIT, mFromTime, mToTime, new MyArticle2Service.ApiCallback() {
                 @Override
                 public void onArticleReady(Article article) {
                     // Do nothing

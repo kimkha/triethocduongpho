@@ -15,6 +15,7 @@ import com.googlecode.objectify.cmd.Query;
 
 import java.security.MessageDigest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -118,6 +119,7 @@ public class Article2Endpoint {
             httpMethod = ApiMethod.HttpMethod.GET)
     public CollectionResponse<Article> list(@Named("cat") String category,
                                             @Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit,
+                                            @Nullable @Named("from") Long from, @Nullable @Named("to") Long to,
                                             @Nullable @Named("timehash") Long timehash, @Nullable @Named("cert") String cert)
             throws ForbiddenException {
         validateRequest(timehash, cert);
@@ -127,6 +129,9 @@ public class Article2Endpoint {
         Query<Article> query = ofy().load().type(Article.class).order("-created").limit(limit);
         if (category != null && !"".equals(category)) {
             query = query.filter("category", category);
+        }
+        if (from != null && to != null && 0 < from && from <= to) {
+            query = query.filter("created >", new Date(from)).filter("created <", new Date(to));
         }
         if (cursor != null) {
             query = query.startAt(Cursor.fromWebSafeString(cursor));

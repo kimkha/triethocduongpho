@@ -32,6 +32,11 @@
     <string name="update_go">Cập Nhật</string>
     <string name="update_cancel">Bỏ Qua</string>
 
+    <!-- Month dialog -->
+    <string name="month_title">Chọn Tháng Để Xem:-</string>
+    <string name="month_format">Tháng %1$d Năm %2$d</string>
+    <string name="month_cancel">Huỷ Bỏ</string>
+
     <!-- Other -->
     <string name="dot">·</string>
     <string name="no_post">Không có bài viết nào</string>

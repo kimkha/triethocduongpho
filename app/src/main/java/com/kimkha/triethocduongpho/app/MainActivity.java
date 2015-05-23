@@ -1,6 +1,7 @@
 package com.kimkha.triethocduongpho.app;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,10 +17,14 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.backend.article2Api.model.Article;
 import com.kimkha.triethocduongpho.data.Category;
+import com.kimkha.triethocduongpho.data.MonthYearAdapter;
 import com.kimkha.triethocduongpho.data.MyArticle2Service;
 import com.kimkha.triethocduongpho.ui.MainFragment;
 import com.kimkha.triethocduongpho.ui.NavigationDrawerFragment;
@@ -34,9 +39,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -53,12 +61,15 @@ public class MainActivity extends BaseActivity
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
-    private CharSequence mTitle;
+    private String mTitle;
     private Menu optionsMenu;
     private MainFragment mFragment;
     private boolean isNetworkAvailable = false;
     private boolean isLoading = false;
     private MyConnection connection = new MyConnection(this);
+    private AlertDialog monthDialog;
+    private Calendar fromDate;
+    private Calendar toDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +82,7 @@ public class MainActivity extends BaseActivity
 
             mNavigationDrawerFragment = (NavigationDrawerFragment)
                     getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-            mTitle = getTitle();
+            //mTitle = getTitle();
 
             // Set up the drawer.
             mNavigationDrawerFragment.setUp(
@@ -103,21 +114,26 @@ public class MainActivity extends BaseActivity
         startActivity(intent);
     }
 
+    public void runFragment() {
+        mFragment = MainFragment.newInstance(mTitle, fromDate, toDate);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, mFragment)
+                .commit();
+    }
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         if (connection.checkNetworkAndShowAlert()) {
             // update the main content by replacing fragments
-            String category = Category.CATEGORY_LIST[position];
-            mFragment = MainFragment.newInstance(category);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, mFragment)
-                    .commit();
+            mTitle = Category.CATEGORY_LIST[position];
+            fromDate = null;
+            toDate = null;
 
-            mTitle = category;
+            runFragment();
             restoreActionBar();
 
-            tracking(SCREEN_NAME, mTitle.toString(), "select", null, -1);
+            tracking(SCREEN_NAME, mTitle, "select", null, -1);
         }
     }
 
@@ -151,9 +167,11 @@ public class MainActivity extends BaseActivity
             case R.id.action_refresh:
                 if (isNetworkAvailable) {
                     mFragment.cleanAndReload();
-                    tracking(SCREEN_NAME, mTitle.toString(), "reload", null, -1);
+                    tracking(SCREEN_NAME, mTitle, "reload", null, -1);
                 }
                 break;
+            case R.id.action_time:
+                showMonthDialog();
             default:
                 break;
         }
@@ -196,6 +214,43 @@ public class MainActivity extends BaseActivity
                     //refreshItem.setActionView(null);
                 }
             }
+        }
+    }
+
+    private void setMonthYear(Calendar selectedDate) {
+        fromDate = selectedDate;
+        toDate = (Calendar) selectedDate.clone();
+        toDate.add(Calendar.MONTH, 1);
+        runFragment();
+    }
+
+    private void showMonthDialog() {
+        if (monthDialog == null) {
+            AlertDialog.Builder builderSingle = new AlertDialog.Builder(MainActivity.this)
+                    .setIcon(R.mipmap.ic_launcher)
+                    .setTitle(R.string.month_title);
+
+            final MonthYearAdapter monthYearAdapter = new MonthYearAdapter(MainActivity.this);
+
+            builderSingle.setNegativeButton(R.string.month_cancel,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+            builderSingle.setAdapter(monthYearAdapter,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Calendar value = (Calendar) monthYearAdapter.getItem(which);
+                            setMonthYear(value);
+                        }
+                    });
+            monthDialog = builderSingle.show();
+        } else {
+            monthDialog.show();
         }
     }
 

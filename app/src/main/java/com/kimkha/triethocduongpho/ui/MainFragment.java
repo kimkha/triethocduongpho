@@ -18,6 +18,8 @@ import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.data.ArticleGridAdapter;
 import com.kimkha.triethocduongpho.data.ArticleListAdapter;
 
+import java.util.Calendar;
+
 /**
  * @author kimkha
  * @version 0.1
@@ -29,9 +31,13 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
      * fragment.
      */
     private static final String ARG_CATEGORY = "category";
+    private static final String ARG_FROM_DATE = "from_date";
+    private static final String ARG_TO_DATE = "to_date";
 
     private int expectHeightForBig = 200;
     private String category = "";
+    private long fromTime = -1;
+    private long toTime = -1;
     private TextView mNoPostView;
     private RecyclerView mRecyclerView = null;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -44,10 +50,16 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static MainFragment newInstance(String category) {
+    public static MainFragment newInstance(String category, Calendar fromDate, Calendar toDate) {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
         args.putString(ARG_CATEGORY, category);
+        if (fromDate != null) {
+            args.putLong(ARG_FROM_DATE, fromDate.getTimeInMillis());
+        }
+        if (toDate != null) {
+            args.putLong(ARG_TO_DATE, toDate.getTimeInMillis());
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,6 +77,8 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
 
         if (getArguments().containsKey(ARG_CATEGORY)) {
             category = getArguments().getString(ARG_CATEGORY);
+            fromTime = getArguments().getLong(ARG_FROM_DATE, -1);
+            toTime = getArguments().getLong(ARG_TO_DATE, -1);
 
             if (category == null || category.equalsIgnoreCase(getString(R.string.category_all))) {
                 category = "";
@@ -92,6 +106,8 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
         super.onAttach(activity);
 
         category = "";
+        fromTime = -1;
+        toTime = -1;
     }
 
     public void switchLayout(boolean isGridMode) {
@@ -104,11 +120,11 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
         mRecyclerView.setAdapter(adapter);
         adapter.setCallback(this);
 
-        adapter.startLoader(category);
+        adapter.startLoader(category, fromTime, toTime);
     }
 
     public void cleanAndReload() {
-        adapter.startLoader(category);
+        adapter.startLoader(category, fromTime, toTime);
     }
 
     private ArticleAdapter getAdapter(Activity activity) {

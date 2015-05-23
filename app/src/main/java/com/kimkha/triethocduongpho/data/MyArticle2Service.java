@@ -2,6 +2,7 @@ package com.kimkha.triethocduongpho.data;
 
 import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
 import android.util.Pair;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -55,8 +56,8 @@ public class MyArticle2Service {
         return IMG_BASE;
     }
 
-    public static void getArticleList(String category, String nextPageToken, int limit, ApiCallback callback) {
-        new EndpointsAsyncTask(callback, category, nextPageToken, limit).execute();
+    public static void getArticleList(String category, String nextPageToken, int limit, long fromTime, long toTime, ApiCallback callback) {
+        new EndpointsAsyncTask(callback, category, nextPageToken, limit, fromTime, toTime).execute();
     }
 
     public static void getArticle(String url, Long id, ApiCallback callback) {
@@ -101,12 +102,16 @@ public class MyArticle2Service {
         private final String category;
         private final String nextPageToken;
         private final int limit;
+        private final long fromTime;
+        private final long toTime;
 
-        public EndpointsAsyncTask(ApiCallback apiCallback, String category, String nextPageToken, int limit) {
+        public EndpointsAsyncTask(ApiCallback apiCallback, String category, String nextPageToken, int limit, long fromTime, long toTime) {
             this.apiCallback = apiCallback;
             this.category = category;
             this.nextPageToken = nextPageToken;
             this.limit = limit;
+            this.fromTime = fromTime;
+            this.toTime = toTime;
         }
 
         @Override
@@ -115,8 +120,13 @@ public class MyArticle2Service {
             String cert = MyValidator.getCertificate(timehash);
 
             try {
-                return articleApi.list(category).setCursor(nextPageToken).setLimit(limit)
-                        .setTimehash(timehash).setCert(cert).execute();
+                Article2Api.List builder = articleApi.list(category).setCursor(nextPageToken).setLimit(limit)
+                        .setTimehash(timehash).setCert(cert);
+                if (0 < fromTime && fromTime <= toTime) {
+                    builder = builder.setFrom(fromTime).setTo(toTime);
+                    Log.e("AAA", "time " + fromTime + " " + toTime);
+                }
+                return builder.execute();
             } catch (IOException e) {
                 e.printStackTrace();
             }
