@@ -3,6 +3,8 @@
 
 [Download from Google Play](https://play.google.com/store/apps/details?id=com.kimkha.triethocduongpho)
 
+Một app khác cũng dùng source này, nhưng trang này nói về tin Khoa học: [Khoa Học News](https://play.google.com/store/apps/details?id=com.kimkha.khoahoc)
+
 Đây là ứng dụng không chính thức cho trang TrietHocDuongPho, tiếng nói của những người trẻ tự do.
 
 Ứng dụng Triết Học Đường Phố này giúp cho bạn đọc dùng Android có thể đọc các bài viết dễ dàng hơn, nhất là trên các máy cấu hình yếu.
@@ -35,6 +37,8 @@ Các category:
 - Video Ngắn
 
 [Download from Google Play](https://play.google.com/store/apps/details?id=com.kimkha.triethocduongpho)
+
+Một app khác cũng dùng source này, nhưng trang này nói về tin Khoa học: [Khoa Học News](https://play.google.com/store/apps/details?id=com.kimkha.khoahoc)
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/kimkha/triethocduongpho/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
