@@ -6,9 +6,15 @@
         <!--<item name="android:fontFamily">sans-serif-light</item>-->
     </style>
 
-    <style name="NormalTitleText">
+    <style name="ContentText" parent="NormalTitleText">
+        <item name="android:textColor">@color/material_grey_700</item>
+    </style>
+
+    <style name="NormalTitleText" parent="NormalTitleTextBase"/>
+    <style name="NormalTitleTextBase">
         <item name="android:textSize">@dimen/abc_text_size_body_2_material</item>
         <item name="android:textColor">@color/material_grey_900</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="SubTitleText" parent="SubTitleTextBase"/>

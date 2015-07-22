@@ -61,7 +61,7 @@ public class ArticleEndpoint {
             path = "article/{id}",
             httpMethod = ApiMethod.HttpMethod.GET)
     public Article get(@Named("id") Long id) throws NotFoundException {
-        Article article = ofy().load().type(Article.class).id(id).now();
+        Article article = ObjectifyService.ofy().load().type(Article.class).id(id).now();
         if (article == null) {
             throw new NotFoundException("Could not find Article with ID: " + id);
         }
@@ -85,7 +85,7 @@ public class ArticleEndpoint {
             arr[1] = url + "/";
         }
 
-        Article article = ofy().load().type(Article.class).filter("url in", arr).first().now();
+        Article article = ObjectifyService.ofy().load().type(Article.class).filter("url in", arr).first().now();
         if (article == null) {
             throw new NotFoundException("Could not find Article with URL: " + url);
         }
@@ -106,7 +106,7 @@ public class ArticleEndpoint {
     public CollectionResponse<Article> list(@Named("cat") String category, @Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         //test();
-        Query<Article> query = ofy().load().type(Article.class).order("-created").limit(limit);
+        Query<Article> query = ObjectifyService.ofy().load().type(Article.class).order("-created").limit(limit);
         if (category != null && !"".equals(category)) {
             query = query.filter("category", category);
         }

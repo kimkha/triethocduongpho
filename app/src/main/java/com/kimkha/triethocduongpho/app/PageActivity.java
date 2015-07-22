@@ -86,6 +86,7 @@ public class PageActivity extends BaseActivity {
     }
 
     public void notFoundPage() {
+        Toast.makeText(this, R.string.not_found, Toast.LENGTH_LONG).show();
         tracking(SCREEN_NAME, mCategory, "notfound", (id>0?mTitle:mUrl), id);
         finish();
     }
@@ -93,6 +94,12 @@ public class PageActivity extends BaseActivity {
     public void updateData(String title, String url) {
         mTitle = title;
         mUrl = url;
+    }
+
+    public void startNewPage(String url) {
+        Intent pageIntent = new Intent(this, PageActivity.class);
+        pageIntent.putExtra(PageFragment.ARG_ITEM_URL, url);
+        startActivity(pageIntent);
     }
 
     private void restoreActionBar() {

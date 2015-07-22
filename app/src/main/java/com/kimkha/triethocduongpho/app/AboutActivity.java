@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class AboutActivity extends BaseActivity {
+    private final HtmlTextView.Options htmlOptions = new HtmlTextView.Options().setCallback(null)
+            .setUseLocalDrawables(true).setBaseUrl("");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +35,7 @@ public class AboutActivity extends BaseActivity {
             HtmlTextView htmlTextView = (HtmlTextView) findViewById(R.id.content);
             String text = readInputStream(getAssets().open("changes.txt"));
             text = text.replace("__VER__", versionName);
-            htmlTextView.setHtmlFromString(text, true, "");
+            htmlTextView.setHtmlFromString(text, htmlOptions);
         } catch (IOException e) {
             e.printStackTrace();
         }

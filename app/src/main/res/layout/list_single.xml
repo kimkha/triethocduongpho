@@ -10,7 +10,8 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:clickable="true"
         android:id="@+id/normal_style"
         android:visibility="visible">
@@ -37,31 +38,12 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/NormalTitleText"
                 android:text="Title"/>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_marginTop="4dp"
+            <TextView
+                android:id="@+id/sub_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/author_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/SubTitleText"
-                    android:text="Author"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:textAppearance="@style/SubTitleText"
-                    android:text="@string/dot"/>
-                <TextView
-                    android:id="@+id/sub_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/SubTitleText"
-                    android:text="Subtitle"/>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/SubTitleText"
+                android:text="Subtitle"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -96,31 +78,12 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/BigTitleText"
                 android:text="Title"/>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_marginTop="4dp"
+            <TextView
+                android:id="@+id/big_sub"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/big_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/BigSubTitleText"
-                    android:text="Subtitle"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    android:paddingRight="4dp"
-                    android:textAppearance="@style/SubTitleText"
-                    android:text="@string/dot"/>
-                <TextView
-                    android:id="@+id/big_sub"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/BigSubTitleText"
-                    android:text="Subtitle"/>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/BigSubTitleText"
+                android:text="Subtitle"/>
         </LinearLayout>
 
     </RelativeLayout>

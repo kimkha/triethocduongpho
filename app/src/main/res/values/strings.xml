@@ -40,8 +40,9 @@
     <string name="month_all">Tất Cả</string>
 
     <!-- Other -->
-    <string name="dot">·</string>
+    <string name="subhead_text">%1$s · %2$s</string>
     <string name="no_post">Không có bài viết nào</string>
     <string name="end_of_list">Đã tới cuối danh sách</string>
+    <string name="not_found">Bài này chưa có</string>
 
 </resources>

@@ -71,7 +71,7 @@ public class Article2Endpoint {
             throws NotFoundException, UnauthorizedException, ForbiddenException {
         validateRequest(timehash, cert);
 
-        Article article = ofy().load().type(Article.class).id(id).now();
+        Article article = ObjectifyService.ofy().load().type(Article.class).id(id).now();
         if (article == null) {
             throw new NotFoundException("Could not find Article with ID: " + id);
         }
@@ -99,7 +99,7 @@ public class Article2Endpoint {
             arr[1] = url + "/";
         }
 
-        Article article = ofy().load().type(Article.class).filter("url in", arr).first().now();
+        Article article = ObjectifyService.ofy().load().type(Article.class).filter("url in", arr).first().now();
         if (article == null) {
             throw new NotFoundException("Could not find Article with URL: " + url);
         }
@@ -126,7 +126,7 @@ public class Article2Endpoint {
 
         limit = (limit == null || limit <= 0) ? DEFAULT_LIST_LIMIT : limit;
         //test();
-        Query<Article> query = ofy().load().type(Article.class).order("-created").limit(limit);
+        Query<Article> query = ObjectifyService.ofy().load().type(Article.class).order("-created").limit(limit);
         if (category != null && !"".equals(category)) {
             query = query.filter("category", category);
         }
@@ -159,7 +159,7 @@ public class Article2Endpoint {
     private void validateRequest(Long timehash, String cert) throws ForbiddenException {
         if (timehash != null && cert != null) {
             try {
-                QueryResultIterable<PrivateInfo> allPrivate = ofy().load().type(PrivateInfo.class).iterable();
+                QueryResultIterable<PrivateInfo> allPrivate = ObjectifyService.ofy().load().type(PrivateInfo.class).iterable();
                 for (PrivateInfo info : allPrivate) {
                     String key = doSHA1(String.format("%s;%s;%d", info.getFingerprint().toLowerCase(), info.getPackageName().toLowerCase(), timehash));
                     if (cert.equalsIgnoreCase(key)) {

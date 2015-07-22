@@ -14,6 +14,7 @@ import java.util.List;
  * @since 3/2/15
  */
 @Entity
+@SuppressWarnings("unused")
 public class Article {
     @Id
     private Long id;

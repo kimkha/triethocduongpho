@@ -36,43 +36,29 @@
                     android:textColor="@color/abc_primary_text_material_dark"
                     android:text="Header"
                     android:textSize="@dimen/abc_text_size_headline_material" />
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/page_author"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/abc_secondary_text_material_dark"
-                        android:textSize="@dimen/abc_text_size_caption_material"
-                        android:text="Author"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="4dp"
-                        android:paddingRight="4dp"
-                        android:textColor="@color/abc_secondary_text_material_dark"
-                        android:textSize="@dimen/abc_text_size_caption_material"
-                        android:text="@string/dot"/>
-                    <TextView
-                        android:id="@+id/page_subheader"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/abc_secondary_text_material_dark"
-                        android:textSize="@dimen/abc_text_size_caption_material"
-                        android:text="Subhead"/>
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/page_subheader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/abc_secondary_text_material_dark"
+                    android:textSize="@dimen/abc_text_size_caption_material"
+                    android:text="Subhead"/>
             </LinearLayout>
-            <org.sufficientlysecure.htmltextview.HtmlTextView
-                android:id="@+id/page_content"
-                android:text="@string/loading"
-                android:textSize="@dimen/abc_text_size_body_1_material"
+            <LinearLayout
+                android:id="@+id/main_content"
+                android:orientation="vertical"
                 android:layout_margin="@dimen/my_text_margin"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/page_author"
+                android:text="@string/loading"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:lineSpacingMultiplier="1.2"/>
+                android:layout_margin="@dimen/my_text_margin"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/abc_text_size_subhead_material"/>
 
             <View
                 android:layout_width="match_parent"

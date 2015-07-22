@@ -190,12 +190,16 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
 
     @Override
     public void onItemSelected(Long id, String title, String url, String imgUrl) {
-        ((MainActivity) getActivity()).onItemSelected(id, title, url, imgUrl);
+        if (getActivity() != null) {
+            ((MainActivity) getActivity()).onItemSelected(id, title, url, imgUrl);
+        }
     }
 
     @Override
     public void onItemLoaded() {
-        ((MainActivity) getActivity()).setRefreshActionButtonState(false);
+        if (getActivity() != null) {
+            ((MainActivity) getActivity()).setRefreshActionButtonState(false);
+        }
         if (adapter.isNoPost()) {
             mRecyclerView.setVisibility(View.GONE);
             mNoPostView.setVisibility(View.VISIBLE);
@@ -211,6 +215,8 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
 
     @Override
     public void onItemLoading() {
-        ((MainActivity) getActivity()).setRefreshActionButtonState(true);
+        if (getActivity() != null) {
+            ((MainActivity) getActivity()).setRefreshActionButtonState(true);
+        }
     }
 }

@@ -30,8 +30,7 @@ import java.util.List;
  * @since 3/1/15
  * @version 0.1
  */
-public class PageFragment extends Fragment implements MyArticle2Service.ApiCallback, ViewTreeObserver.OnScrollChangedListener
-{
+public class PageFragment extends Fragment implements MyArticle2Service.ApiCallback, ViewTreeObserver.OnScrollChangedListener, HtmlTextView.LinkCallback {
 
     public static final String ARG_ITEM_ID = "item_id";
     public static final String ARG_ITEM_CATEGORY = "item_cat";
@@ -42,6 +41,9 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
     private final DisplayImageOptions options = new DisplayImageOptions.Builder()
             .cacheInMemory(true).cacheOnDisk(true)
             .build();
+
+    private final HtmlTextView.Options htmlOptions = new HtmlTextView.Options().setCallback(this)
+            .setUseLocalDrawables(false).setBaseUrl(MyArticle2Service.getImgBase());
 
     private int startAlpha = 0;
     private int endAlpha = 1;
@@ -55,12 +57,12 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
     private Article article;
     private PageActivity mActivity;
     private ScrollView scrollView;
-    private HtmlTextView htmlTextView;
     private ImageView imageView;
     private TextView headerView;
     private TextView subHeaderView;
     private View headGroup;
     private TextView authorView;
+    private LinearLayout mainContent;
 
     public PageFragment() {
 
@@ -88,12 +90,12 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_page, container, false);
         scrollView = (ScrollView) rootView.findViewById(R.id.scroll_view);
-        htmlTextView = (HtmlTextView) rootView.findViewById(R.id.page_content);
         imageView = (ImageView) rootView.findViewById(R.id.page_image);
         headerView = (TextView) rootView.findViewById(R.id.page_header);
         subHeaderView = (TextView) rootView.findViewById(R.id.page_subheader);
         authorView = (TextView) rootView.findViewById(R.id.page_author);
         headGroup = rootView.findViewById(R.id.page_head_group);
+        mainContent = (LinearLayout) rootView.findViewById(R.id.main_content);
 
         refreshScrollListener();
 
@@ -114,6 +116,7 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
         }
         subHeaderView.setText("");
         authorView.setText("");
+        mainContent.removeAllViews();
         if (imgUrl != null) {
             ImageLoader.getInstance().displayImage(imgUrl, imageView, options);
             imgLoaded = true;
@@ -177,7 +180,7 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
     }
 
     private void updateView() {
-        if (article != null && htmlTextView != null) {
+        if (article != null && mainContent != null) {
             if (!titleLoaded) {
                 title = article.getTitle();
                 mActivity.updateData(title, article.getUrl());
@@ -191,10 +194,18 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
                 imgLoaded = true;
             }
 
-            htmlTextView.setHtmlFromString(article.getFullContent().getValue(), false, MyArticle2Service.getImgBase());
+            List<String> list = splitContent(article.getFullContent().getValue());
+            for (String str: list) {
+                if (str.startsWith("http")) {
+                    addImage(str);
+                } else {
+                    addContent(str);
+                }
+            }
+
             CharSequence timeSpanned = DateUtils.getRelativeTimeSpanString(
                     article.getCreated().getValue(), System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS);
-            subHeaderView.setText(timeSpanned);
+            subHeaderView.setText(getResources().getString(R.string.subhead_text, article.getAuthor(), timeSpanned));
             authorView.setText(article.getAuthor());
 
             refreshScrollListener();
@@ -202,6 +213,50 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
 
             mActivity.tracking(PageActivity.SCREEN_NAME, category, "show", article.getTitle(), article.getId());
         }
+    }
+
+    private List<String> splitContent(String content) {
+        List<String> list = new ArrayList<>();
+        String copy = String.copyValueOf(content.toCharArray());
+
+        Pattern pattern = Pattern.compile("<img[^>]+src=['\"]?([^'\"]+)['\"]?[^>]+>");
+        Matcher matcher = pattern.matcher(content);
+        while (matcher.find()) {
+            String img = matcher.group(1);
+            img = MyArticle2Service.parseImageUrl(img);
+            String tag = matcher.group(0);
+            String[] arr = copy.split(Pattern.quote(tag), 2);
+            String text = arr[0];
+            copy = arr[1];
+
+            list.add(text);
+            list.add(img);
+        }
+
+        list.add(copy);
+
+        return list;
+    }
+
+    private void addContent(String html) {
+        HtmlTextView textView = new HtmlTextView(getActivity());
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        textView.setLayoutParams(layoutParams);
+        textView.setTextAppearance(getActivity(), R.style.ContentText);
+        textView.setLineSpacing(0.0f, 1.2f);
+        textView.setHtmlFromString(html, htmlOptions);
+        mainContent.addView(textView);
+    }
+
+    private void addImage(String imgUrl) {
+        ImageView imageView = new ImageView(getActivity());
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        imageView.setLayoutParams(layoutParams);
+        imageView.setAdjustViewBounds(true);
+        ImageLoader.getInstance().displayImage(imgUrl, imageView, options);
+        mainContent.addView(imageView);
     }
 
     @Override
@@ -219,4 +274,10 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
 
     }
 
+    @Override
+    public void onLinkClick(String url) {
+        if (mActivity != null) {
+            mActivity.startNewPage(url);
+        }
+    }
 }
