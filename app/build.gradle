@@ -9,9 +9,9 @@ android {
         applicationId "com.kimkha.triethocduongpho"
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 15
-        versionName "2.1"
-//        multiDexEnabled true
+        versionCode 16
+        versionName "2.2"
+        multiDexEnabled true
     }
     buildTypes {
         debug {
@@ -30,7 +30,7 @@ android {
 
 dependencies {
 //    compile fileTree(dir: 'libs', include: ['*.jar'])
-//    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.android.support:multidex:1.0.1'
     compile project(':html-textview:HtmlTextView')
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'com.android.support:appcompat-v7:+'

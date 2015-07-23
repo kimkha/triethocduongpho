@@ -12,6 +12,7 @@ import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Logger;
@@ -49,6 +50,22 @@ public class ArticleEndpoint {
         ObjectifyService.register(Article.class);
     }
 
+    private static Article defaultArticle() {
+        Article article = new Article();
+        article.setAuthor("NGUYỄN KIM KHA");
+        article.setCreated(new Date());
+        article.setId(1L);
+        article.setStyle(1);
+        article.setTitle("PLEASE UPDATE! VUI LÒNG CẬP NHẬT PHIÊN BẢN MỚI!");
+        Text text = new Text("PHIÊN BẢN NÀY HIỆN ĐÃ LỖI THỜI. ĐỂ TIẾP TỤC SỬ DỤNG, VUI LÒNG CẬP NHẬT PHIÊN BẢN MỚI.<br/><br/>" +
+                "DOWNLOAD TẠI: <a href='https://play.google.com/store/apps/details?id=com.kimkha.triethocduongpho'>https://play.google.com/store/apps/details?id=com.kimkha.triethocduongpho</a>" +
+                ". <br/><br/>HOẶC DÙNG LINK RÚT GỌN: <a href='https://goo.gl/b44yb1'>https://goo.gl/b44yb1</a>.");
+        article.setFullContent(text);
+        article.setVersion(4);
+        article.setUrl("https://play.google.com/store/apps/details?id=com.kimkha.triethocduongpho");
+        return article;
+    }
+
     /**
      * Returns the {@link Article} with the corresponding ID.
      *
@@ -61,11 +78,11 @@ public class ArticleEndpoint {
             path = "article/{id}",
             httpMethod = ApiMethod.HttpMethod.GET)
     public Article get(@Named("id") Long id) throws NotFoundException {
-        Article article = ObjectifyService.ofy().load().type(Article.class).id(id).now();
-        if (article == null) {
-            throw new NotFoundException("Could not find Article with ID: " + id);
-        }
-        return article;
+//        Article article = ObjectifyService.ofy().load().type(Article.class).id(id).now();
+//        if (article == null) {
+//            throw new NotFoundException("Could not find Article with ID: " + id);
+//        }
+        return defaultArticle();
     }
 
     @ApiMethod(
@@ -74,22 +91,22 @@ public class ArticleEndpoint {
             httpMethod = ApiMethod.HttpMethod.GET)
     public Article getByUrl(@Named("url") String url) throws NotFoundException {
         // Remove ? and #
-        url = url.split("\\?")[0];
-        url = url.split("#")[0];
-
-        String[] arr = new String[2];
-        arr[0] = url;
-        if (url.endsWith("/")) {
-            arr[1] = url.substring(0, url.length()-1);
-        } else {
-            arr[1] = url + "/";
-        }
-
-        Article article = ObjectifyService.ofy().load().type(Article.class).filter("url in", arr).first().now();
-        if (article == null) {
-            throw new NotFoundException("Could not find Article with URL: " + url);
-        }
-        return article;
+//        url = url.split("\\?")[0];
+//        url = url.split("#")[0];
+//
+//        String[] arr = new String[2];
+//        arr[0] = url;
+//        if (url.endsWith("/")) {
+//            arr[1] = url.substring(0, url.length()-1);
+//        } else {
+//            arr[1] = url + "/";
+//        }
+//
+//        Article article = ObjectifyService.ofy().load().type(Article.class).filter("url in", arr).first().now();
+//        if (article == null) {
+//            throw new NotFoundException("Could not find Article with URL: " + url);
+//        }
+        return defaultArticle();
     }
 
     /**
@@ -104,33 +121,35 @@ public class ArticleEndpoint {
             path = "article",
             httpMethod = ApiMethod.HttpMethod.GET)
     public CollectionResponse<Article> list(@Named("cat") String category, @Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
-        limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
-        //test();
-        Query<Article> query = ObjectifyService.ofy().load().type(Article.class).order("-created").limit(limit);
-        if (category != null && !"".equals(category)) {
-            query = query.filter("category", category);
-        }
-        if (cursor != null) {
-            query = query.startAt(Cursor.fromWebSafeString(cursor));
-        }
-        QueryResultIterator<Article> queryIterator = query.iterator();
-        List<Article> articleList = new ArrayList<Article>(limit);
+//        limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
+//        //test();
+//        Query<Article> query = ObjectifyService.ofy().load().type(Article.class).order("-created").limit(limit);
+//        if (category != null && !"".equals(category)) {
+//            query = query.filter("category", category);
+//        }
+//        if (cursor != null) {
+//            query = query.startAt(Cursor.fromWebSafeString(cursor));
+//        }
+//        QueryResultIterator<Article> queryIterator = query.iterator();
+        List<Article> articleList = new ArrayList<Article>();
+        articleList.add(defaultArticle());
+        return CollectionResponse.<Article>builder().setItems(articleList).build();
 
-        // TODO Use random to choose big style
-        Random random = new Random();
-        boolean isFirst = true;
-
-        while (queryIterator.hasNext()) {
-            Article article = queryIterator.next();
-            // To save data transfer
-            article.setFullContent(null);
-            if (isFirst || random.nextInt(8) == 0) {
-                article.setStyle(1);
-                isFirst = false;
-            }
-            articleList.add(article);
-        }
-        return CollectionResponse.<Article>builder().setItems(articleList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
+//        // TODO Use random to choose big style
+//        Random random = new Random();
+//        boolean isFirst = true;
+//
+//        while (queryIterator.hasNext()) {
+//            Article article = queryIterator.next();
+//            // To save data transfer
+//            article.setFullContent(null);
+//            if (isFirst || random.nextInt(8) == 0) {
+//                article.setStyle(1);
+//                isFirst = false;
+//            }
+//            articleList.add(article);
+//        }
+//        return CollectionResponse.<Article>builder().setItems(articleList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
 
 }

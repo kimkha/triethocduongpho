@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.multidex.MultiDexApplication;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -20,7 +21,7 @@ import java.net.InetAddress;
  * @version 0.2
  * @since 4/26/15
  */
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
     public static GoogleAnalytics analytics;
     public static Tracker tracker;
 
