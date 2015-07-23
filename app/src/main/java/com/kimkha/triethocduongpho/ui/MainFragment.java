@@ -44,6 +44,7 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
     private StaggeredGridLayoutManager gridLayoutManager;
     private LinearLayoutManager listLayoutManager;
     private ArticleAdapter adapter = null;
+    private MainActivity activity = null;
     private boolean isGridMode = false;
 
     /**
@@ -105,18 +106,30 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
+        try {
+            this.activity = (MainActivity) activity;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+
         category = "";
         fromTime = -1;
         toTime = -1;
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        this.activity = null;
+    }
+
     public void switchLayout(boolean isGridMode) {
         this.isGridMode = isGridMode;
 
-        mLayoutManager = getLayoutManager(getActivity());
+        mLayoutManager = getLayoutManager(activity);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        adapter = getAdapter(getActivity());
+        adapter = getAdapter(activity);
         mRecyclerView.setAdapter(adapter);
         adapter.setCallback(this);
 
@@ -180,7 +193,7 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
             }
         });
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(activity, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 adapter.onChooseItem(position);
