@@ -9,9 +9,9 @@ android {
         applicationId "com.kimkha.triethocduongpho"
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 16
-        versionName "2.2"
-        multiDexEnabled true
+        versionCode 17
+        versionName "2.3"
+//        multiDexEnabled true
     }
     buildTypes {
         debug {
@@ -30,14 +30,13 @@ android {
 
 dependencies {
 //    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:multidex:1.0.1'
+//    compile 'com.android.support:multidex:1.0.1'
     compile project(':html-textview:HtmlTextView')
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
-    compile 'com.android.support:appcompat-v7:+'
-    compile 'com.android.support:cardview-v7:22.+'
-    compile 'com.android.support:recyclerview-v7:22.+'
-    compile 'com.android.support:support-v4:+'
-    compile 'com.google.android.gms:play-services:+'
+    compile 'com.android.support:design:22.2.1'
+    compile 'com.android.support:cardview-v7:22.2.1'
+    compile 'com.android.support:recyclerview-v7:22.2.1'
+    compile 'com.google.android.gms:play-services-ads:7.5.0'
     compile 'com.google.http-client:google-http-client-gson:1.+' exclude module: 'httpclient'
     compile project(path: ':backend', configuration: 'android-endpoints')
 }

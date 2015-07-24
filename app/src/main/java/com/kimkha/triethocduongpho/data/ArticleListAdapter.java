@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.backend.article2Api.model.Article;
+import com.kimkha.triethocduongpho.util.FontSizeEnum;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -21,9 +22,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class ArticleListAdapter extends ArticleAdapter<ArticleListAdapter.ViewHolder> {
     private final int mExpectHeightForBig;
     private final Context mContext;
+    private final FontSizeEnum mFontSize;
 
-    public ArticleListAdapter(Context context, int expectHeightForBig) {
+    public ArticleListAdapter(Context context, FontSizeEnum fontSize, int expectHeightForBig) {
         mContext = context;
+        mFontSize = fontSize;
         mExpectHeightForBig = expectHeightForBig;
     }
 
@@ -39,7 +42,7 @@ public class ArticleListAdapter extends ArticleAdapter<ArticleListAdapter.ViewHo
         public ImageView mBigImageView;
         public TextView mBigSubView;
 
-        public ViewHolder(View view, int expectHeightForBig) {
+        public ViewHolder(View view, FontSizeEnum fontSize, int expectHeightForBig) {
             super(view);
             normalWrapView = view.findViewById(R.id.normal_style);
             mTextView = (TextView) view.findViewById(R.id.grid_text);
@@ -54,6 +57,12 @@ public class ArticleListAdapter extends ArticleAdapter<ArticleListAdapter.ViewHo
             View contentView = view.findViewById(R.id.big_content_view);
             contentView.getLayoutParams().height = expectHeightForBig;
             mBigImageView.getLayoutParams().height = expectHeightForBig;
+
+            Context context = view.getContext();
+            mTextView.setTextAppearance(context, fontSize.getNormalTitle());
+            mSubTextView.setTextAppearance(context, fontSize.getNormalSubTitle());
+            mBigTitleView.setTextAppearance(context, fontSize.getBigTitle());
+            mBigSubView.setTextAppearance(context, fontSize.getBigSubTitle());
         }
     }
 
@@ -61,7 +70,7 @@ public class ArticleListAdapter extends ArticleAdapter<ArticleListAdapter.ViewHo
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View grid = LayoutInflater.from(mContext).inflate(R.layout.list_single, null);
 
-        return new ViewHolder(grid, mExpectHeightForBig);
+        return new ViewHolder(grid, mFontSize, mExpectHeightForBig);
     }
 
     @Override

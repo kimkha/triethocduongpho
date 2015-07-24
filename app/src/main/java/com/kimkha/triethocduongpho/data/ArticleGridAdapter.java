@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.backend.article2Api.model.Article;
+import com.kimkha.triethocduongpho.util.FontSizeEnum;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -19,9 +20,11 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  */
 public class ArticleGridAdapter extends ArticleAdapter<ArticleGridAdapter.ViewHolder> {
     private final Context mContext;
+    private final FontSizeEnum mFontSize;
 
-    public ArticleGridAdapter(Context context) {
+    public ArticleGridAdapter(Context context, FontSizeEnum fontSize) {
         mContext = context;
+        mFontSize = fontSize;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

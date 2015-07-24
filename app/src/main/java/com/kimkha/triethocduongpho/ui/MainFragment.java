@@ -17,6 +17,7 @@ import com.kimkha.triethocduongpho.data.ArticleAdapter;
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.data.ArticleGridAdapter;
 import com.kimkha.triethocduongpho.data.ArticleListAdapter;
+import com.kimkha.triethocduongpho.util.FontSizeEnum;
 
 import java.util.Calendar;
 
@@ -33,6 +34,7 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
     private static final String ARG_CATEGORY = "category";
     private static final String ARG_FROM_DATE = "from_date";
     private static final String ARG_TO_DATE = "to_date";
+    private static final String ARG_FONT_SIZE = "font_size";
 
     private int expectHeightForBig = 200;
     private String category = "";
@@ -46,12 +48,13 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
     private ArticleAdapter adapter = null;
     private MainActivity activity = null;
     private boolean isGridMode = false;
+    private FontSizeEnum fontSize = FontSizeEnum.SMALL;
 
     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static MainFragment newInstance(String category, Calendar fromDate, Calendar toDate) {
+    public static MainFragment newInstance(String category, Calendar fromDate, Calendar toDate, FontSizeEnum fontSize) {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
         args.putString(ARG_CATEGORY, category);
@@ -61,6 +64,7 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
         if (toDate != null) {
             args.putLong(ARG_TO_DATE, toDate.getTimeInMillis());
         }
+        args.putSerializable(ARG_FONT_SIZE, fontSize);
         fragment.setArguments(args);
         return fragment;
     }
@@ -80,6 +84,7 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
             category = getArguments().getString(ARG_CATEGORY);
             fromTime = getArguments().getLong(ARG_FROM_DATE, -1);
             toTime = getArguments().getLong(ARG_TO_DATE, -1);
+            fontSize = (FontSizeEnum) getArguments().getSerializable(ARG_FONT_SIZE);
 
             if (category == null || category.equalsIgnoreCase(getString(R.string.category_all))) {
                 category = "";
@@ -142,9 +147,9 @@ public class MainFragment extends Fragment implements ArticleAdapter.Callbacks {
 
     private ArticleAdapter getAdapter(Activity activity) {
         if (isGridMode) {
-            return new ArticleGridAdapter(activity);
+            return new ArticleGridAdapter(activity, fontSize);
         } else {
-            return new ArticleListAdapter(activity, expectHeightForBig);
+            return new ArticleListAdapter(activity, fontSize, expectHeightForBig);
         }
     }
 

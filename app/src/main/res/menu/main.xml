@@ -16,4 +16,11 @@
         android:icon="@drawable/ic_refresh_white_24dp"
         android:title="@string/action_refresh"/>
 
+    <item
+        android:id="@+id/action_font"
+        android:orderInCategory="110"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_font_download_white_24dp"
+        android:title="@string/action_font"/>
+
 </menu>

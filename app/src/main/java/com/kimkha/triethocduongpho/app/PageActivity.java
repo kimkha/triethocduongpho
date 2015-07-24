@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.ui.PageFragment;
+import com.kimkha.triethocduongpho.util.FontSizeEnum;
 
 public class PageActivity extends BaseActivity {
     public static final String SCREEN_NAME = "PAGE";
@@ -42,7 +43,10 @@ public class PageActivity extends BaseActivity {
             String mImgUrl = getIntent().getStringExtra(PageFragment.ARG_ITEM_IMG);
             arguments.putString(PageFragment.ARG_ITEM_IMG, mImgUrl);
 
-            tracking(SCREEN_NAME, mCategory, "start", (id>0?mTitle:mUrl), id);
+            FontSizeEnum fontSize = getFontSize();
+            arguments.putSerializable(PageFragment.ARG_FONT_SIZE, fontSize);
+
+            tracking(SCREEN_NAME, mCategory, "start", (id > 0 ? mTitle : mUrl), id);
 
             PageFragment pageFragment = new PageFragment();
             pageFragment.setArguments(arguments);

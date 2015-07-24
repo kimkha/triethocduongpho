@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="font_size">
+        <item>Nhỏ (mặc định)</item>
+        <item>Lớn</item>
+        <item>Rất lớn</item>
+    </string-array>
+</resources>

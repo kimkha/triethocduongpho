@@ -21,6 +21,7 @@
     <string name="action_rate">Đánh giá ứng dụng</string>
     <string name="action_month">Bài cũ</string>
     <string name="action_refresh">Làm mới danh sách</string>
+    <string name="action_font">Đổi cỡ chữ</string>
 
     <!-- Alert -->
     <string name="network">Lỗi Kết Nối</string>
@@ -38,6 +39,11 @@
     <string name="month_format">Tháng %1$d/%2$d</string>
     <string name="month_cancel">Huỷ Bỏ</string>
     <string name="month_all">Tất Cả</string>
+
+    <!-- Font size dialog -->
+    <string name="font_size_title">Đổi cỡ chữ</string>
+    <string name="font_size_cancel">Huỷ Bỏ</string>
+    <string name="font_size_all">Tất Cả</string>
 
     <!-- Other -->
     <string name="subhead_text">%1$s · %2$s</string>

@@ -19,6 +19,7 @@ import com.kimkha.triethocduongpho.R;
 import com.kimkha.triethocduongpho.app.PageActivity;
 import com.kimkha.triethocduongpho.backend.article2Api.model.Article;
 import com.kimkha.triethocduongpho.data.MyArticle2Service;
+import com.kimkha.triethocduongpho.util.FontSizeEnum;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -41,6 +42,7 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
     public static final String ARG_ITEM_TITLE = "item_title";
     public static final String ARG_ITEM_URL = "item_url";
     public static final String ARG_ITEM_IMG = "item_img";
+    public static final String ARG_FONT_SIZE = "font_size";
 
     private final DisplayImageOptions options = new DisplayImageOptions.Builder()
             .cacheInMemory(true).cacheOnDisk(true)
@@ -67,6 +69,7 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
     private View headGroup;
     private TextView authorView;
     private LinearLayout mainContent;
+    private FontSizeEnum fontSize = FontSizeEnum.SMALL;
 
     public PageFragment() {
 
@@ -84,6 +87,7 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
             title = getArguments().getString(ARG_ITEM_TITLE);
             imgUrl = getArguments().getString(ARG_ITEM_IMG);
             imgUrl = MyArticle2Service.parseImageUrl(imgUrl);
+            fontSize = (FontSizeEnum) getArguments().getSerializable(ARG_FONT_SIZE);
 
             MyArticle2Service.getArticle(url, id, this);
         }
@@ -101,10 +105,13 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
         headGroup = rootView.findViewById(R.id.page_head_group);
         mainContent = (LinearLayout) rootView.findViewById(R.id.main_content);
 
+        headerView.setTextAppearance(getActivity(), fontSize.getContentHead());
+        subHeaderView.setTextAppearance(getActivity(), fontSize.getContentSubHead());
+
         refreshScrollListener();
 
         AdView mAdView = (AdView) rootView.findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("14636C6C8763E3CF9546AFE871A60ABF").build();
         mAdView.loadAd(adRequest);
 
         return rootView;
@@ -247,7 +254,7 @@ public class PageFragment extends Fragment implements MyArticle2Service.ApiCallb
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
         textView.setLayoutParams(layoutParams);
-        textView.setTextAppearance(getActivity(), R.style.ContentText);
+        textView.setTextAppearance(getActivity(), fontSize.getContentText());
         textView.setLineSpacing(0.0f, 1.2f);
         textView.setHtmlFromString(html, htmlOptions);
         mainContent.addView(textView);

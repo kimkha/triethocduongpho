@@ -6,6 +6,17 @@
     Phiên bản hiện tại: <b>__VER__</b>
 </p>
 
+<h3>v2.3</h3>
+<ul>
+    <li>Hỗ trợ tuỳ chọn font chữ</li>
+</ul>
+
+<h3>v2.2</h3>
+<ul>
+    <li>Khắc phục lỗi hiển thị hình ảnh trong bài</li>
+    <li>Lấy nội dung chính xác hơn</li>
+</ul>
+
 <h3>v2.1</h3>
 <ul>
     <li>Fixbug</li>

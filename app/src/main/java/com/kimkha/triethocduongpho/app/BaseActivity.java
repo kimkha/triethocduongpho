@@ -1,6 +1,8 @@
 package com.kimkha.triethocduongpho.app;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +15,10 @@ import android.widget.Toast;
 import com.google.android.gms.analytics.HitBuilders;
 import com.kimkha.triethocduongpho.MyApplication;
 import com.kimkha.triethocduongpho.R;
+import com.kimkha.triethocduongpho.util.FontSizeEnum;
+import com.kimkha.triethocduongpho.util.PrefHelper;
+
+import java.util.Arrays;
 
 /**
  * @author kimkha
@@ -21,6 +27,7 @@ import com.kimkha.triethocduongpho.R;
  */
 public abstract class BaseActivity extends AppCompatActivity {
     private Toolbar toolbar;
+    private AlertDialog.Builder dialogBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +39,8 @@ public abstract class BaseActivity extends AppCompatActivity {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+
+        buildDialog();
 
         if (MyApplication.tracker != null) {
             MyApplication.tracker.setScreenName("BASE");
@@ -72,6 +81,12 @@ public abstract class BaseActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, AboutActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.action_font:
+                if (dialogBuilder == null) {
+                    buildDialog();
+                }
+                dialogBuilder.show().setCanceledOnTouchOutside(true);
+                break;
             case R.id.action_rate:
                 Uri uri = Uri.parse("market://details?id=" + this.getPackageName());
                 Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
@@ -87,6 +102,36 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public FontSizeEnum getFontSize() {
+        int current = PrefHelper.getInt(this, "font_size");
+        return FontSizeEnum.parse(current);
+    }
+
+    private void buildDialog() {
+        dialogBuilder = new AlertDialog.Builder(this).setIcon(R.mipmap.ic_launcher).setTitle(R.string.font_size_title);
+        dialogBuilder.setCancelable(true);
+        dialogBuilder.setNegativeButton(R.string.font_size_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        int current = PrefHelper.getInt(this, "font_size");
+
+        dialogBuilder.setSingleChoiceItems(R.array.font_size, current, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                PrefHelper.setInt(BaseActivity.this, "font_size", which);
+                dialog.dismiss();
+
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+            }
+        });
     }
 
     public void tracking(String screenName, String category, String action, String label, long value) {

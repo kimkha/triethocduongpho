@@ -6,8 +6,40 @@
         <!--<item name="android:fontFamily">sans-serif-light</item>-->
     </style>
 
+    <style name="ContentHead">
+        <item name="android:textSize">@dimen/abc_text_size_headline_material</item>
+        <item name="android:textColor">@color/abc_primary_text_material_dark</item>
+    </style>
+
+    <style name="ContentHead.Medium" parent="ContentHead">
+    </style>
+
+    <style name="ContentHead.Large" parent="ContentHead">
+    </style>
+
+    <style name="ContentSubHead">
+        <item name="android:textSize">@dimen/abc_text_size_caption_material</item>
+        <item name="android:textColor">@color/abc_secondary_text_material_dark</item>
+    </style>
+
+    <style name="ContentSubHead.Medium" parent="ContentSubHead">
+        <item name="android:textSize">@dimen/abc_text_size_body_2_material</item>
+    </style>
+
+    <style name="ContentSubHead.Large" parent="ContentSubHead">
+        <item name="android:textSize">@dimen/abc_text_size_subhead_material</item>
+    </style>
+
     <style name="ContentText" parent="NormalTitleText">
         <item name="android:textColor">@color/material_grey_700</item>
+    </style>
+
+    <style name="ContentText.Medium" parent="ContentText">
+        <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
+    </style>
+
+    <style name="ContentText.Large" parent="ContentText">
+        <item name="android:textSize">@dimen/abc_text_size_large_material</item>
     </style>
 
     <style name="NormalTitleText" parent="NormalTitleTextBase"/>
@@ -16,12 +48,27 @@
         <item name="android:textColor">@color/material_grey_900</item>
         <item name="android:textStyle">normal</item>
     </style>
+    <style name="NormalTitleText.Medium" parent="NormalTitleText">
+        <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
+    </style>
+
+    <style name="NormalTitleText.Large" parent="NormalTitleText">
+        <item name="android:textSize">@dimen/abc_text_size_large_material</item>
+    </style>
 
     <style name="SubTitleText" parent="SubTitleTextBase"/>
 
     <style name="SubTitleTextBase">
         <item name="android:textSize">10sp</item>
         <item name="android:textColor">@color/material_grey_600</item>
+    </style>
+
+    <style name="SubTitleText.Medium" parent="SubTitleText">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="SubTitleText.Large" parent="SubTitleText">
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="BigTitleText" parent="NormalTitleText">
@@ -32,6 +79,14 @@
         <item name="android:shadowRadius">1</item>
     </style>
 
+    <style name="BigTitleText.Medium" parent="BigTitleText">
+        <item name="android:textSize">@dimen/abc_text_size_medium_material</item>
+    </style>
+
+    <style name="BigTitleText.Large" parent="BigTitleText">
+        <item name="android:textSize">@dimen/abc_text_size_large_material</item>
+    </style>
+
     <style name="BigSubTitleText" parent="SubTitleText">
         <item name="android:textColor">@color/material_grey_500</item>
         <item name="android:shadowColor">#000000</item>
@@ -39,4 +94,13 @@
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">1</item>
     </style>
+
+    <style name="BigSubTitleText.Medium" parent="BigSubTitleText">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="BigSubTitleText.Large" parent="BigSubTitleText">
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>

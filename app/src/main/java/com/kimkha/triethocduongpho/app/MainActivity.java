@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity
     }
 
     public void runFragment() {
-        mFragment = MainFragment.newInstance(mTitle, fromDate, toDate);
+        mFragment = MainFragment.newInstance(mTitle, fromDate, toDate, getFontSize());
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, mFragment)
@@ -146,11 +146,11 @@ public class MainActivity extends BaseActivity
         if (actionBar != null) {
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
             actionBar.setDisplayShowTitleEnabled(true);
-            String title = mTitle;
+            actionBar.setTitle(mTitle);
             if (fromDate != null) {
-                title = String.format("[%02d/%02d] %s", fromDate.get(Calendar.MONTH)+1, fromDate.get(Calendar.YEAR)%100, title);
+                String subtitle = String.format("%02d/%04d", fromDate.get(Calendar.MONTH)+1, fromDate.get(Calendar.YEAR));
+                getToolbar().setSubtitle(subtitle);
             }
-            actionBar.setTitle(title);
         }
     }
 

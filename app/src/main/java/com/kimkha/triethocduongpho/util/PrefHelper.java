@@ -32,4 +32,15 @@ public class PrefHelper {
         pref.putLong(key, value);
         pref.apply();
     }
+
+    public static int getInt(Activity activity, String key) {
+        SharedPreferences pref = activity.getPreferences(Context.MODE_PRIVATE);
+        return pref.getInt(key, 0);
+    }
+
+    public static void setInt(Activity activity, String key, int value) {
+        SharedPreferences.Editor pref = activity.getPreferences(Context.MODE_PRIVATE).edit();
+        pref.putInt(key, value);
+        pref.apply();
+    }
 }
