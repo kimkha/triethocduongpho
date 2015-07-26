@@ -9,8 +9,8 @@ android {
         applicationId "com.kimkha.triethocduongpho"
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 17
-        versionName "2.3"
+        versionCode 18
+        versionName "2.4"
 //        multiDexEnabled true
     }
     buildTypes {
