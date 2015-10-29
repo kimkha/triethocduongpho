@@ -1,9 +1,9 @@
 # triethocduongpho
 Ứng dụng Android tiện lợi để đọc bài trên TrietHocDuongPho.com
 
-[Download from Google Play](https://play.google.com/store/apps/details?id=com.kimkha.triethocduongpho)
+[Download from Google Play](https://play.google.com/store/apps/details?id=com.nkimkha.triethocduongpho)
 
-Một app khác cũng dùng source này, nhưng trang này nói về tin Khoa học: [Khoa Học News](https://play.google.com/store/apps/details?id=com.kimkha.khoahoc)
+Một app khác cũng dùng source này, nhưng trang này nói về tin Khoa học: [Khoa Học News](https://play.google.com/store/apps/details?id=com.nkimkha.khoahoc)
 
 Đây là ứng dụng không chính thức cho trang TrietHocDuongPho, tiếng nói của những người trẻ tự do.
 
@@ -36,9 +36,9 @@ Các category:
 - Tôn Giáo - Tâm Linh
 - Video Ngắn
 
-[Download from Google Play](https://play.google.com/store/apps/details?id=com.kimkha.triethocduongpho)
+[Download from Google Play](https://play.google.com/store/apps/details?id=com.nkimkha.triethocduongpho)
 
-Một app khác cũng dùng source này, nhưng trang này nói về tin Khoa học: [Khoa Học News](https://play.google.com/store/apps/details?id=com.kimkha.khoahoc)
+Một app khác cũng dùng source này, nhưng trang này nói về tin Khoa học: [Khoa Học News](https://play.google.com/store/apps/details?id=com.nkimkha.khoahoc)
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/kimkha/triethocduongpho/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
