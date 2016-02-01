@@ -3,7 +3,7 @@
 
 [Download from Google Play](https://play.google.com/store/apps/details?id=com.nkimkha.triethocduongpho)
 
-Một app khác cũng dùng source này, nhưng trang này nói về tin Khoa học: [Khoa Học News](https://play.google.com/store/apps/details?id=com.nkimkha.khoahoc)
+Một app khác cũng dùng source này, nhưng trang này nói về tin Khoa học: [Khoa Học News](https://play.google.com/store/apps/details?id=com.nkimkha.khoahoc). Thêm một app nữa chứa các tin tức ngoài luồng và nhiều góc nhìn đa chiều: [Tin ngoài luồng-đa chiều](https://play.google.com/store/apps/details?id=com.nkimkha.tinletrai)
 
 Đây là ứng dụng không chính thức cho trang TrietHocDuongPho, tiếng nói của những người trẻ tự do.
 
@@ -39,6 +39,8 @@ Các category:
 [Download from Google Play](https://play.google.com/store/apps/details?id=com.nkimkha.triethocduongpho)
 
 Một app khác cũng dùng source này, nhưng trang này nói về tin Khoa học: [Khoa Học News](https://play.google.com/store/apps/details?id=com.nkimkha.khoahoc)
+
+Thêm một app nữa chứa các tin tức ngoài luồng và nhiều góc nhìn đa chiều: [Tin ngoài luồng-đa chiều](https://play.google.com/store/apps/details?id=com.nkimkha.tinletrai)
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/kimkha/triethocduongpho/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
